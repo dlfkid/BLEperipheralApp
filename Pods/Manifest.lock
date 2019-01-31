@@ -1,0 +1,24 @@
+PODS:
+  - FLEX (2.4.0)
+  - iOSDeviceScreenAdapter (1.0.2)
+  - Masonry (1.1.0)
+
+DEPENDENCIES:
+  - FLEX
+  - iOSDeviceScreenAdapter (~> 1.0.2)
+  - Masonry
+
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - FLEX
+    - iOSDeviceScreenAdapter
+    - Masonry
+
+SPEC CHECKSUMS:
+  FLEX: bd1a39e55b56bb413b6f1b34b3c10a0dc44ef079
+  iOSDeviceScreenAdapter: 359c45fa7398a736978d6432e2686c76f763b9a5
+  Masonry: 678fab65091a9290e40e2832a55e7ab731aad201
+
+PODFILE CHECKSUM: f1f36a460d296f776f4856ae2ac169d18a6d7ba4
+
+COCOAPODS: 1.5.3

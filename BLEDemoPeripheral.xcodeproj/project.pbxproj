@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		819F4A0A64B934D5E6793BA9 /* Pods_BLEDemoPeripheral.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EDFDC52ACB2C95D53810726F /* Pods_BLEDemoPeripheral.framework */; };
 		B44D1FA71F3841840011AC95 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = B44D1FA61F3841840011AC95 /* main.m */; };
 		B44D1FAA1F3841840011AC95 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = B44D1FA91F3841840011AC95 /* AppDelegate.m */; };
 		B44D1FB21F3841840011AC95 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B44D1FB11F3841840011AC95 /* Assets.xcassets */; };
@@ -15,6 +16,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		2606390A15FA0B0AC7CDE7E5 /* Pods-BLEDemoPeripheral.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BLEDemoPeripheral.release.xcconfig"; path = "Pods/Target Support Files/Pods-BLEDemoPeripheral/Pods-BLEDemoPeripheral.release.xcconfig"; sourceTree = "<group>"; };
+		867E6E9C5FF211B7AE199967 /* Pods-BLEDemoPeripheral.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BLEDemoPeripheral.debug.xcconfig"; path = "Pods/Target Support Files/Pods-BLEDemoPeripheral/Pods-BLEDemoPeripheral.debug.xcconfig"; sourceTree = "<group>"; };
 		B44D1FA21F3841840011AC95 /* BLEDemoPeripheral.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BLEDemoPeripheral.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B44D1FA61F3841840011AC95 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		B44D1FA81F3841840011AC95 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -24,6 +27,7 @@
 		B44D1FB61F3841840011AC95 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B44D1FBC1F3842770011AC95 /* MainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainViewController.h; sourceTree = "<group>"; };
 		B44D1FBD1F3842770011AC95 /* MainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainViewController.m; sourceTree = "<group>"; };
+		EDFDC52ACB2C95D53810726F /* Pods_BLEDemoPeripheral.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BLEDemoPeripheral.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -31,17 +35,37 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				819F4A0A64B934D5E6793BA9 /* Pods_BLEDemoPeripheral.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		6AF9279BD1FCDE8C6AB87C08 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				867E6E9C5FF211B7AE199967 /* Pods-BLEDemoPeripheral.debug.xcconfig */,
+				2606390A15FA0B0AC7CDE7E5 /* Pods-BLEDemoPeripheral.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		94326C7E9B695D7E5004865A /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				EDFDC52ACB2C95D53810726F /* Pods_BLEDemoPeripheral.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		B44D1F991F3841840011AC95 = {
 			isa = PBXGroup;
 			children = (
 				B44D1FA41F3841840011AC95 /* BLEDemoPeripheral */,
 				B44D1FA31F3841840011AC95 /* Products */,
+				6AF9279BD1FCDE8C6AB87C08 /* Pods */,
+				94326C7E9B695D7E5004865A /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -83,9 +107,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = B44D1FB91F3841840011AC95 /* Build configuration list for PBXNativeTarget "BLEDemoPeripheral" */;
 			buildPhases = (
+				15B197CC4362D7AB80EECDB6 /* [CP] Check Pods Manifest.lock */,
 				B44D1F9E1F3841840011AC95 /* Sources */,
 				B44D1F9F1F3841840011AC95 /* Frameworks */,
 				B44D1FA01F3841840011AC95 /* Resources */,
+				25446721E42988F835D3501E /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -102,7 +128,7 @@
 		B44D1F9A1F3841840011AC95 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0830;
+				LastUpgradeCheck = 1010;
 				ORGANIZATIONNAME = Ivan_deng;
 				TargetAttributes = {
 					B44D1FA11F3841840011AC95 = {
@@ -142,6 +168,57 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		15B197CC4362D7AB80EECDB6 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-BLEDemoPeripheral-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		25446721E42988F835D3501E /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-BLEDemoPeripheral/Pods-BLEDemoPeripheral-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/FLEX/FLEX.framework",
+				"${BUILT_PRODUCTS_DIR}/Masonry/Masonry.framework",
+				"${BUILT_PRODUCTS_DIR}/iOSDeviceScreenAdapter/iOSDeviceScreenAdapter.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FLEX.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Masonry.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/iOSDeviceScreenAdapter.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-BLEDemoPeripheral/Pods-BLEDemoPeripheral-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		B44D1F9E1F3841840011AC95 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -177,15 +254,23 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
@@ -225,15 +310,23 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
@@ -259,24 +352,26 @@
 		};
 		B44D1FBA1F3841840011AC95 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 867E6E9C5FF211B7AE199967 /* Pods-BLEDemoPeripheral.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = VSH7W5Y66V;
 				INFOPLIST_FILE = BLEDemoPeripheral/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = Misery.BLEDemoPeripheral;
+				PRODUCT_BUNDLE_IDENTIFIER = com.GitHub.BLEDemoPeripheral;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
 		};
 		B44D1FBB1F3841840011AC95 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2606390A15FA0B0AC7CDE7E5 /* Pods-BLEDemoPeripheral.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = VSH7W5Y66V;
 				INFOPLIST_FILE = BLEDemoPeripheral/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = Misery.BLEDemoPeripheral;
+				PRODUCT_BUNDLE_IDENTIFIER = com.GitHub.BLEDemoPeripheral;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
@@ -300,6 +395,7 @@
 				B44D1FBB1F3841840011AC95 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
