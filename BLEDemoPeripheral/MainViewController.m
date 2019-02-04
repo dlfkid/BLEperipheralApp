@@ -12,7 +12,10 @@
 #import "MainViewController.h"
 
 
-@interface MainViewController ()
+@interface MainViewController ()<UITableViewDelegate, UITableViewDataSource>
+
+@property (nonatomic, strong) UIButton *postButton;
+@property (nonatomic, strong) UITableView *tableView;
 
 @end
 
@@ -37,25 +40,7 @@
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
- CBManagerStateUnknown = 0,
-	CBManagerStateResetting,
-	CBManagerStateUnsupported,
-	CBManagerStateUnauthorized,
-	CBManagerStatePoweredOff,
-	CBManagerStatePoweredOn,
- 
-*/
 
 
 - (void)UIBuild {
@@ -77,7 +62,27 @@
     
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"BoardCast" style:UIBarButtonItemStyleDone target:self action:@selector(startBoardCast)];
     
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"Post" style:UIBarButtonItemStylePlain target:self action:@selector(didClickPost)];
+    _tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStyleGrouped];
+    _tableView.dataSource = self;
+    _tableView.delegate = self;
+    [self.view addSubview:self.tableView];
+    
+    
+    
+    _postButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [_postButton addTarget:self action:@selector(didClickPost) forControlEvents:UIControlEventTouchUpInside];
+    _postButton.backgroundColor = [UIColor tintColor];
+    [_postButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [_postButton setTitle:NSLocalizedString(@"MainViewController.postButton.title", @"") forState:UIControlStateNormal];
+    _postButton.layer.cornerRadius = 10;
+    [self.view addSubview:self.postButton];
+    
+    [self.postButton mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.mas_equalTo(30);
+        make.right.mas_equalTo(- 30);
+        make.height.equalTo(@40);
+        make.bottom.mas_equalTo(- 30).mas_offset(-[DeviceScreenAdaptor bottomIndicatorMargin]);
+    }];
 }
 
 - (void)didClickPost {
@@ -180,5 +185,11 @@
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
     return YES;
 }
+
+#pragma mark - TableViewDataSource
+
+
+#pragma mark - TableViewDelegate
+
 
 @end

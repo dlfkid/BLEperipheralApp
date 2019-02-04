@@ -8,8 +8,9 @@
 
 #import <UIKit/UIKit.h>
 #import <CoreBluetooth/CoreBluetooth.h>
+#import "BaseViewController.h"
 
-@interface MainViewController : UIViewController<CBPeripheralManagerDelegate,UITextFieldDelegate>
+@interface MainViewController : BaseViewController <CBPeripheralManagerDelegate,UITextFieldDelegate>
 
 @property(nonatomic,strong) CBPeripheralManager *peripheralManager;
 @property(nonatomic,strong) UILabel *stateLabel;

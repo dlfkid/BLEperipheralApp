@@ -14,7 +14,7 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "071FACA0E20E00DABA5881E3278E1755"
+               BlueprintIdentifier = "245570EA4D2321AAD540E52DB8C82D51"
                BlueprintName = "iOSDeviceScreenAdapter"
                ReferencedContainer = "container:Pods.xcodeproj"
                BuildableName = "iOSDeviceScreenAdapter.framework">

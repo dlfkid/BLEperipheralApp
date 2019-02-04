@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3561D2672203D8C1000491D2 /* BaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3561D2662203D8C1000491D2 /* BaseViewController.m */; };
+		35F7DB23220889270045F7B0 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 35F7DB25220889270045F7B0 /* Localizable.strings */; };
 		819F4A0A64B934D5E6793BA9 /* Pods_BLEDemoPeripheral.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EDFDC52ACB2C95D53810726F /* Pods_BLEDemoPeripheral.framework */; };
 		B44D1FA71F3841840011AC95 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = B44D1FA61F3841840011AC95 /* main.m */; };
 		B44D1FAA1F3841840011AC95 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = B44D1FA91F3841840011AC95 /* AppDelegate.m */; };
@@ -17,6 +19,11 @@
 
 /* Begin PBXFileReference section */
 		2606390A15FA0B0AC7CDE7E5 /* Pods-BLEDemoPeripheral.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BLEDemoPeripheral.release.xcconfig"; path = "Pods/Target Support Files/Pods-BLEDemoPeripheral/Pods-BLEDemoPeripheral.release.xcconfig"; sourceTree = "<group>"; };
+		3561D2652203D8C1000491D2 /* BaseViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BaseViewController.h; sourceTree = "<group>"; };
+		3561D2662203D8C1000491D2 /* BaseViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BaseViewController.m; sourceTree = "<group>"; };
+		35F7DB20220888870045F7B0 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/LaunchScreen.strings"; sourceTree = "<group>"; };
+		35F7DB24220889270045F7B0 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		35F7DB26220889390045F7B0 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		867E6E9C5FF211B7AE199967 /* Pods-BLEDemoPeripheral.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BLEDemoPeripheral.debug.xcconfig"; path = "Pods/Target Support Files/Pods-BLEDemoPeripheral/Pods-BLEDemoPeripheral.debug.xcconfig"; sourceTree = "<group>"; };
 		B44D1FA21F3841840011AC95 /* BLEDemoPeripheral.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BLEDemoPeripheral.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B44D1FA61F3841840011AC95 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -82,6 +89,8 @@
 			children = (
 				B44D1FA81F3841840011AC95 /* AppDelegate.h */,
 				B44D1FA91F3841840011AC95 /* AppDelegate.m */,
+				3561D2652203D8C1000491D2 /* BaseViewController.h */,
+				3561D2662203D8C1000491D2 /* BaseViewController.m */,
 				B44D1FBC1F3842770011AC95 /* MainViewController.h */,
 				B44D1FBD1F3842770011AC95 /* MainViewController.m */,
 				B44D1FB11F3841840011AC95 /* Assets.xcassets */,
@@ -96,6 +105,7 @@
 			isa = PBXGroup;
 			children = (
 				B44D1FA61F3841840011AC95 /* main.m */,
+				35F7DB25220889270045F7B0 /* Localizable.strings */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -145,6 +155,7 @@
 			knownRegions = (
 				en,
 				Base,
+				"zh-Hans",
 			);
 			mainGroup = B44D1F991F3841840011AC95;
 			productRefGroup = B44D1FA31F3841840011AC95 /* Products */;
@@ -162,6 +173,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B44D1FB51F3841840011AC95 /* LaunchScreen.storyboard in Resources */,
+				35F7DB23220889270045F7B0 /* Localizable.strings in Resources */,
 				B44D1FB21F3841840011AC95 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -199,9 +211,10 @@
 			inputFileListPaths = (
 			);
 			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-BLEDemoPeripheral/Pods-BLEDemoPeripheral-frameworks.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-BLEDemoPeripheral/Pods-BLEDemoPeripheral-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/FLEX/FLEX.framework",
 				"${BUILT_PRODUCTS_DIR}/Masonry/Masonry.framework",
+				"${BUILT_PRODUCTS_DIR}/UIExtensionKit/UIExtensionKit.framework",
 				"${BUILT_PRODUCTS_DIR}/iOSDeviceScreenAdapter/iOSDeviceScreenAdapter.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
@@ -210,11 +223,12 @@
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FLEX.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Masonry.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/UIExtensionKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/iOSDeviceScreenAdapter.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-BLEDemoPeripheral/Pods-BLEDemoPeripheral-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-BLEDemoPeripheral/Pods-BLEDemoPeripheral-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -225,6 +239,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B44D1FAA1F3841840011AC95 /* AppDelegate.m in Sources */,
+				3561D2672203D8C1000491D2 /* BaseViewController.m in Sources */,
 				B44D1FBE1F3842770011AC95 /* MainViewController.m in Sources */,
 				B44D1FA71F3841840011AC95 /* main.m in Sources */,
 			);
@@ -233,10 +248,20 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
+		35F7DB25220889270045F7B0 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				35F7DB24220889270045F7B0 /* en */,
+				35F7DB26220889390045F7B0 /* zh-Hans */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
 		B44D1FB31F3841840011AC95 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
 				B44D1FB41F3841840011AC95 /* Base */,
+				35F7DB20220888870045F7B0 /* zh-Hans */,
 			);
 			name = LaunchScreen.storyboard;
 			sourceTree = "<group>";
@@ -248,6 +273,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
@@ -304,6 +330,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";

@@ -14,10 +14,10 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "F48F73EFAE009A098D74D65210277196"
-               BlueprintName = "FLEX"
+               BlueprintIdentifier = "05E41E360A23601B1D0E7EB29BEAB9F3"
+               BlueprintName = "UIExtensionKit"
                ReferencedContainer = "container:Pods.xcodeproj"
-               BuildableName = "FLEX.framework">
+               BuildableName = "UIExtensionKit.framework">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>

@@ -8,6 +8,7 @@
 
 #import "AppDelegate.h"
 #import "MainViewController.h"
+#import <UIExtensionKit/UIColor+UIExtensionKit.h>
 
 @interface AppDelegate ()
 
@@ -24,6 +25,8 @@
     MainViewController *main = [[MainViewController alloc]init];
     UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:main];
     [self.window setRootViewController:nav];
+    // 设置主色调
+    [UIColor setTintColor:[UIColor colorWithR:57.f G:98.f B:153.f]];
     return YES;
 }
 

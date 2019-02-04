@@ -1,0 +1,43 @@
+/* 
+  Localizable.strings
+  BLEDemoPeripheral
+
+  Created by LeonDeng on 2019/2/4.
+  Copyright © 2019 Ivan_deng. All rights reserved.
+*/
+
+// 常用
+"Back"    = "返回";
+"Cancel"  = "取消";
+"No"      = "否";
+"Yes"     = "是";
+"Save"    = "保存";
+"Saved"   = "已保存";
+"OK"      = "好";
+"Edit"    = "编辑";
+"Delete"  = "删除";
+"Done"    = "完成";
+"Post"    = "发布";
+"Deny"    = "拒绝";
+"Agree"   = "允许";
+"Submit"  = "提交";
+"Send"    = "发送";
+"Upgrade" = "升级";
+"Next"    = "下一步";
+"Add"     = "添加";
+"Warning" = "警告";
+"Wait"    = "稍等";
+"Skip"    = "跳过";
+"Select"  = "选择";
+"Stop"    = "停止";
+"Search"  = "搜索";
+"More"    = "更多";
+"Quit"    = "退出";
+"Dismiss" = "关闭";
+"Share"   = "分享";
+"New"     = "新建";
+"Continue" = "继续";
+"现在"     = "现在";
+
+"MainViewController.postButton.title" = "发送特征值";
+"MainViewController.boardcastButton.title" = "广播蓝牙信号";

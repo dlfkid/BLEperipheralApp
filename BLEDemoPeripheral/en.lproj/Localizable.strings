@@ -1,0 +1,43 @@
+/* 
+  Localizable.strings
+  BLEDemoPeripheral
+
+  Created by LeonDeng on 2019/2/4.
+  Copyright © 2019 Ivan_deng. All rights reserved.
+*/
+
+// 常用
+"Back"    = "Back";
+"Cancel"  = "Cancel";
+"Yes"     = "Yes";
+"No"      = "No";
+"Warning" = "Warning";
+"Save"    = "Save";
+"Saved"   = "Saved";
+"OK"      = "OK";
+"Edit"    = "Edit";
+"Delete"  = "Delete";
+"Done"    = "Done";
+"Post"    = "Post";
+"Deny"    = "Deny";
+"Agree"   = "Agree";
+"Submit"  = "Submit";
+"Send"    = "Send";
+"Upgrade" = "Upgrade";
+"Next"    = "Next";
+"Add"     = "Add";
+"Wait"    = "Wait";
+"Skip"    = "Skip";
+"Select"  = "Select";
+"Stop"    = "Stop";
+"Search"  = "Search";
+"More"    = "More";
+"Quit"    = "Quit";
+"Dismiss" = "Dismiss";
+"Share"   = "Share";
+"New"     = "New";
+"Continue" = "Continue";
+"现在"     = "current";
+
+"MainViewController.postButton.title" = "Post new value";
+"MainViewController.boardcastButton.title" = "Boardcast BLE Signal";

@@ -7,6 +7,7 @@ target 'BLEDemoPeripheral' do
   pod 'iOSDeviceScreenAdapter', '~> 1.0.2'
   pod 'FLEX'
   pod 'Masonry'
+  pod 'UIExtensionKit'
   # Pods for BLEDemoPeripheral
 
 end
