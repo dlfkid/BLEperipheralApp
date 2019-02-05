@@ -39,5 +39,12 @@
 "Continue" = "继续";
 "现在"     = "现在";
 
+"peripheralState.unknown" = "未知状态";
+"peripheralState.unsupported" = "设备不支持";
+"peripheralState.unauthorzied" = "未授权";
+"peripheralState.resetting" = "重置中";
+"peripheralState.powerOff" = "关闭";
+"peripheralState.powerOn" = "开启";
+
 "MainViewController.postButton.title" = "发送特征值";
 "MainViewController.boardcastButton.title" = "广播蓝牙信号";

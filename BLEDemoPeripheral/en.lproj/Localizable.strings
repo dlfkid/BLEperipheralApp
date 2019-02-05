@@ -39,5 +39,13 @@
 "Continue" = "Continue";
 "现在"     = "current";
 
+"peripheralState.unknown" = "Unknown";
+"peripheralState.unsupported" = "Unsupported";
+"peripheralState.unauthorzied" = "Unauthorzied";
+"peripheralState.resetting" = "Resetting";
+"peripheralState.powerOff" = "Power Off";
+"peripheralState.powerOn" = "Power On";
+
+
 "MainViewController.postButton.title" = "Post new value";
 "MainViewController.boardcastButton.title" = "Boardcast BLE Signal";
