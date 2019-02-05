@@ -10,9 +10,10 @@
 #define CHARACTERISTIC_UUID @"CDD2"
 
 #import "MainViewController.h"
+#import <Masonry/Masonry.h>
 
 
-@interface MainViewController () <CBPeripheralManagerDelegate, UITextFieldDelegate, UITableViewDelegate, UITableViewDataSource>
+@interface MainViewController () <CBPeripheralManagerDelegate, UITableViewDelegate, UITableViewDataSource>
 
 @property (nonatomic, strong) UIButton *boardCastButton;
 @property (nonatomic, strong) UITableView *tableView;
@@ -37,7 +38,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self UIBuild];
-    // Do any additional setup after loading the view.
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -50,7 +50,6 @@
 
 
 - (void)UIBuild {
-    
     _stateView = [[UIView alloc] initWithFrame:CGRectZero];
     _stateView.backgroundColor = [UIColor colorWithR:224 G:180 B:62];
     [self.view addSubview:_stateView];
@@ -62,25 +61,13 @@
     _stateLabel.text = [NSString stringWithFormat:@"%@%@", NSLocalizedString(@"MainViewController.stateLabel.text", @""), [self peripherialStateString:self.peripheralManager.state]];
     [self.stateView addSubview:_stateLabel];
     
-    UITextField *textField = [[UITextField alloc]initWithFrame:CGRectZero];
-    textField.delegate = self;
-    textField.textAlignment = NSTextAlignmentLeft;
-    textField.font = [UIFont systemFontOfSize:14];
-    textField.layer.borderWidth = 1;
-    _textContent = textField;
-    [self.view addSubview:_textContent];
-    
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"BoardCast" style:UIBarButtonItemStyleDone target:self action:@selector(startBoardCast)];
-    
     _tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStyleGrouped];
     _tableView.dataSource = self;
     _tableView.delegate = self;
     [self.view addSubview:self.tableView];
     
-    
-    
     _boardCastButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [_boardCastButton addTarget:self action:@selector(startBoardCast) forControlEvents:UIControlEventTouchUpInside];
+    [_boardCastButton addTarget:self action:@selector(boardcastButtonDidTappedAction:) forControlEvents:UIControlEventTouchUpInside];
     _boardCastButton.backgroundColor = [UIColor tintColor];
     [_boardCastButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [_boardCastButton setTitle:NSLocalizedString(@"MainViewController.boardcastButton.title", @"") forState:UIControlStateNormal];
@@ -104,14 +91,19 @@
         make.left.mas_equalTo(30);
         make.right.mas_equalTo(- 30);
         make.height.equalTo(@40);
-        make.bottom.equalTo(@(-10)).mas_offset(- [DeviceScreenAdaptor bottomIndicatorMargin]);
+        make.bottom.equalTo(@(-30)).mas_offset(- [DeviceScreenAdaptor bottomIndicatorMargin]);
     }];
     
     [self.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.mas_equalTo(self.stateView.mas_bottom);
         make.left.right.equalTo(@0);
-        make.bottom.mas_equalTo(self.boardCastButton.mas_top).mas_offset(-10);
+        make.bottom.mas_equalTo(0).mas_offset(- [DeviceScreenAdaptor bottomIndicatorMargin]);
     }];
+}
+
+- (void)updateViewConstraints {
+
+    [super updateViewConstraints];
 }
 
 #pragma mark - Actions
@@ -170,6 +162,13 @@
 }
 
 - (void)setBoardcasting:(BOOL)boardcasting {
+    if(self.peripheralManager.state != CBManagerStatePoweredOn) {
+        [self.peripheralManager stopAdvertising];
+        UIAlertController *alertControl = [UIAlertController alertControllerWithTitle:@"ManagerError" message:@"Manager state wrong" preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction *alertAction = [UIAlertAction actionWithTitle:@"confirm" style:UIAlertActionStyleDefault handler:nil];
+        [alertControl addAction:alertAction];
+        [self presentViewController:alertControl animated:true completion:nil];
+    }
     _boardcasting = boardcasting;
     if (self.isBoardcasting) {
         [self.peripheralManager startAdvertising:@{CBAdvertisementDataServiceUUIDsKey:@[[CBUUID UUIDWithString:SERVICE_UUID]]}];
@@ -223,15 +222,6 @@
     }
     
     self.stateLabel.text = [NSString stringWithFormat:@"%@%@", NSLocalizedString(@"MainViewController.stateLabel.text", @""), [self peripherialStateString:peripheral.state]];
-    
-    
-    if(peripheral.state != CBManagerStatePoweredOn) {
-        [self.peripheralManager stopAdvertising];
-        UIAlertController *alertControl = [UIAlertController alertControllerWithTitle:@"ManagerError" message:@"Manager state wrong" preferredStyle:UIAlertControllerStyleAlert];
-        UIAlertAction *alertAction = [UIAlertAction actionWithTitle:@"confirm" style:UIAlertActionStyleDefault handler:nil];
-        [alertControl addAction:alertAction];
-        [self presentViewController:alertControl animated:true completion:nil];
-    }
 }
 
 - (void)peripheralManager:(CBPeripheralManager *)peripheral didReceiveReadRequest:(CBATTRequest *)request {
@@ -250,12 +240,6 @@
 
 - (void)peripheralManager:(CBPeripheralManager *)peripheral central:(CBCentral *)central didUnsubscribeFromCharacteristic:(CBCharacteristic *)characteristic {
     NSLog(@"%s",__FUNCTION__);
-}
-
-#pragma mark - textFieldDelegate
-
-- (BOOL)textFieldShouldReturn:(UITextField *)textField {
-    return YES;
 }
 
 #pragma mark - TableViewDataSource

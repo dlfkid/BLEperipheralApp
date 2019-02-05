@@ -8,6 +8,9 @@
 
 #import "BaseViewController.h"
 
+# ifdef DEBUG
+#import <FLEX/FLEX.h>
+# endif
 
 @interface BaseViewController ()
 
@@ -19,6 +22,10 @@
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
     [self setNavigationBar];
+    UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(addFLEXGestureAction)];
+    longPress.minimumPressDuration = 3;
+    longPress.numberOfTouchesRequired = 1;
+    [self.view addGestureRecognizer:longPress];
 }
 
 
@@ -38,4 +45,9 @@
     self.navigationController.navigationBar.shadowImage = [UIImage new];
 }
 
+- (void)addFLEXGestureAction {
+#ifdef DEBUG
+    [[FLEXManager sharedManager] showExplorer];
+#endif
+}
 @end
