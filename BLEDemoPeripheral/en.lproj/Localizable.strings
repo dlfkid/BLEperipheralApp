@@ -39,6 +39,7 @@
 "Continue" = "Continue";
 "现在"     = "current";
 
+
 "peripheralState.unknown" = "Unknown";
 "peripheralState.unsupported" = "Unsupported";
 "peripheralState.unauthorzied" = "Unauthorzied";
@@ -46,6 +47,8 @@
 "peripheralState.powerOff" = "Power Off";
 "peripheralState.powerOn" = "Power On";
 
-
+"MainViewController.stateLabel.text" = "Current State: ";
+"MainViewController.navigationitem.title" = "BLE Demo Peripherial";
 "MainViewController.postButton.title" = "Post new value";
 "MainViewController.boardcastButton.title" = "Boardcast BLE Signal";
+"MainViewController.boardcastButton.title.selected" = "Stop BLE Signal";

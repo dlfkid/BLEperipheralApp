@@ -12,10 +12,16 @@
 #import "MainViewController.h"
 
 
-@interface MainViewController ()<UITableViewDelegate, UITableViewDataSource>
+@interface MainViewController () <CBPeripheralManagerDelegate, UITextFieldDelegate, UITableViewDelegate, UITableViewDataSource>
 
-@property (nonatomic, strong) UIButton *postButton;
+@property (nonatomic, strong) UIButton *boardCastButton;
 @property (nonatomic, strong) UITableView *tableView;
+@property (nonatomic, strong) CBPeripheralManager *peripheralManager;
+@property (nonatomic, strong) UILabel *stateLabel;
+@property (nonatomic, strong) UIView *stateView;
+@property (nonatomic, strong) CBMutableCharacteristic *currentCharacteristic;
+@property (nonatomic, strong) UITextField *textContent;
+@property (nonatomic, assign, getter = isBoardcasting) BOOL boardcasting;
 
 @end
 
@@ -35,7 +41,7 @@
 }
 
 - (void)viewWillAppear:(BOOL)animated {
-    self.navigationItem.title = @"BLEPeripheral";
+    self.navigationItem.title = @"BLEDemoPeripheral";
 }
 
 - (void)didReceiveMemoryWarning {
@@ -44,15 +50,19 @@
 
 
 - (void)UIBuild {
-    CGFloat screenWidth = [UIScreen mainScreen].bounds.size.width;
-    CGFloat screenheight = [UIScreen mainScreen].bounds.size.height;
-    CGFloat topView = 64;
-    CGFloat labelHeight = 44;
-    _stateLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, topView, screenWidth, labelHeight)];
-    _stateLabel.textAlignment = NSTextAlignmentCenter;
-    [self.view addSubview:_stateLabel];
     
-    UITextField *textField = [[UITextField alloc]initWithFrame:CGRectMake(10, topView + 60, screenWidth - 20, screenheight/2)];
+    _stateView = [[UIView alloc] initWithFrame:CGRectZero];
+    _stateView.backgroundColor = [UIColor colorWithR:224 G:180 B:62];
+    [self.view addSubview:_stateView];
+    
+    _stateLabel = [[UILabel alloc]initWithFrame:CGRectZero];
+    _stateLabel.textAlignment = NSTextAlignmentCenter;
+    _stateLabel.textColor = [UIColor whiteColor];
+    _stateLabel.font = [UIFont systemFontOfSize:[UIFont systemFontSize]];
+    _stateLabel.text = [NSString stringWithFormat:@"%@%@", NSLocalizedString(@"MainViewController.stateLabel.text", @""), [self peripherialStateString:self.peripheralManager.state]];
+    [self.stateView addSubview:_stateLabel];
+    
+    UITextField *textField = [[UITextField alloc]initWithFrame:CGRectZero];
     textField.delegate = self;
     textField.textAlignment = NSTextAlignmentLeft;
     textField.font = [UIFont systemFontOfSize:14];
@@ -69,20 +79,68 @@
     
     
     
-    _postButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [_postButton addTarget:self action:@selector(didClickPost) forControlEvents:UIControlEventTouchUpInside];
-    _postButton.backgroundColor = [UIColor tintColor];
-    [_postButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [_postButton setTitle:NSLocalizedString(@"MainViewController.postButton.title", @"") forState:UIControlStateNormal];
-    _postButton.layer.cornerRadius = 10;
-    [self.view addSubview:self.postButton];
+    _boardCastButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [_boardCastButton addTarget:self action:@selector(startBoardCast) forControlEvents:UIControlEventTouchUpInside];
+    _boardCastButton.backgroundColor = [UIColor tintColor];
+    [_boardCastButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [_boardCastButton setTitle:NSLocalizedString(@"MainViewController.boardcastButton.title", @"") forState:UIControlStateNormal];
+    [_boardCastButton setTitle:NSLocalizedString(@"MainViewController.boardcastButton.title.selected", @"") forState:UIControlStateSelected];
+    _boardCastButton.layer.cornerRadius = 10;
+    [self.view addSubview:self.boardCastButton];
     
-    [self.postButton mas_makeConstraints:^(MASConstraintMaker *make) {
+    [self.stateView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.mas_equalTo([DeviceScreenAdaptor statusBarMargin] + 44);
+        make.left.right.equalTo(@0);
+        make.height.equalTo(@30);
+    }];
+    
+    [self.stateLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(@10);
+        make.right.equalTo(@(-10));
+        make.centerY.equalTo(@0);
+    }];
+    
+    [self.boardCastButton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.mas_equalTo(30);
         make.right.mas_equalTo(- 30);
         make.height.equalTo(@40);
-        make.bottom.mas_equalTo(- 30).mas_offset(-[DeviceScreenAdaptor bottomIndicatorMargin]);
+        make.bottom.equalTo(@(-10)).mas_offset(- [DeviceScreenAdaptor bottomIndicatorMargin]);
     }];
+    
+    [self.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.mas_equalTo(self.stateView.mas_bottom);
+        make.left.right.equalTo(@0);
+        make.bottom.mas_equalTo(self.boardCastButton.mas_top).mas_offset(-10);
+    }];
+}
+
+#pragma mark - Actions
+
+- (NSString *)peripherialStateString:(CBManagerState)state {
+    NSString *currentState = NSLocalizedString(@"peripheralState.unknown", @"");
+    switch (state) {
+        case CBManagerStateUnknown:
+            currentState = NSLocalizedString(@"peripheralState.unknown", @"");
+            break;
+        case CBManagerStateUnsupported:
+            currentState = NSLocalizedString(@"peripheralState.unsupported", @"");
+            break;
+        case CBManagerStateUnauthorized:
+            currentState = NSLocalizedString(@"peripheralState.unauthorzied", @"");
+            break;
+        case CBManagerStateResetting:
+            currentState = NSLocalizedString(@"peripheralState.resetting", @"");
+            break;
+        case CBManagerStatePoweredOff:
+            currentState = NSLocalizedString(@"peripheralState.powerOff", @"");
+            break;
+        case CBManagerStatePoweredOn:
+            currentState = NSLocalizedString(@"peripheralState.powerOn", @"");
+            break;
+        default:
+            break;
+    }
+    return currentState;
 }
 
 - (void)didClickPost {
@@ -101,9 +159,23 @@
     }
 }
 
+- (void)boardcastButtonDidTappedAction:(UIButton *)sender {
+    sender.selected = !sender.isSelected;
+    self.boardcasting = sender.isSelected;
+}
+
 - (void)startBoardCast {
     [self setUpServiceAndCharacteristic];
-    [self.peripheralManager startAdvertising:@{CBAdvertisementDataServiceUUIDsKey:@[[CBUUID UUIDWithString:SERVICE_UUID]]}];
+    
+}
+
+- (void)setBoardcasting:(BOOL)boardcasting {
+    _boardcasting = boardcasting;
+    if (self.isBoardcasting) {
+        [self.peripheralManager startAdvertising:@{CBAdvertisementDataServiceUUIDsKey:@[[CBUUID UUIDWithString:SERVICE_UUID]]}];
+    } else {
+        [self.peripheralManager stopAdvertising];
+    }
 }
 
 - (void)setUpServiceAndCharacteristic {
@@ -124,35 +196,35 @@
 # pragma mark - BLEDelegate
 
 - (void)peripheralManagerDidUpdateState:(CBPeripheralManager *)peripheral {
-    
+    UIColor *errorColor = [UIColor colorWithHexString:@"#FADFDF"];
+    UIColor *warningColor = [UIColor colorWithR:224 G:180 B:62];
+    UIColor *normalColor = [UIColor colorWithR:99 G:207 B:173];
     switch (peripheral.state) {
         case CBManagerStateUnknown:
-            NSLog(@"state unknown");
-            _stateLabel.text = @"state unknow";
+            self.stateView.backgroundColor = warningColor;
             break;
         case CBManagerStateUnsupported:
-            NSLog(@"state unsupported");
-            _stateLabel.text = @"state unsupported";
+            self.stateView.backgroundColor = errorColor;
             break;
         case CBManagerStateUnauthorized:
-            NSLog(@"state unauthorzied");
-            _stateLabel.text = @"state unauthorzied";
+            self.stateView.backgroundColor = errorColor;
             break;
         case CBManagerStateResetting:
-            NSLog(@"state resetting");
-            _stateLabel.text = @"state resetting";
+            self.stateView.backgroundColor = warningColor;
             break;
         case CBManagerStatePoweredOff:
-            NSLog(@"state poweroff");
-            _stateLabel.text = @"state power off";
+            self.stateView.backgroundColor = warningColor;
             break;
         case CBManagerStatePoweredOn:
-            NSLog(@"state power on");
-            _stateLabel.text = @"state power on";
+            self.stateView.backgroundColor = normalColor;
             break;
         default:
             break;
     }
+    
+    self.stateLabel.text = [NSString stringWithFormat:@"%@%@", NSLocalizedString(@"MainViewController.stateLabel.text", @""), [self peripherialStateString:peripheral.state]];
+    
+    
     if(peripheral.state != CBManagerStatePoweredOn) {
         [self.peripheralManager stopAdvertising];
         UIAlertController *alertControl = [UIAlertController alertControllerWithTitle:@"ManagerError" message:@"Manager state wrong" preferredStyle:UIAlertControllerStyleAlert];
@@ -188,6 +260,18 @@
 
 #pragma mark - TableViewDataSource
 
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    return 0;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    return 0;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"cell"];
+    return cell;
+}
 
 #pragma mark - TableViewDelegate
 

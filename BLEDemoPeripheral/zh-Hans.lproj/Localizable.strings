@@ -46,5 +46,8 @@
 "peripheralState.powerOff" = "关闭";
 "peripheralState.powerOn" = "开启";
 
+"MainViewController.stateLabel.text" = "当前状态: ";
+"MainViewController.navigationitem.title" = "BLE蓝牙周边设备";
 "MainViewController.postButton.title" = "发送特征值";
 "MainViewController.boardcastButton.title" = "广播蓝牙信号";
+"MainViewController.boardcastButton.title.selected" = "停止广播蓝牙信号";

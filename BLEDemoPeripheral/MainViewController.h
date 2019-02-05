@@ -10,11 +10,6 @@
 #import <CoreBluetooth/CoreBluetooth.h>
 #import "BaseViewController.h"
 
-@interface MainViewController : BaseViewController <CBPeripheralManagerDelegate,UITextFieldDelegate>
-
-@property(nonatomic,strong) CBPeripheralManager *peripheralManager;
-@property(nonatomic,strong) UILabel *stateLabel;
-@property(nonatomic,strong) CBMutableCharacteristic *currentCharacteristic;
-@property(nonatomic,strong) UITextField *textContent;
+@interface MainViewController : BaseViewController
 
 @end
