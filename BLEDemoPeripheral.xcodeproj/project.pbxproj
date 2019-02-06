@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		350EDF8922094C85003AD2D9 /* BaseTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 350EDF8822094C85003AD2D9 /* BaseTableViewCell.m */; };
 		350EDF8E22094CEF003AD2D9 /* CharacteristicTabeViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 350EDF8D22094CEF003AD2D9 /* CharacteristicTabeViewCell.m */; };
+		35184C70220ADE82001C8242 /* ServiceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 35184C6F220ADE82001C8242 /* ServiceViewController.m */; };
 		3561D2672203D8C1000491D2 /* BaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3561D2662203D8C1000491D2 /* BaseViewController.m */; };
 		35F7DB23220889270045F7B0 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 35F7DB25220889270045F7B0 /* Localizable.strings */; };
 		819F4A0A64B934D5E6793BA9 /* Pods_BLEDemoPeripheral.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EDFDC52ACB2C95D53810726F /* Pods_BLEDemoPeripheral.framework */; };
@@ -25,6 +26,8 @@
 		350EDF8822094C85003AD2D9 /* BaseTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BaseTableViewCell.m; sourceTree = "<group>"; };
 		350EDF8C22094CEF003AD2D9 /* CharacteristicTabeViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CharacteristicTabeViewCell.h; sourceTree = "<group>"; };
 		350EDF8D22094CEF003AD2D9 /* CharacteristicTabeViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CharacteristicTabeViewCell.m; sourceTree = "<group>"; };
+		35184C6E220ADE82001C8242 /* ServiceViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ServiceViewController.h; sourceTree = "<group>"; };
+		35184C6F220ADE82001C8242 /* ServiceViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ServiceViewController.m; sourceTree = "<group>"; };
 		3561D2652203D8C1000491D2 /* BaseViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BaseViewController.h; sourceTree = "<group>"; };
 		3561D2662203D8C1000491D2 /* BaseViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BaseViewController.m; sourceTree = "<group>"; };
 		35F7DB20220888870045F7B0 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/LaunchScreen.strings"; sourceTree = "<group>"; };
@@ -73,6 +76,8 @@
 				3561D2662203D8C1000491D2 /* BaseViewController.m */,
 				B44D1FBC1F3842770011AC95 /* MainViewController.h */,
 				B44D1FBD1F3842770011AC95 /* MainViewController.m */,
+				35184C6E220ADE82001C8242 /* ServiceViewController.h */,
+				35184C6F220ADE82001C8242 /* ServiceViewController.m */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -267,6 +272,7 @@
 				350EDF8922094C85003AD2D9 /* BaseTableViewCell.m in Sources */,
 				B44D1FAA1F3841840011AC95 /* AppDelegate.m in Sources */,
 				3561D2672203D8C1000491D2 /* BaseViewController.m in Sources */,
+				35184C70220ADE82001C8242 /* ServiceViewController.m in Sources */,
 				B44D1FBE1F3842770011AC95 /* MainViewController.m in Sources */,
 				350EDF8E22094CEF003AD2D9 /* CharacteristicTabeViewCell.m in Sources */,
 				B44D1FA71F3841840011AC95 /* main.m in Sources */,

@@ -10,7 +10,9 @@
 #define CHARACTERISTIC_UUID @"CDD2"
 
 #import "MainViewController.h"
-#import <Masonry/Masonry.h>
+
+// Controllers
+#import "ServiceViewController.h"
 
 
 @interface MainViewController () <CBPeripheralManagerDelegate, UITableViewDelegate, UITableViewDataSource>
@@ -23,6 +25,8 @@
 @property (nonatomic, strong) CBMutableCharacteristic *currentCharacteristic;
 @property (nonatomic, strong) UITextField *textContent;
 @property (nonatomic, assign, getter = isBoardcasting) BOOL boardcasting;
+
+@property (nonatomic, strong) NSArray <CBService *> *serviceArray;
 
 @end
 
