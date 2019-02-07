@@ -51,3 +51,10 @@
 "MainViewController.postButton.title" = "发送特征值";
 "MainViewController.boardcastButton.title" = "广播蓝牙信号";
 "MainViewController.boardcastButton.title.selected" = "停止广播蓝牙信号";
+
+"ServiceViewController.title.default" = "创建新服务";
+
+"ServiceTableViewCell.primaryIndicator.text" = "主服务";
+"ServiceTableViewCell.UUIDLabel.text" = "UUID:";
+"ServiceTableViewCell.includedServicesLabel.text" = "子服务:";
+"ServiceTableViewCell.characteristicLabel.text" = "特征:";

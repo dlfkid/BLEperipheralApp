@@ -8,12 +8,17 @@
 
 #import <UIKit/UIKit.h>
 #import <Masonry/Masonry.h>
+#import <UIColor+UIExtensionKit.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface BaseTableViewCell : UITableViewCell
 
+@property (nonatomic, strong) UIView *customContentView;
+
 + (CGFloat)rowHeight;
+
++ (CGFloat)rowUnfoldHeight;
 
 + (NSString *)reuseIdentifier;
 

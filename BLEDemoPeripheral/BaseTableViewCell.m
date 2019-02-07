@@ -10,12 +10,25 @@
 
 @implementation BaseTableViewCell
 
+- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
+    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
+    if (self) {
+        _customContentView = [[UIView alloc] initWithFrame:CGRectZero];
+        [self.contentView addSubview:self.customContentView];
+    }
+    return self;
+}
+
 + (BOOL)requiresConstraintBasedLayout {
     return YES;
 }
 
 + (CGFloat)rowHeight {
     return 50;
+}
+
++ (CGFloat)rowUnfoldHeight {
+    return 90;
 }
 
 + (NSString *)reuseIdentifier {

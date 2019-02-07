@@ -14,6 +14,12 @@
 // Controllers
 #import "ServiceViewController.h"
 
+// Views
+#import "ServiceTableViewCell.h"
+
+// Models
+#import "ViewModel.h"
+
 
 @interface MainViewController () <CBPeripheralManagerDelegate, UITableViewDelegate, UITableViewDataSource>
 
@@ -27,6 +33,7 @@
 @property (nonatomic, assign, getter = isBoardcasting) BOOL boardcasting;
 
 @property (nonatomic, strong) NSArray <CBService *> *serviceArray;
+@property (nonatomic, strong) NSArray <ViewModel *> *foldModel;
 
 @end
 
@@ -41,6 +48,8 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addButtonDidTappedAction)];
+    [self setUpServiceAndCharacteristic];
     [self UIBuild];
 }
 
@@ -68,6 +77,8 @@
     _tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStyleGrouped];
     _tableView.dataSource = self;
     _tableView.delegate = self;
+    NSString *reuseIdentfier = [ServiceTableViewCell reuseIdentifier];
+    [_tableView registerClass:[ServiceTableViewCell class] forCellReuseIdentifier:reuseIdentfier];
     [self.view addSubview:self.tableView];
     
     _boardCastButton = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -111,6 +122,15 @@
 }
 
 #pragma mark - Actions
+
+- (void)addButtonDidTappedAction {
+    ServiceViewController *serviceVC = [[ServiceViewController alloc] initWithService:nil CompletionHandler:^(CBService * _Nonnull service) {
+        // 此处传入服务被创建成功后的回调
+    }];
+    UINavigationController *navigationVC = [[UINavigationController alloc] initWithRootViewController:serviceVC];
+    
+    [self presentViewController:navigationVC animated:YES completion:nil];
+}
 
 - (NSString *)peripherialStateString:(CBManagerState)state {
     NSString *currentState = NSLocalizedString(@"peripheralState.unknown", @"");
@@ -160,11 +180,6 @@
     self.boardcasting = sender.isSelected;
 }
 
-- (void)startBoardCast {
-    [self setUpServiceAndCharacteristic];
-    
-}
-
 - (void)setBoardcasting:(BOOL)boardcasting {
     if(self.peripheralManager.state != CBManagerStatePoweredOn) {
         [self.peripheralManager stopAdvertising];
@@ -194,6 +209,10 @@
     
     //为了手动给中心设备发送数据
     self.currentCharacteristic = characteristic;
+    
+    self.serviceArray = @[service];
+    ViewModel *foldModel = [[ViewModel alloc] init];
+    self.foldModel = @[foldModel];
 }
 
 # pragma mark - BLEDelegate
@@ -249,19 +268,31 @@
 #pragma mark - TableViewDataSource
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 0;
+    return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return 0;
+    return self.serviceArray.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"cell"];
+    ServiceTableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:[ServiceTableViewCell reuseIdentifier]];
+    cell.service = self.serviceArray[indexPath.row];
+    cell.unFold = self.foldModel[indexPath.row].isUnfold;
     return cell;
 }
 
 #pragma mark - TableViewDelegate
 
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    ViewModel *model = self.foldModel[indexPath.row];
+    model.unfold = !model.isUnfold;
+    [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationBottom];
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    ViewModel *foldModel = self.foldModel[indexPath.row];
+    return foldModel.isUnfold ? [ServiceTableViewCell rowUnfoldHeight] : [ServiceTableViewCell rowHeight];
+}
 
 @end
