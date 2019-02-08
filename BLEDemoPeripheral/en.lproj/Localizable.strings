@@ -52,6 +52,7 @@
 "MainViewController.postButton.title" = "Post new value";
 "MainViewController.boardcastButton.title" = "Boardcast BLE Signal";
 "MainViewController.boardcastButton.title.selected" = "Stop BLE Signal";
+"MainViewController.tableView.header" = "All Services";
 
 "ServiceViewController.title.default" = "Create New Service";
 
@@ -59,3 +60,4 @@
 "ServiceTableViewCell.UUIDLabel.text" = "UUID:";
 "ServiceTableViewCell.includedServicesLabel.text" = "Included services:";
 "ServiceTableViewCell.characteristicLabel.text" = "Characteristic:";
+

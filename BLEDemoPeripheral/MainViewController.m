@@ -79,8 +79,9 @@
     _tableView.delegate = self;
     NSString *reuseIdentfier = [ServiceTableViewCell reuseIdentifier];
     [_tableView registerClass:[ServiceTableViewCell class] forCellReuseIdentifier:reuseIdentfier];
+    _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    [_tableView registerClass:[UITableViewHeaderFooterView class] forHeaderFooterViewReuseIdentifier:kdefaultTableViewHeaderReuseIdentifier];
     [self.view addSubview:self.tableView];
-    
     _boardCastButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [_boardCastButton addTarget:self action:@selector(boardcastButtonDidTappedAction:) forControlEvents:UIControlEventTouchUpInside];
     _boardCastButton.backgroundColor = [UIColor tintColor];
@@ -180,6 +181,7 @@
     self.boardcasting = sender.isSelected;
 }
 
+// 广播当前所有服务
 - (void)setBoardcasting:(BOOL)boardcasting {
     if(self.peripheralManager.state != CBManagerStatePoweredOn) {
         [self.peripheralManager stopAdvertising];
@@ -190,7 +192,11 @@
     }
     _boardcasting = boardcasting;
     if (self.isBoardcasting) {
-        [self.peripheralManager startAdvertising:@{CBAdvertisementDataServiceUUIDsKey:@[[CBUUID UUIDWithString:SERVICE_UUID]]}];
+        NSMutableArray *boardcastingServices = [NSMutableArray array];
+        for (CBService *service in self.serviceArray) {
+            [boardcastingServices addObject:service.UUID];
+        }
+        [self.peripheralManager startAdvertising:@{CBAdvertisementDataServiceUUIDsKey:boardcastingServices}];
     } else {
         [self.peripheralManager stopAdvertising];
     }
@@ -282,12 +288,18 @@
     return cell;
 }
 
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+    UITableViewHeaderFooterView *view = [tableView dequeueReusableHeaderFooterViewWithIdentifier:kdefaultTableViewHeaderReuseIdentifier];
+    view.textLabel.text = NSLocalizedString(@"MainViewController.tableView.header", "");
+    return view;
+}
+
 #pragma mark - TableViewDelegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     ViewModel *model = self.foldModel[indexPath.row];
     model.unfold = !model.isUnfold;
-    [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationBottom];
+    [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {

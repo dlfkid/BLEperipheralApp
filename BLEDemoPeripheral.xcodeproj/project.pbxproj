@@ -34,6 +34,8 @@
 		35184C72220C1A77001C8242 /* ServiceTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ServiceTableViewCell.m; sourceTree = "<group>"; };
 		35184C74220C2746001C8242 /* ViewModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewModel.h; sourceTree = "<group>"; };
 		35184C75220C2746001C8242 /* ViewModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewModel.m; sourceTree = "<group>"; };
+		35184C79220DC2D9001C8242 /* Constants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
+		353D8CEC220DC6D7000C1EFB /* PrefixHeader.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PrefixHeader.pch; sourceTree = "<group>"; };
 		3561D2652203D8C1000491D2 /* BaseViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BaseViewController.h; sourceTree = "<group>"; };
 		3561D2662203D8C1000491D2 /* BaseViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BaseViewController.m; sourceTree = "<group>"; };
 		35F7DB20220888870045F7B0 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/LaunchScreen.strings"; sourceTree = "<group>"; };
@@ -139,6 +141,8 @@
 			children = (
 				B44D1FA81F3841840011AC95 /* AppDelegate.h */,
 				B44D1FA91F3841840011AC95 /* AppDelegate.m */,
+				353D8CEC220DC6D7000C1EFB /* PrefixHeader.pch */,
+				35184C79220DC2D9001C8242 /* Constants.h */,
 				35184C77220C274B001C8242 /* Model */,
 				350EDF8B22094C9A003AD2D9 /* Controller */,
 				350EDF8A22094C8D003AD2D9 /* View */,
@@ -437,10 +441,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = VSH7W5Y66V;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SRCROOT)/BLEDemoPeripheral/PrefixHeader.pch";
 				INFOPLIST_FILE = BLEDemoPeripheral/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRECOMPS_INCLUDE_HEADERS_FROM_BUILT_PRODUCTS_DIR = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = com.GitHub.BLEDemoPeripheral;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SCAN_ALL_SOURCE_FILES_FOR_INCLUDES = YES;
 			};
 			name = Debug;
 		};
@@ -450,10 +458,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = VSH7W5Y66V;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SRCROOT)/BLEDemoPeripheral/PrefixHeader.pch";
 				INFOPLIST_FILE = BLEDemoPeripheral/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRECOMPS_INCLUDE_HEADERS_FROM_BUILT_PRODUCTS_DIR = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = com.GitHub.BLEDemoPeripheral;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SCAN_ALL_SOURCE_FILES_FOR_INCLUDES = YES;
 			};
 			name = Release;
 		};
