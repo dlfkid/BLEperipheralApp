@@ -8,6 +8,10 @@
 
 #import "ServiceViewController.h"
 
+// Views
+#import "ServiceTableViewCell.h"
+#import "CharacteristicTabeViewCell.h"
+
 // Models
 #import "ViewModel.h"
 
@@ -68,6 +72,8 @@
     _tableView.dataSource = self;
     [_tableView registerClass:[UITableViewHeaderFooterView class] forHeaderFooterViewReuseIdentifier:kdefaultTableViewHeaderReuseIdentifier];
     [_tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:kdefaultTableViewCellReuseIdentifier];
+    [_tableView registerClass:[ServiceTableViewCell class] forCellReuseIdentifier:[ServiceTableViewCell reuseIdentifier]];
+    [_tableView registerClass:[CharacteristicTabeViewCell class] forCellReuseIdentifier:[CharacteristicTabeViewCell reuseIdentifier]];
     [self.view addSubview:self.tableView];
     
     [self.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -120,38 +126,31 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kdefaultTableViewCellReuseIdentifier forIndexPath:indexPath];
     switch (indexPath.section) {
-        case 0: {
-            
-        }
-            break;
-            
         case 1: {
-            
+            CharacteristicTabeViewCell *characteristicCell = [tableView dequeueReusableCellWithIdentifier:[CharacteristicTabeViewCell reuseIdentifier] forIndexPath:indexPath];
+            return characteristicCell;
         }
             break;
             
         case 2: {
-            
+            ServiceTableViewCell *serviceCell = [tableView dequeueReusableCellWithIdentifier:[ServiceTableViewCell reuseIdentifier] forIndexPath:indexPath];
+            return serviceCell;
         }
             break;
             
         default: {
-            
+            UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kdefaultTableViewCellReuseIdentifier forIndexPath:indexPath];
+            return cell;
         }
             break;
     }
-    return cell;
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     UITableViewHeaderFooterView *header = [tableView dequeueReusableHeaderFooterViewWithIdentifier:kdefaultTableViewHeaderReuseIdentifier];
     NSString *sectionTitle = @"";
     switch (section) {
-        case 0:
-            break;
-            
         case 1:
             sectionTitle = NSLocalizedString(@"ServiceViewController.table.header.characteristic", "");
             break;
@@ -168,6 +167,10 @@
 }
 
 #pragma mark - TaleViewDelegate
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+}
 
 @end
 

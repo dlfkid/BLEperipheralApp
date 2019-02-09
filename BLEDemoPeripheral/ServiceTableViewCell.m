@@ -46,7 +46,6 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         self.selectionStyle = UITableViewCellSelectionStyleNone;
-        // self.contentView.backgroundColor = [UIColor clearColor];
         self.backgroundColor = [UIColor clearColor];
         self.customContentView.backgroundColor = [UIColor whiteColor];
         self.customContentView.layer.borderWidth = .5f;
@@ -87,8 +86,8 @@
 - (void)setService:(CBService *)service {
     _service = service;
     self.UUIDLabel.text = [NSString stringWithFormat:@"%@ %@", NSLocalizedString(@"ServiceTableViewCell.UUIDLabel.text", @""), service.UUID.UUIDString];
-    self.includedServiceCountLabel.text = [NSString stringWithFormat:@"%@ %lu", NSLocalizedString(@"ServiceTableViewCell.includedServicesLabel.text", @""), service.includedServices.count];
-    self.characteristicCountLabel.text = [NSString stringWithFormat:@"%@ %lu", NSLocalizedString(@"ServiceTableViewCell.characteristicLabel.text", @""), service.characteristics.count];
+    self.includedServiceCountLabel.text = [NSString stringWithFormat:@"%@ %u", NSLocalizedString(@"ServiceTableViewCell.includedServicesLabel.text", @""), service.includedServices.count];
+    self.characteristicCountLabel.text = [NSString stringWithFormat:@"%@ %u", NSLocalizedString(@"ServiceTableViewCell.characteristicLabel.text", @""), service.characteristics.count];
     self.primaryIndiCatorView.hidden = !service.isPrimary;
 }
 
