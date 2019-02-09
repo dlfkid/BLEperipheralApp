@@ -16,6 +16,8 @@
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) CBService *sampleService;
 @property (nonatomic, strong) CBPeripheralManager *peripheralManager;
+@property (nonatomic, strong) NSArray <CBService *>includedServices;
+@property (nonatomic, strong) NSArray <CBCharacteristic *>characteristics;
 
 @property (nonatomic, copy) void(^serviceDidAddHandler)(CBService *);
 
@@ -95,3 +97,23 @@
 #pragma mark - TaleViewDelegate
 
 @end
+
+// 添加服务需要UUID, 是否主要服务, 子服务和特征四个参数。
+// UUID以弹出输入控制器的形式提供输入
+// 是否主要服务用switch实现
+// 特征和自服务需要各开一个section
+// 添加子服务实现为模态再展示一个同样的控制器
+// 添加新特征以子窗口的形式呈现
+// 所有特征的属性
+/*
+CBCharacteristicPropertyBroadcast                                                = 0x01,
+CBCharacteristicPropertyRead                                                    = 0x02,
+CBCharacteristicPropertyWriteWithoutResponse                                    = 0x04,
+CBCharacteristicPropertyWrite                                                    = 0x08,
+CBCharacteristicPropertyNotify                                                    = 0x10,
+CBCharacteristicPropertyIndicate                                                = 0x20,
+CBCharacteristicPropertyAuthenticatedSignedWrites                                = 0x40,
+CBCharacteristicPropertyExtendedProperties                                        = 0x80,
+CBCharacteristicPropertyNotifyEncryptionRequired NS_ENUM_AVAILABLE(10_9, 6_0)    = 0x100,
+CBCharacteristicPropertyIndicateEncryptionRequired NS_ENUM_AVAILABLE(10_9, 6_0)    = 0x200
+*/

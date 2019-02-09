@@ -103,17 +103,17 @@
         make.centerY.equalTo(@0);
     }];
     
-    [self.boardCastButton mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.mas_equalTo(30);
-        make.right.mas_equalTo(- 30);
-        make.height.equalTo(@40);
-        make.bottom.equalTo(@(-30)).mas_offset(- [DeviceScreenAdaptor bottomIndicatorMargin]);
-    }];
-    
     [self.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.mas_equalTo(self.stateView.mas_bottom);
         make.left.right.equalTo(@0);
         make.bottom.mas_equalTo(0).mas_offset(- [DeviceScreenAdaptor bottomIndicatorMargin]);
+    }];
+    
+    [self.boardCastButton mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.mas_equalTo(30);
+        make.right.mas_equalTo(- 30);
+        make.height.mas_equalTo(40);
+        make.bottom.mas_equalTo(self.tableView.mas_bottom).mas_offset(- 30);
     }];
 }
 
@@ -127,6 +127,12 @@
 - (void)addButtonDidTappedAction {
     ServiceViewController *serviceVC = [[ServiceViewController alloc] initWithService:nil CompletionHandler:^(CBService * _Nonnull service) {
         // 此处传入服务被创建成功后的回调
+        NSMutableArray *tmpArray = [NSMutableArray arrayWithArray:self.serviceArray];
+        if (![tmpArray containsObject:service]) {
+            [tmpArray addObject:service];
+        }
+        self.serviceArray = tmpArray;
+        [self.tableView reloadData];
     }];
     UINavigationController *navigationVC = [[UINavigationController alloc] initWithRootViewController:serviceVC];
     

@@ -266,6 +266,7 @@
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-BLEDemoPeripheral/Pods-BLEDemoPeripheral-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/FLEX/FLEX.framework",
+				"${BUILT_PRODUCTS_DIR}/IQKeyboardManager/IQKeyboardManager.framework",
 				"${BUILT_PRODUCTS_DIR}/Masonry/Masonry.framework",
 				"${BUILT_PRODUCTS_DIR}/UIExtensionKit/UIExtensionKit.framework",
 				"${BUILT_PRODUCTS_DIR}/iOSDeviceScreenAdapter/iOSDeviceScreenAdapter.framework",
@@ -275,6 +276,7 @@
 			);
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FLEX.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/IQKeyboardManager.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Masonry.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/UIExtensionKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/iOSDeviceScreenAdapter.framework",

@@ -9,6 +9,7 @@
 #import "AppDelegate.h"
 #import "MainViewController.h"
 #import <UIExtensionKit/UIColor+UIExtensionKit.h>
+#import <IQKeyboardManager/IQKeyboardManager.h>
 
 @interface AppDelegate ()
 
@@ -27,6 +28,8 @@
     [self.window setRootViewController:nav];
     // 设置主色调
     [UIColor setTintColor:[UIColor colorWithR:57.f G:98.f B:153.f]];
+    // 激活智能键盘
+    [IQKeyboardManager sharedManager].enable = YES;
     return YES;
 }
 
