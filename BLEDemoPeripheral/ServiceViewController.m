@@ -8,6 +8,9 @@
 
 #import "ServiceViewController.h"
 
+// Models
+#import "ViewModel.h"
+
 // Helpers
 #import <CoreBluetooth/CoreBluetooth.h>
 
@@ -16,8 +19,9 @@
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) CBService *sampleService;
 @property (nonatomic, strong) CBPeripheralManager *peripheralManager;
-@property (nonatomic, strong) NSArray <CBService *>includedServices;
-@property (nonatomic, strong) NSArray <CBCharacteristic *>characteristics;
+@property (nonatomic, strong) NSArray <CBService *> *includedServices;
+@property (nonatomic, strong) NSArray <CBCharacteristic *> *characteristics;
+@property (nonatomic, strong) NSArray <ViewModel *> *viewModels;
 
 @property (nonatomic, copy) void(^serviceDidAddHandler)(CBService *);
 
@@ -40,6 +44,11 @@
     if (self) {
         _sampleService = service;
         _serviceDidAddHandler = completion;
+        ViewModel *uuidModel = [[ViewModel alloc] init];
+        uuidModel.title = NSLocalizedString(@"ServiceViewController.table.cell.UUID", "");
+        ViewModel *primaryModel = [[ViewModel alloc] init];
+        primaryModel.title = NSLocalizedString(@"ServiceViewController.table.cell.primary", "");
+        _viewModels = @[uuidModel, primaryModel];
     }
     return self;
 }
@@ -57,6 +66,8 @@
     _tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
     _tableView.delegate = self;
     _tableView.dataSource = self;
+    [_tableView registerClass:[UITableViewHeaderFooterView class] forHeaderFooterViewReuseIdentifier:kdefaultTableViewHeaderReuseIdentifier];
+    [_tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:kdefaultTableViewCellReuseIdentifier];
     [self.view addSubview:self.tableView];
     
     [self.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -87,11 +98,73 @@
 #pragma mark - TableViewDataSource
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 0;
+    return 3;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return 0;
+    switch (section) {
+        case 0:
+            return self.viewModels.count;
+            break;
+        case 1:
+            return self.characteristics.count;
+            break;
+        case 2:
+            return self.includedServices.count;
+            break;
+            
+        default:
+            return 0;
+            break;
+    }
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kdefaultTableViewCellReuseIdentifier forIndexPath:indexPath];
+    switch (indexPath.section) {
+        case 0: {
+            
+        }
+            break;
+            
+        case 1: {
+            
+        }
+            break;
+            
+        case 2: {
+            
+        }
+            break;
+            
+        default: {
+            
+        }
+            break;
+    }
+    return cell;
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+    UITableViewHeaderFooterView *header = [tableView dequeueReusableHeaderFooterViewWithIdentifier:kdefaultTableViewHeaderReuseIdentifier];
+    NSString *sectionTitle = @"";
+    switch (section) {
+        case 0:
+            break;
+            
+        case 1:
+            sectionTitle = NSLocalizedString(@"ServiceViewController.table.header.characteristic", "");
+            break;
+            
+        case 2:
+            sectionTitle = NSLocalizedString(@"ServiceViewController.table.header.includedServices", "");
+            break;
+            
+        default:
+            break;
+    }
+    header.textLabel.text = sectionTitle;
+    return header;
 }
 
 #pragma mark - TaleViewDelegate
