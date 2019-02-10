@@ -59,3 +59,8 @@
 "ServiceTableViewCell.UUIDLabel.text" = "UUID:";
 "ServiceTableViewCell.includedServicesLabel.text" = "子服务:";
 "ServiceTableViewCell.characteristicLabel.text" = "特征:";
+
+"CharacteristicTableViewCell.notifyView.text" = "订阅通知";
+"CharacteristicTableViewCell.UUID" = "UUID:";
+"CharacteristicTableViewCell.value" = "当前值:";
+"CharacteristicTableViewCell.property" = "属性:";

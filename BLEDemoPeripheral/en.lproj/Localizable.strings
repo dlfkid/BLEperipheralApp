@@ -66,3 +66,7 @@
 "ServiceViewController.table.header.characteristic" = "Characteristic";
 "ServiceViewController.table.header.includedServices" = "included Services";
 
+"CharacteristicTableViewCell.notifyView.text" = "Notifying";
+"CharacteristicTableViewCell.UUID" = "UUID:";
+"CharacteristicTableViewCell.value" = "Value:";
+"CharacteristicTableViewCell.property" = "Properties:";
