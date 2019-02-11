@@ -97,6 +97,54 @@
     return 60;
 }
 
+- (void)setCharacteristic:(CBCharacteristic *)characteristic {
+    _characteristic = characteristic;
+    NSString *uuidText = NSLocalizedString(@"CharacteristicTableViewCell.UUID", "");
+    self.UUIDLabel.text = [uuidText stringByAppendingFormat:@" %@", characteristic.UUID.UUIDString];
+    NSString *propertyText = NSLocalizedString(@"CharacteristicTableViewCell.property", "");
+    NSString *properties = [self propertiesString:characteristic.properties];
+    self.propertyLabel.text = [propertyText stringByAppendingFormat:@" %@", properties];
+    NSString *valueText = NSLocalizedString(@"CharacteristicTableViewCell.value", "");
+    NSString *valueString = [[NSString alloc] initWithData:characteristic.value encoding:NSUTF8StringEncoding];
+    self.valueLabel.text = [valueText stringByAppendingFormat:@" %@", valueString];
+    self.notifyView.hidden = !characteristic.isNotifying;
+}
+
+- (NSString *)propertiesString:(CBCharacteristicProperties)properties {
+    NSString *result = @"";
+    if (properties & CBCharacteristicPropertyRead) {
+        
+    }
+    if (properties & CBCharacteristicPropertyWrite) {
+        
+    }
+    if (properties & CBCharacteristicPropertyNotify) {
+        
+    }
+    if (properties & CBCharacteristicPropertyIndicate) {
+        
+    }
+    if (properties & CBCharacteristicPropertyBroadcast) {
+        
+    }
+    if (properties & CBCharacteristicPropertyExtendedProperties) {
+        
+    }
+    if (properties & CBCharacteristicPropertyWriteWithoutResponse) {
+        
+    }
+    if (properties & CBCharacteristicPropertyNotifyEncryptionRequired) {
+        
+    }
+    if (properties & CBCharacteristicPropertyAuthenticatedSignedWrites) {
+        
+    }
+    if (properties & CBCharacteristicPropertyIndicateEncryptionRequired) {
+        
+    }
+    return result;
+}
+
 - (void)setUnFold:(BOOL)unFold {
     if (unFold) {
         // 展开状态布局

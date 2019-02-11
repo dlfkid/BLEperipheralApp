@@ -70,3 +70,15 @@
 "CharacteristicTableViewCell.UUID" = "UUID:";
 "CharacteristicTableViewCell.value" = "Value:";
 "CharacteristicTableViewCell.property" = "Properties:";
+
+"Characteristic.propperty.read" = "Read";
+"Characteristic.propperty.write" = "Write";
+"Characteristic.propperty.boardcast" = "Boardcast";
+"Characteristic.propperty.writeWithoutResponse" = "Write without Response";
+"Characteristic.propperty.notify" = "Notify";
+"Characteristic.propperty.indicate" = "Indicate";
+"Characteristic.propperty.authendicatedSignedWrite" = "Authendicated signed write";
+"Characteristic.propperty.extendedProperties" = "Extended Properties";
+"Characteristic.propperty.notifyEncryptionRequired" = "Notify Encryption Required";
+"Characteristic.propperty.indicateEncryptionRequired" = "Indicate Encryption Required";
+

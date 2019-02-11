@@ -64,3 +64,14 @@
 "CharacteristicTableViewCell.UUID" = "UUID:";
 "CharacteristicTableViewCell.value" = "当前值:";
 "CharacteristicTableViewCell.property" = "属性:";
+
+"Characteristic.propperty.read" = "可读";
+"Characteristic.propperty.write" = "可写";
+"Characteristic.propperty.boardcast" = "广播";
+"Characteristic.propperty.writeWithoutResponse" = "无回复写入";
+"Characteristic.propperty.notify" = "订阅通知";
+"Characteristic.propperty.indicate" = "指示读数";
+"Characteristic.propperty.authendicatedSignedWrite" = "认证签名写入";
+"Characteristic.propperty.extendedProperties" = "扩展属性";
+"Characteristic.propperty.notifyEncryptionRequired" = "需要加密通知";
+"Characteristic.propperty.indicateEncryptionRequired" = "需要加密指示读数";
