@@ -8,6 +8,7 @@
 
 #import "ServiceTableViewCell.h"
 
+// Helpers
 #import <CoreBluetooth/CoreBluetooth.h>
 
 @interface ServiceTableViewCell()
@@ -62,6 +63,8 @@
         _characteristicCountLabel = [[UILabel alloc] initWithFrame:CGRectZero];
         _characteristicCountLabel.text = NSLocalizedString(@"ServiceTableViewCell.characteristicLabel.text", @"");
         [self.customContentView addSubview:self.UUIDLabel];
+        
+        
     }
     return self;
 }
@@ -86,8 +89,8 @@
 - (void)setService:(CBService *)service {
     _service = service;
     self.UUIDLabel.text = [NSString stringWithFormat:@"%@ %@", NSLocalizedString(@"ServiceTableViewCell.UUIDLabel.text", @""), service.UUID.UUIDString];
-    self.includedServiceCountLabel.text = [NSString stringWithFormat:@"%@ %u", NSLocalizedString(@"ServiceTableViewCell.includedServicesLabel.text", @""), service.includedServices.count];
-    self.characteristicCountLabel.text = [NSString stringWithFormat:@"%@ %u", NSLocalizedString(@"ServiceTableViewCell.characteristicLabel.text", @""), service.characteristics.count];
+    self.includedServiceCountLabel.text = [NSString stringWithFormat:@"%@ %tu", NSLocalizedString(@"ServiceTableViewCell.includedServicesLabel.text", @""), service.includedServices.count];
+    self.characteristicCountLabel.text = [NSString stringWithFormat:@"%@ %tu", NSLocalizedString(@"ServiceTableViewCell.characteristicLabel.text", @""), service.characteristics.count];
     self.primaryIndiCatorView.hidden = !service.isPrimary;
 }
 
@@ -131,5 +134,7 @@
 +(CGFloat)rowHeight {
     return 60;
 }
+
+#warning TODO: Replace Cell Unfold method to 3D touch & Top left button.
 
 @end

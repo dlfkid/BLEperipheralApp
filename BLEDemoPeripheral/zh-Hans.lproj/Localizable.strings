@@ -64,6 +64,7 @@
 "CharacteristicTableViewCell.UUID" = "UUID:";
 "CharacteristicTableViewCell.value" = "当前值:";
 "CharacteristicTableViewCell.property" = "属性:";
+"CharacteristicTableViewCell.permissions" = "权限:";
 
 "Characteristic.propperty.read" = "可读";
 "Characteristic.propperty.write" = "可写";
@@ -75,3 +76,8 @@
 "Characteristic.propperty.extendedProperties" = "扩展属性";
 "Characteristic.propperty.notifyEncryptionRequired" = "需要加密通知";
 "Characteristic.propperty.indicateEncryptionRequired" = "需要加密指示读数";
+
+"Characteristic.permission.readable" = "可读";
+"Characteristic.permission.writeable" = "可写";
+"Characteristic.permission.readEncryptionRequired" = "加密可读";
+"Characteristic.permission.writeEncryptionRequired" = "加密可写";

@@ -8,6 +8,18 @@
 
 #import "ViewModel.h"
 
+@interface ViewModel()<NSCopying>
+
+
+@end
+
 @implementation ViewModel
+
+- (id)copyWithZone:(NSZone *)zone {
+    ViewModel *copiedModel = [[ViewModel alloc] init];
+    copiedModel.title = self.title;
+    copiedModel.unfold = self.isUnfold;
+    return copiedModel;
+}
 
 @end

@@ -10,6 +10,7 @@
 
 // Helpers
 #import <CoreBluetooth/CoreBluetooth.h>
+#import "CBCharacteristic+StringExtensions.h"
 
 @interface CharacteristicTabeViewCell()
 
@@ -105,47 +106,14 @@
     NSString *uuidText = NSLocalizedString(@"CharacteristicTableViewCell.UUID", "");
     self.UUIDLabel.text = [uuidText stringByAppendingFormat:@" %@", characteristic.UUID.UUIDString];
     NSString *propertyText = NSLocalizedString(@"CharacteristicTableViewCell.property", "");
-    NSString *properties = [self propertiesString:characteristic.properties];
+    NSString *properties = [CBCharacteristic propertiesString:characteristic.properties];
     self.propertyLabel.text = [propertyText stringByAppendingFormat:@" %@", properties];
+    
     NSString *valueText = NSLocalizedString(@"CharacteristicTableViewCell.value", "");
     NSString *valueString = [[NSString alloc] initWithData:characteristic.value encoding:NSUTF8StringEncoding];
     self.valueLabel.text = [valueText stringByAppendingFormat:@" %@", valueString];
+    
     self.notifyView.hidden = !characteristic.isNotifying;
-}
-
-- (NSString *)propertiesString:(CBCharacteristicProperties)properties {
-    NSString *result = @"";
-    if (properties & CBCharacteristicPropertyRead) {
-        [result stringByAppendingFormat:@"%@", NSLocalizedString(@"Characteristic.propperty.read", "")];
-    }
-    if (properties & CBCharacteristicPropertyWrite) {
-        [result stringByAppendingFormat:@", %@", NSLocalizedString(@"Characteristic.propperty.write", "")];
-    }
-    if (properties & CBCharacteristicPropertyNotify) {
-        [result stringByAppendingFormat:@", %@", NSLocalizedString(@"Characteristic.propperty.notify", "")];
-    }
-    if (properties & CBCharacteristicPropertyIndicate) {
-        [result stringByAppendingFormat:@", %@", NSLocalizedString(@"Characteristic.propperty.indicate", "")];
-    }
-    if (properties & CBCharacteristicPropertyBroadcast) {
-        [result stringByAppendingFormat:@", %@", NSLocalizedString(@"Characteristic.propperty.boardcast", "")];
-    }
-    if (properties & CBCharacteristicPropertyExtendedProperties) {
-        [result stringByAppendingFormat:@", %@", NSLocalizedString(@"Characteristic.propperty.extendedProperties", "")];
-    }
-    if (properties & CBCharacteristicPropertyWriteWithoutResponse) {
-        [result stringByAppendingFormat:@", %@", NSLocalizedString(@"Characteristic.propperty.writeWithoutResponse", "")];
-    }
-    if (properties & CBCharacteristicPropertyNotifyEncryptionRequired) {
-        [result stringByAppendingFormat:@", %@", NSLocalizedString(@"Characteristic.propperty.notifyEncryptionRequired", "")];
-    }
-    if (properties & CBCharacteristicPropertyAuthenticatedSignedWrites) {
-        [result stringByAppendingFormat:@", %@", NSLocalizedString(@"Characteristic.propperty.authendicatedSignedWrite", "")];
-    }
-    if (properties & CBCharacteristicPropertyIndicateEncryptionRequired) {
-        [result stringByAppendingFormat:@", %@", NSLocalizedString(@"Characteristic.propperty.indicateEncryptionRequired", "")];
-    }
-    return result;
 }
 
 - (void)setUnFold:(BOOL)unFold {

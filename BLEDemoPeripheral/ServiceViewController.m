@@ -26,6 +26,8 @@
 @property (nonatomic, strong) NSArray <CBService *> *includedServices;
 @property (nonatomic, strong) NSArray <CBCharacteristic *> *characteristics;
 @property (nonatomic, strong) NSArray <ViewModel *> *viewModels;
+@property (nonatomic, strong) NSArray <ViewModel *> *serviceCellFoldModel;
+@property (nonatomic, strong) NSArray <ViewModel *> *CharacteristicCellFoldModel;
 
 @property (nonatomic, copy) void(^serviceDidAddHandler)(CBService *);
 
@@ -57,7 +59,6 @@
     return self;
 }
 
-
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelButtnDidTappedAction)];
@@ -84,6 +85,29 @@
 }
 
 - (void)viewWillAppear:(BOOL)animated {
+    
+    if (self.sampleService) {
+        self.characteristics = self.sampleService.characteristics;
+        
+        NSMutableArray *tmpCharacteristicModelArray = [NSMutableArray array];
+        
+        [self.characteristics enumerateObjectsUsingBlock:^(CBCharacteristic * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            ViewModel *tmpCharacteristicViewModel = [[ViewModel alloc] init];
+            [tmpCharacteristicModelArray addObject:tmpCharacteristicViewModel];
+        }];
+        
+        self.CharacteristicCellFoldModel = tmpCharacteristicModelArray;
+        
+        self.includedServices = self.sampleService.includedServices;
+        
+        NSMutableArray *tmpServiceModelArray = [NSMutableArray array];
+        [self.serviceCellFoldModel enumerateObjectsUsingBlock:^(ViewModel * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            ViewModel *tmpServiceViewModel = [[ViewModel alloc] init];
+            [tmpServiceModelArray addObject:tmpServiceViewModel];
+        }];
+        
+        [self.tableView reloadData];
+    }
     
     [super viewWillAppear:animated];
 }
@@ -117,10 +141,10 @@
             return self.viewModels.count;
             break;
         case 1:
-            return self.characteristics.count;
+            return self.CharacteristicCellFoldModel.count;
             break;
         case 2:
-            return self.includedServices.count;
+            return self.serviceCellFoldModel.count;
             break;
             
         default:
@@ -177,8 +201,33 @@
 #pragma mark - TaleViewDelegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    
+    if (indexPath.section == 0) {
+        return;
+    } else if (indexPath.section == 2) {
+        ViewModel *model = self.serviceCellFoldModel[indexPath.row];
+        model.unfold = !model.isUnfold;
+        [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+    } else if (indexPath.section == 1) {
+        ViewModel *model = self.CharacteristicCellFoldModel[indexPath.row];
+        model.unfold = !model.isUnfold;
+        [tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+    }
 }
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (indexPath.section == 0) {
+        return [BaseTableViewCell rowHeight];
+    } else if (indexPath.section == 2) {
+        ViewModel *foldModel = self.serviceCellFoldModel[indexPath.row];
+        return foldModel.isUnfold ? [ServiceTableViewCell rowUnfoldHeight] : [ServiceTableViewCell rowHeight];
+    } else if (indexPath.section == 1) {
+        ViewModel *foldModel = self.CharacteristicCellFoldModel[indexPath.row];
+        return foldModel.isUnfold ? [CharacteristicTabeViewCell rowUnfoldHeight] : [CharacteristicTabeViewCell rowHeight];
+    } else {
+        return 50;
+    }
+}
+
 
 @end
 

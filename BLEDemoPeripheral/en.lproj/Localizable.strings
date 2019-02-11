@@ -70,6 +70,7 @@
 "CharacteristicTableViewCell.UUID" = "UUID:";
 "CharacteristicTableViewCell.value" = "Value:";
 "CharacteristicTableViewCell.property" = "Properties:";
+"CharacteristicTableViewCell.permissions" = "Permissions:";
 
 "Characteristic.propperty.read" = "Read";
 "Characteristic.propperty.write" = "Write";
@@ -81,4 +82,9 @@
 "Characteristic.propperty.extendedProperties" = "Extended Properties";
 "Characteristic.propperty.notifyEncryptionRequired" = "Notify Encryption Required";
 "Characteristic.propperty.indicateEncryptionRequired" = "Indicate Encryption Required";
+
+"Characteristic.permission.readable" = "Readable";
+"Characteristic.permission.writeable" = "writeable";
+"Characteristic.permission.readEncryptionRequired" = "Read Encryption Required";
+"Characteristic.permission.writeEncryptionRequired" = "Write Encryption Required";
 
