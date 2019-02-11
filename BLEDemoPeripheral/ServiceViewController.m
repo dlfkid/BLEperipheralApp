@@ -101,6 +101,10 @@
 
 #pragma mark - CBPeripheralManagerDelegate
 
+- (void)peripheralManagerDidUpdateState:(CBPeripheralManager *)peripheral {
+    
+}
+
 #pragma mark - TableViewDataSource
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -129,18 +133,22 @@
     switch (indexPath.section) {
         case 1: {
             CharacteristicTabeViewCell *characteristicCell = [tableView dequeueReusableCellWithIdentifier:[CharacteristicTabeViewCell reuseIdentifier] forIndexPath:indexPath];
+            characteristicCell.characteristic = self.characteristics[indexPath.row];
             return characteristicCell;
         }
             break;
             
         case 2: {
             ServiceTableViewCell *serviceCell = [tableView dequeueReusableCellWithIdentifier:[ServiceTableViewCell reuseIdentifier] forIndexPath:indexPath];
+            serviceCell.service = self.includedServices[indexPath.row];
             return serviceCell;
         }
             break;
             
         default: {
             UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kdefaultTableViewCellReuseIdentifier forIndexPath:indexPath];
+            ViewModel *viewModel = self.viewModels[indexPath.row];
+            cell.textLabel.text = viewModel.title;
             return cell;
         }
             break;

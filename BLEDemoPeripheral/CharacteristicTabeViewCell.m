@@ -64,6 +64,9 @@
         _propertyLabel = [[UILabel alloc] initWithFrame:CGRectZero];
         _propertyLabel.textColor = [UIColor brownColor];
         _propertyLabel.text = NSLocalizedString(@"CharacteristicTableViewCell.property", "");
+        _propertyLabel.numberOfLines = 0;
+        _propertyLabel.lineBreakMode = NSLineBreakByWordWrapping;
+        _propertyLabel.font = [UIFont systemFontOfSize:[UIFont systemFontSize]];
         
         _valueLabel = [[UILabel alloc] initWithFrame:CGRectZero];
         _valueLabel.textAlignment = NSTextAlignmentCenter;
@@ -113,34 +116,34 @@
 - (NSString *)propertiesString:(CBCharacteristicProperties)properties {
     NSString *result = @"";
     if (properties & CBCharacteristicPropertyRead) {
-        
+        [result stringByAppendingFormat:@"%@", NSLocalizedString(@"Characteristic.propperty.read", "")];
     }
     if (properties & CBCharacteristicPropertyWrite) {
-        
+        [result stringByAppendingFormat:@", %@", NSLocalizedString(@"Characteristic.propperty.write", "")];
     }
     if (properties & CBCharacteristicPropertyNotify) {
-        
+        [result stringByAppendingFormat:@", %@", NSLocalizedString(@"Characteristic.propperty.notify", "")];
     }
     if (properties & CBCharacteristicPropertyIndicate) {
-        
+        [result stringByAppendingFormat:@", %@", NSLocalizedString(@"Characteristic.propperty.indicate", "")];
     }
     if (properties & CBCharacteristicPropertyBroadcast) {
-        
+        [result stringByAppendingFormat:@", %@", NSLocalizedString(@"Characteristic.propperty.boardcast", "")];
     }
     if (properties & CBCharacteristicPropertyExtendedProperties) {
-        
+        [result stringByAppendingFormat:@", %@", NSLocalizedString(@"Characteristic.propperty.extendedProperties", "")];
     }
     if (properties & CBCharacteristicPropertyWriteWithoutResponse) {
-        
+        [result stringByAppendingFormat:@", %@", NSLocalizedString(@"Characteristic.propperty.writeWithoutResponse", "")];
     }
     if (properties & CBCharacteristicPropertyNotifyEncryptionRequired) {
-        
+        [result stringByAppendingFormat:@", %@", NSLocalizedString(@"Characteristic.propperty.notifyEncryptionRequired", "")];
     }
     if (properties & CBCharacteristicPropertyAuthenticatedSignedWrites) {
-        
+        [result stringByAppendingFormat:@", %@", NSLocalizedString(@"Characteristic.propperty.authendicatedSignedWrite", "")];
     }
     if (properties & CBCharacteristicPropertyIndicateEncryptionRequired) {
-        
+        [result stringByAppendingFormat:@", %@", NSLocalizedString(@"Characteristic.propperty.indicateEncryptionRequired", "")];
     }
     return result;
 }
