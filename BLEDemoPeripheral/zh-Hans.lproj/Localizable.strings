@@ -86,3 +86,7 @@
 "Characteristic.permission.writeable" = "可写";
 "Characteristic.permission.readEncryptionRequired" = "加密可读";
 "Characteristic.permission.writeEncryptionRequired" = "加密可写";
+
+"ServiceTableViewCell.newService" = "新增服务";
+"CharacteristicTableViewCell.newCharacteristic" = "新增特征";
+

@@ -61,6 +61,7 @@
 "ServiceTableViewCell.includedServicesLabel.text" = "Included services:";
 "ServiceTableViewCell.characteristicLabel.text" = "Characteristic:";
 
+
 "ServiceViewController.table.cell.UUID" = "UUID";
 "ServiceViewController.table.cell.primary" = "is Primary";
 "ServiceViewController.table.header.characteristic" = "Characteristic";
@@ -87,4 +88,7 @@
 "Characteristic.permission.writeable" = "writeable";
 "Characteristic.permission.readEncryptionRequired" = "Read Encryption Required";
 "Characteristic.permission.writeEncryptionRequired" = "Write Encryption Required";
+
+"ServiceTableViewCell.newService" = "New Service";
+"CharacteristicTableViewCell.newCharacteristic" = "New Characteristic";
 

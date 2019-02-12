@@ -65,7 +65,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelButtnDidTappedAction)];
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave target:self action:@selector(saveButtonDidTappedAction)];
+    self.navigationItem.rightBarButtonItem = self.sampleService ? [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Delete", "") style:UIBarButtonItemStylePlain target:self action:@selector(deleteButtonDidTappedAction)] : [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave target:self action:@selector(saveButtonDidTappedAction)];
     self.navigationItem.title = self.sampleService.UUID.UUIDString ? self.sampleService.UUID.UUIDString : NSLocalizedString(@"ServiceViewController.title.default", "");
     [self setupContents];
 }
@@ -125,6 +125,10 @@
     [self.navigationController popViewControllerAnimated:YES];
 }
 
+- (void)deleteButtonDidTappedAction {
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
 #pragma mark - CBPeripheralManagerDelegate
 
 - (void)peripheralManagerDidUpdateState:(CBPeripheralManager *)peripheral {
@@ -143,10 +147,10 @@
             return self.viewModels.count;
             break;
         case 1:
-            return self.characteristicCellFoldModel.count;
+            return self.characteristicCellFoldModel.count + 1;
             break;
         case 2:
-            return self.serviceCellFoldModel.count;
+            return self.serviceCellFoldModel.count + 1;
             break;
             
         default:
@@ -158,28 +162,50 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     switch (indexPath.section) {
         case 1: {
-            CharacteristicTabeViewCell *characteristicCell = [tableView dequeueReusableCellWithIdentifier:[CharacteristicTabeViewCell reuseIdentifier] forIndexPath:indexPath];
-            characteristicCell.characteristic = self.characteristics[indexPath.row];
-            characteristicCell.unFold = self.characteristicCellFoldModel[indexPath.row].isUnfold;
-            characteristicCell.foldButtonDidTappedHandler = ^(BOOL isUnfold) {
-                ViewModel *model = self.characteristicCellFoldModel[indexPath.row];
-                model.unfold = isUnfold;
-                [tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-            };
-            return characteristicCell;
+            if (indexPath.row < self.characteristicCellFoldModel.count) {
+                CharacteristicTabeViewCell *characteristicCell = [tableView dequeueReusableCellWithIdentifier:[CharacteristicTabeViewCell reuseIdentifier] forIndexPath:indexPath];
+                characteristicCell.characteristic = self.characteristics[indexPath.row];
+                characteristicCell.unFold = self.characteristicCellFoldModel[indexPath.row].isUnfold;
+                characteristicCell.foldButtonDidTappedHandler = ^(BOOL isUnfold) {
+                    ViewModel *model = self.characteristicCellFoldModel[indexPath.row];
+                    model.unfold = isUnfold;
+                    [tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+                };
+                return characteristicCell;
+            } else {
+                UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+                if (!cell) {
+                    cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kdefaultTableViewCellReuseIdentifier];
+                }
+                cell.textLabel.text = NSLocalizedString(@"CharacteristicTableViewCell.newCharacteristic", "");
+                cell.textLabel.textAlignment = NSTextAlignmentCenter;
+                cell.textLabel.textColor = [UIColor tintColor];
+                return cell;
+            }
         }
             break;
             
         case 2: {
-            ServiceTableViewCell *serviceCell = [tableView dequeueReusableCellWithIdentifier:[ServiceTableViewCell reuseIdentifier] forIndexPath:indexPath];
-            serviceCell.service = self.includedServices[indexPath.row];
-            serviceCell.unFold = self.serviceCellFoldModel[indexPath.row].isUnfold;
-            serviceCell.foldButtonDidTappedHandler = ^(BOOL isUnfold) {
-                ViewModel *model = self.serviceCellFoldModel[indexPath.row];
-                model.unfold = isUnfold;
-                [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-            };
-            return serviceCell;
+            if (indexPath.row < self.serviceCellFoldModel.count) {
+                ServiceTableViewCell *serviceCell = [tableView dequeueReusableCellWithIdentifier:[ServiceTableViewCell reuseIdentifier] forIndexPath:indexPath];
+                serviceCell.service = self.includedServices[indexPath.row];
+                serviceCell.unFold = self.serviceCellFoldModel[indexPath.row].isUnfold;
+                serviceCell.foldButtonDidTappedHandler = ^(BOOL isUnfold) {
+                    ViewModel *model = self.serviceCellFoldModel[indexPath.row];
+                    model.unfold = isUnfold;
+                    [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+                };
+                return serviceCell;
+            } else {
+                UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+                if (!cell) {
+                    cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kdefaultTableViewCellReuseIdentifier];
+                }
+                cell.textLabel.text = NSLocalizedString(@"ServiceTableViewCell.newService", "");
+                cell.textLabel.textAlignment = NSTextAlignmentCenter;
+                cell.textLabel.textColor = [UIColor tintColor];
+                return cell;
+            }
         }
             break;
             
@@ -232,11 +258,19 @@
     if (indexPath.section == 0) {
         return [BaseTableViewCell rowHeight];
     } else if (indexPath.section == 2) {
-        ViewModel *foldModel = self.serviceCellFoldModel[indexPath.row];
-        return foldModel.isUnfold ? [ServiceTableViewCell rowUnfoldHeight] : [ServiceTableViewCell rowHeight];
+        if (indexPath.row < self.serviceCellFoldModel.count) {
+            ViewModel *foldModel = self.serviceCellFoldModel[indexPath.row];
+            return foldModel.isUnfold ? [ServiceTableViewCell rowUnfoldHeight] : [ServiceTableViewCell rowHeight];
+        } else {
+            return 50;
+        }
     } else if (indexPath.section == 1) {
-        ViewModel *foldModel = self.characteristicCellFoldModel[indexPath.row];
-        return foldModel.isUnfold ? [CharacteristicTabeViewCell rowUnfoldHeight] : [CharacteristicTabeViewCell rowHeight];
+        if (indexPath.row < self.characteristicCellFoldModel.count) {
+            ViewModel *foldModel = self.characteristicCellFoldModel[indexPath.row];
+            return foldModel.isUnfold ? [CharacteristicTabeViewCell rowUnfoldHeight] : [CharacteristicTabeViewCell rowHeight];
+        } else {
+            return 50;
+        }
     } else {
         return 50;
     }
