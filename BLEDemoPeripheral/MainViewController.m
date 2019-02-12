@@ -134,9 +134,7 @@
         self.serviceArray = tmpArray;
         [self.tableView reloadData];
     }];
-    UINavigationController *navigationVC = [[UINavigationController alloc] initWithRootViewController:serviceVC];
-    
-    [self presentViewController:navigationVC animated:YES completion:nil];
+    [self.navigationController pushViewController:serviceVC animated:YES];
 }
 
 - (NSString *)peripherialStateString:(CBManagerState)state {
@@ -291,6 +289,11 @@
     ServiceTableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:[ServiceTableViewCell reuseIdentifier]];
     cell.service = self.serviceArray[indexPath.row];
     cell.unFold = self.foldModel[indexPath.row].isUnfold;
+    cell.foldButtonDidTappedHandler = ^(BOOL isUnfold) {
+        ViewModel *foldModel = self.foldModel[indexPath.row];
+        foldModel.unfold = isUnfold;
+        [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+    };
     return cell;
 }
 
@@ -303,9 +306,11 @@
 #pragma mark - TableViewDelegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    ViewModel *model = self.foldModel[indexPath.row];
-    model.unfold = !model.isUnfold;
-    [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+    CBService *service = self.serviceArray[indexPath.row];
+    ServiceViewController *viewController = [[ServiceViewController alloc] initWithService:service CompletionHandler:^(CBService * _Nonnull service) {
+        
+    }];
+    [self.navigationController pushViewController:viewController animated:YES];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {

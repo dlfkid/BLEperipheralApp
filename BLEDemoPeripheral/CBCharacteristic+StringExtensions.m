@@ -13,34 +13,34 @@
 + (NSString *)propertiesString:(CBCharacteristicProperties)properties {
     NSString *result = @"";
     if (properties & CBCharacteristicPropertyRead) {
-        [result stringByAppendingFormat:@"%@, ", NSLocalizedString(@"Characteristic.propperty.read", "")];
+        result = [result stringByAppendingFormat:@"%@, ", NSLocalizedString(@"Characteristic.propperty.read", "")];
     }
     if (properties & CBCharacteristicPropertyWrite) {
-        [result stringByAppendingFormat:@"%@, ", NSLocalizedString(@"Characteristic.propperty.write", "")];
+        result = [result stringByAppendingFormat:@"%@, ", NSLocalizedString(@"Characteristic.propperty.write", "")];
     }
     if (properties & CBCharacteristicPropertyNotify) {
-        [result stringByAppendingFormat:@"%@, ", NSLocalizedString(@"Characteristic.propperty.notify", "")];
+        result = [result stringByAppendingFormat:@"%@, ", NSLocalizedString(@"Characteristic.propperty.notify", "")];
     }
     if (properties & CBCharacteristicPropertyIndicate) {
-        [result stringByAppendingFormat:@"%@, ", NSLocalizedString(@"Characteristic.propperty.indicate", "")];
+        result = [result stringByAppendingFormat:@"%@, ", NSLocalizedString(@"Characteristic.propperty.indicate", "")];
     }
     if (properties & CBCharacteristicPropertyBroadcast) {
-        [result stringByAppendingFormat:@"%@, ", NSLocalizedString(@"Characteristic.propperty.boardcast", "")];
+        result = [result stringByAppendingFormat:@"%@, ", NSLocalizedString(@"Characteristic.propperty.boardcast", "")];
     }
     if (properties & CBCharacteristicPropertyExtendedProperties) {
-        [result stringByAppendingFormat:@"%@, ", NSLocalizedString(@"Characteristic.propperty.extendedProperties", "")];
+        result = [result stringByAppendingFormat:@"%@, ", NSLocalizedString(@"Characteristic.propperty.extendedProperties", "")];
     }
     if (properties & CBCharacteristicPropertyWriteWithoutResponse) {
-        [result stringByAppendingFormat:@"%@, ", NSLocalizedString(@"Characteristic.propperty.writeWithoutResponse", "")];
+        result = [result stringByAppendingFormat:@"%@, ", NSLocalizedString(@"Characteristic.propperty.writeWithoutResponse", "")];
     }
     if (properties & CBCharacteristicPropertyNotifyEncryptionRequired) {
-        [result stringByAppendingFormat:@"%@, ", NSLocalizedString(@"Characteristic.propperty.notifyEncryptionRequired", "")];
+        result = [result stringByAppendingFormat:@"%@, ", NSLocalizedString(@"Characteristic.propperty.notifyEncryptionRequired", "")];
     }
     if (properties & CBCharacteristicPropertyAuthenticatedSignedWrites) {
-        [result stringByAppendingFormat:@"%@, ", NSLocalizedString(@"Characteristic.propperty.authendicatedSignedWrite", "")];
+        result = [result stringByAppendingFormat:@"%@, ", NSLocalizedString(@"Characteristic.propperty.authendicatedSignedWrite", "")];
     }
     if (properties & CBCharacteristicPropertyIndicateEncryptionRequired) {
-        [result stringByAppendingFormat:@"%@, ", NSLocalizedString(@"Characteristic.propperty.indicateEncryptionRequired", "")];
+        result = [result stringByAppendingFormat:@"%@, ", NSLocalizedString(@"Characteristic.propperty.indicateEncryptionRequired", "")];
     }
     return result;
 }
@@ -48,16 +48,16 @@
 + (NSString *)permissionString:(CBAttributePermissions)permissions {
     NSString *result = @"";
     if (permissions & CBAttributePermissionsReadable) {
-        [result stringByAppendingFormat:@"%@, ", NSLocalizedString(@"Characteristic.permission.readable", "")];
+        result = [result stringByAppendingFormat:@"%@, ", NSLocalizedString(@"Characteristic.permission.readable", "")];
     }
     if (permissions & CBAttributePermissionsWriteable) {
-        [result stringByAppendingFormat:@"%@, ", NSLocalizedString(@"Characteristic.permission.writeable", "")];
+        result = [result stringByAppendingFormat:@"%@, ", NSLocalizedString(@"Characteristic.permission.writeable", "")];
     }
     if (permissions & CBAttributePermissionsReadEncryptionRequired) {
-        [result stringByAppendingFormat:@"%@, ", NSLocalizedString(@"Characteristic.permission.readEncryptionRequired", "")];
+        result = [result stringByAppendingFormat:@"%@, ", NSLocalizedString(@"Characteristic.permission.readEncryptionRequired", "")];
     }
     if (permissions & CBAttributePermissionsWriteEncryptionRequired) {
-        [result stringByAppendingFormat:@"%@, ", NSLocalizedString(@"Characteristic.permission.writeEncryptionRequired", "")];
+        result = [result stringByAppendingFormat:@"%@, ", NSLocalizedString(@"Characteristic.permission.writeEncryptionRequired", "")];
     }
     return result;
 }

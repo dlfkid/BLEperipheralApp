@@ -17,6 +17,7 @@
 @property (nonatomic, strong) UIView *primaryIndiCatorView;
 @property (nonatomic, strong) UILabel *includedServiceCountLabel;
 @property (nonatomic, strong) UILabel *characteristicCountLabel;
+@property (nonatomic, strong) UIButton *foldButton;
 
 @end
 
@@ -64,7 +65,12 @@
         _characteristicCountLabel.text = NSLocalizedString(@"ServiceTableViewCell.characteristicLabel.text", @"");
         [self.customContentView addSubview:self.UUIDLabel];
         
-        
+        _foldButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [_foldButton addTarget:self action:@selector(foldButtonDidTappedAction) forControlEvents:UIControlEventTouchUpInside];
+        [_foldButton setImage:[UIImage imageNamed:@"up_arrow"] forState:UIControlStateNormal];
+        [_foldButton setImage:[UIImage imageNamed:@"down_arrow"] forState:UIControlStateSelected];
+        _foldButton.contentMode = UIViewContentModeScaleAspectFit;
+        [self.customContentView addSubview:self.foldButton];
     }
     return self;
 }
@@ -76,6 +82,13 @@
         make.edges.mas_equalTo(0).insets(padding);
     }];
     
+    [self.foldButton mas_updateConstraints:^(MASConstraintMaker *make) {
+        make.left.mas_equalTo(5);
+        make.top.mas_equalTo(5);
+        make.width.mas_equalTo(32);
+        make.height.mas_equalTo(32);
+    }];
+    
     [self.UUIDLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
         make.top.mas_equalTo(10);
         make.centerX.mas_equalTo(0);
@@ -85,6 +98,10 @@
 }
 
 #pragma mark - Actions
+
+- (void)foldButtonDidTappedAction {
+    ! self.foldButtonDidTappedHandler ?: self.foldButtonDidTappedHandler(!self.foldButton.isSelected);
+}
 
 - (void)setService:(CBService *)service {
     _service = service;
@@ -129,12 +146,15 @@
         [self.characteristicCountLabel removeFromSuperview];
         [self.primaryIndiCatorView removeFromSuperview];
     }
+    // Cell被Reload的时候Button会重置,因此在这里根据是否折叠设置Button的状态
+    self.foldButton.selected = unFold;
 }
 
 +(CGFloat)rowHeight {
     return 60;
 }
 
-#warning TODO: Replace Cell Unfold method to 3D touch & Top left button.
+#warning TODO: Add new characteristic or new service cell in the bottom of the section;
+#warning TODO: Add about View Controller at the top left corner;
 
 @end

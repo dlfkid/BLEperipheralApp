@@ -18,6 +18,7 @@
 @property (nonatomic, strong) UIView *notifyView;
 @property (nonatomic, strong) UILabel *valueLabel;
 @property (nonatomic, strong) UILabel *propertyLabel;
+@property (nonatomic, strong) UIButton *foldButton;
 
 @end
 
@@ -73,11 +74,13 @@
         _valueLabel.textAlignment = NSTextAlignmentCenter;
         _valueLabel.textColor = [UIColor lightGrayColor];
         _valueLabel.text = NSLocalizedString(@"CharacteristicTableViewCell.value", "");
-        
+        _foldButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [_foldButton addTarget:self action:@selector(foldButtonDidTappedAction) forControlEvents:UIControlEventTouchUpInside];
+        [_foldButton setImage:[UIImage imageNamed:@"up_arrow"] forState:UIControlStateNormal];
+        [_foldButton setImage:[UIImage imageNamed:@"down_arrow"] forState:UIControlStateSelected];
+        _foldButton.contentMode = UIViewContentModeScaleAspectFit;
+        [self.customContentView addSubview:self.foldButton];
         [self.customContentView addSubview:self.UUIDLabel];
-        [self.customContentView addSubview:self.notifyView];
-        [self.customContentView addSubview:self.propertyLabel];
-        [self.customContentView addSubview:self.valueLabel];
     }
     return self;
 }
@@ -94,11 +97,22 @@
         make.centerX.mas_equalTo(0);
     }];
     
+    [self.foldButton mas_updateConstraints:^(MASConstraintMaker *make) {
+        make.left.mas_equalTo(5);
+        make.top.mas_equalTo(5);
+        make.width.mas_equalTo(32);
+        make.height.mas_equalTo(32);
+    }];
+    
     [super updateConstraints];
 }
 
 +(CGFloat)rowHeight {
     return 60;
+}
+
+- (void)foldButtonDidTappedAction {
+    ! self.foldButtonDidTappedHandler ?: self.foldButtonDidTappedHandler(!self.foldButton.isSelected);
 }
 
 - (void)setCharacteristic:(CBCharacteristic *)characteristic {
@@ -111,6 +125,9 @@
     
     NSString *valueText = NSLocalizedString(@"CharacteristicTableViewCell.value", "");
     NSString *valueString = [[NSString alloc] initWithData:characteristic.value encoding:NSUTF8StringEncoding];
+    if (!characteristic.value) {
+        valueString = @"nil";
+    }
     self.valueLabel.text = [valueText stringByAppendingFormat:@" %@", valueString];
     
     self.notifyView.hidden = !characteristic.isNotifying;
@@ -151,6 +168,8 @@
         [self.propertyLabel removeFromSuperview];
         [self.notifyView removeFromSuperview];
     }
+    // Cell被Reload的时候Button会重置,因此在这里根据是否折叠设置Button的状态
+    self.foldButton.selected = unFold;
 }
 
 @end

@@ -19,6 +19,7 @@
     ViewModel *copiedModel = [[ViewModel alloc] init];
     copiedModel.title = self.title;
     copiedModel.unfold = self.isUnfold;
+    copiedModel.subTitle = self.subTitle;
     return copiedModel;
 }
 

@@ -27,7 +27,7 @@
 @property (nonatomic, strong) NSArray <CBCharacteristic *> *characteristics;
 @property (nonatomic, strong) NSArray <ViewModel *> *viewModels;
 @property (nonatomic, strong) NSArray <ViewModel *> *serviceCellFoldModel;
-@property (nonatomic, strong) NSArray <ViewModel *> *CharacteristicCellFoldModel;
+@property (nonatomic, strong) NSArray <ViewModel *> *characteristicCellFoldModel;
 
 @property (nonatomic, copy) void(^serviceDidAddHandler)(CBService *);
 
@@ -52,8 +52,11 @@
         _serviceDidAddHandler = completion;
         ViewModel *uuidModel = [[ViewModel alloc] init];
         uuidModel.title = NSLocalizedString(@"ServiceViewController.table.cell.UUID", "");
+        uuidModel.subTitle = service.UUID.UUIDString;
         ViewModel *primaryModel = [[ViewModel alloc] init];
         primaryModel.title = NSLocalizedString(@"ServiceViewController.table.cell.primary", "");
+        primaryModel.subTitle = service.isPrimary ? NSLocalizedString(@"Yes", "") : NSLocalizedString(@"No", "");
+    
         _viewModels = @[uuidModel, primaryModel];
     }
     return self;
@@ -72,13 +75,12 @@
     _tableView.delegate = self;
     _tableView.dataSource = self;
     [_tableView registerClass:[UITableViewHeaderFooterView class] forHeaderFooterViewReuseIdentifier:kdefaultTableViewHeaderReuseIdentifier];
-    [_tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:kdefaultTableViewCellReuseIdentifier];
     [_tableView registerClass:[ServiceTableViewCell class] forCellReuseIdentifier:[ServiceTableViewCell reuseIdentifier]];
     [_tableView registerClass:[CharacteristicTabeViewCell class] forCellReuseIdentifier:[CharacteristicTabeViewCell reuseIdentifier]];
     [self.view addSubview:self.tableView];
     
     [self.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.mas_equalTo(0).mas_offset([DeviceScreenAdaptor statusBarMargin] + 44);
+        make.top.mas_equalTo(0).mas_offset(44);
         make.left.right.mas_equalTo(0);
         make.bottom.mas_equalTo(0).mas_offset(- [DeviceScreenAdaptor bottomIndicatorMargin]);
     }];
@@ -96,7 +98,7 @@
             [tmpCharacteristicModelArray addObject:tmpCharacteristicViewModel];
         }];
         
-        self.CharacteristicCellFoldModel = tmpCharacteristicModelArray;
+        self.characteristicCellFoldModel = tmpCharacteristicModelArray;
         
         self.includedServices = self.sampleService.includedServices;
         
@@ -115,12 +117,12 @@
 #pragma mark - Actions
 
 - (void)cancelButtnDidTappedAction {
-    [self dismissViewControllerAnimated:YES completion:nil];
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 - (void)saveButtonDidTappedAction {
     // !self.serviceDidAddHandler ?: self.serviceDidAddHandler()
-    [self dismissViewControllerAnimated:YES completion:nil];
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 #pragma mark - CBPeripheralManagerDelegate
@@ -141,7 +143,7 @@
             return self.viewModels.count;
             break;
         case 1:
-            return self.CharacteristicCellFoldModel.count;
+            return self.characteristicCellFoldModel.count;
             break;
         case 2:
             return self.serviceCellFoldModel.count;
@@ -158,6 +160,12 @@
         case 1: {
             CharacteristicTabeViewCell *characteristicCell = [tableView dequeueReusableCellWithIdentifier:[CharacteristicTabeViewCell reuseIdentifier] forIndexPath:indexPath];
             characteristicCell.characteristic = self.characteristics[indexPath.row];
+            characteristicCell.unFold = self.characteristicCellFoldModel[indexPath.row].isUnfold;
+            characteristicCell.foldButtonDidTappedHandler = ^(BOOL isUnfold) {
+                ViewModel *model = self.characteristicCellFoldModel[indexPath.row];
+                model.unfold = isUnfold;
+                [tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+            };
             return characteristicCell;
         }
             break;
@@ -165,14 +173,24 @@
         case 2: {
             ServiceTableViewCell *serviceCell = [tableView dequeueReusableCellWithIdentifier:[ServiceTableViewCell reuseIdentifier] forIndexPath:indexPath];
             serviceCell.service = self.includedServices[indexPath.row];
+            serviceCell.unFold = self.serviceCellFoldModel[indexPath.row].isUnfold;
+            serviceCell.foldButtonDidTappedHandler = ^(BOOL isUnfold) {
+                ViewModel *model = self.serviceCellFoldModel[indexPath.row];
+                model.unfold = isUnfold;
+                [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+            };
             return serviceCell;
         }
             break;
             
         default: {
-            UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kdefaultTableViewCellReuseIdentifier forIndexPath:indexPath];
+            UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+            if (!cell) {
+                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:kdefaultTableViewCellReuseIdentifier];
+            }
             ViewModel *viewModel = self.viewModels[indexPath.row];
             cell.textLabel.text = viewModel.title;
+            cell.detailTextLabel.text = viewModel.subTitle;
             return cell;
         }
             break;
@@ -204,13 +222,9 @@
     if (indexPath.section == 0) {
         return;
     } else if (indexPath.section == 2) {
-        ViewModel *model = self.serviceCellFoldModel[indexPath.row];
-        model.unfold = !model.isUnfold;
-        [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+
     } else if (indexPath.section == 1) {
-        ViewModel *model = self.CharacteristicCellFoldModel[indexPath.row];
-        model.unfold = !model.isUnfold;
-        [tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+
     }
 }
 
@@ -221,7 +235,7 @@
         ViewModel *foldModel = self.serviceCellFoldModel[indexPath.row];
         return foldModel.isUnfold ? [ServiceTableViewCell rowUnfoldHeight] : [ServiceTableViewCell rowHeight];
     } else if (indexPath.section == 1) {
-        ViewModel *foldModel = self.CharacteristicCellFoldModel[indexPath.row];
+        ViewModel *foldModel = self.characteristicCellFoldModel[indexPath.row];
         return foldModel.isUnfold ? [CharacteristicTabeViewCell rowUnfoldHeight] : [CharacteristicTabeViewCell rowHeight];
     } else {
         return 50;

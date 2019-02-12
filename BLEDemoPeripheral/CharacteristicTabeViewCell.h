@@ -17,6 +17,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, assign, getter = isUnFold) BOOL unFold;
 @property (nonatomic, strong) CBCharacteristic *characteristic;
+@property (nonatomic, copy) void(^foldButtonDidTappedHandler)(BOOL isUnfold);
 
 @end
 

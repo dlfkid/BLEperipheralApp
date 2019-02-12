@@ -16,6 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, assign, getter = isUnFold) BOOL unFold;
 @property (nonatomic, strong) CBService *service;
+@property (nonatomic, copy) void(^foldButtonDidTappedHandler)(BOOL isUnfold);
 
 @end
 
