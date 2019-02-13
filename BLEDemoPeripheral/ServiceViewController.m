@@ -22,11 +22,6 @@
 // Helpers
 #import <CoreBluetooth/CoreBluetooth.h>
 
-typedef struct {
-    char *UUIDstring;
-    bool primary;
-}CBServiceStuct;
-
 @interface ServiceViewController ()<CBPeripheralManagerDelegate, UITableViewDataSource, UITableViewDelegate>
 
 @property (nonatomic, strong) UITableView *tableView;
@@ -39,7 +34,6 @@ typedef struct {
 @property (nonatomic, strong) NSArray <ViewModel *> *characteristicCellFoldModel;
 // 此方法用于判断控制器是查看模式还是新建模式，如果是新建模式才允许用户操作内容。
 @property (nonatomic, assign, getter = isAddingMode) BOOL addingMode;
-@property (nonatomic, assign) CBServiceStuct *serviceStruct;
 
 @end
 
@@ -69,8 +63,6 @@ typedef struct {
         primaryModel.subTitle = service.isPrimary ? NSLocalizedString(@"Yes", "") : NSLocalizedString(@"No", "");
     
         _viewModels = @[uuidModel, primaryModel];
-        CBServiceStuct sampleStruct;
-        _serviceStruct = &sampleStruct;
     }
     return self;
 }
@@ -252,9 +244,7 @@ typedef struct {
                 cell.switchControl.enabled = self.isAddingMode;
                 cell.title = viewModel.title;
                 cell.switchValueDidChangedHandler = ^(BOOL switchState) {
-                    CBServiceStuct newStruct = *(self.serviceStruct);
-                    newStruct.primary = switchState;
-                    self.serviceStruct = &newStruct;
+                    
                 };
                 return cell;
             } else {
@@ -295,6 +285,33 @@ typedef struct {
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.section == 0) {
+        ViewModel *model = self.viewModels[indexPath.row];
+        if ([model.title isEqualToString:NSLocalizedString(@"ServiceViewController.table.cell.UUID", "")]) {
+            PSTAlertController *controller = [PSTAlertController alertControllerWithTitle:NSLocalizedString(@"CoreBlueTableViewCell.UUID.alert.text", "") message:@"" preferredStyle:PSTAlertControllerStyleAlert];
+            PSTAlertAction *cancelAction = [PSTAlertAction actionWithTitle:NSLocalizedString(@"Cancel", "") handler:^(PSTAlertAction * _Nonnull action) {
+                
+            }];
+            PSTAlertAction *comfirmAction = [PSTAlertAction actionWithTitle:NSLocalizedString(@"Submit", "") style:PSTAlertActionStyleDefault handler:^(PSTAlertAction * _Nonnull action) {
+                UITextField *textField = controller.textField;
+                if (textField.text.length > 0) {
+                    model.subTitle = textField.text;
+                    [tableView reloadData];
+                }
+            }];
+            
+            [controller addAction:cancelAction];
+            [controller addAction:comfirmAction];
+            
+            [controller addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
+                textField.clearButtonMode = UITextFieldViewModeWhileEditing;
+            }];
+            
+            [controller showWithSender:nil controller:nil animated:YES completion:^{
+                
+            }];
+            
+            
+        }
         return;
     } else if (indexPath.section == 1) {
         // 添加特征
