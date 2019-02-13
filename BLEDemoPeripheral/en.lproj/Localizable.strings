@@ -55,6 +55,7 @@
 "MainViewController.tableView.header" = "All Services";
 
 "ServiceViewController.title.default" = "Create New Service";
+"CharacteristicController.title.default" = "Create New Characteristic";
 
 "ServiceTableViewCell.primaryIndicator.text" = "Primary Service";
 "ServiceTableViewCell.UUIDLabel.text" = "UUID:";

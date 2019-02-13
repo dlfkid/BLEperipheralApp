@@ -6,7 +6,7 @@
 //  Copyright © 2019 Ivan_deng. All rights reserved.
 //
 
-@class CBService;
+@class CBMutableService;
 
 #import "BaseViewController.h"
 
@@ -14,7 +14,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface ServiceViewController : BaseViewController
 
-- (instancetype)initWithService:(nullable CBService *)service CompletionHandler:(void(^)(CBService *service))completion;
+- (instancetype)initWithService:(nullable CBMutableService *)service CompletionHandler:(void(^)(CBMutableService *service))completion;
 
 @end
 

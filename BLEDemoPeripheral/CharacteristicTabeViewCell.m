@@ -120,7 +120,7 @@
     NSString *uuidText = NSLocalizedString(@"CharacteristicTableViewCell.UUID", "");
     self.UUIDLabel.text = [uuidText stringByAppendingFormat:@" %@", characteristic.UUID.UUIDString];
     NSString *propertyText = NSLocalizedString(@"CharacteristicTableViewCell.property", "");
-    NSString *properties = [CBCharacteristic propertiesString:characteristic.properties];
+    NSString *properties = [CBCharacteristic propertiesString:self.characteristic.properties];
     self.propertyLabel.text = [propertyText stringByAppendingFormat:@" %@", properties];
     
     NSString *valueText = NSLocalizedString(@"CharacteristicTableViewCell.value", "");

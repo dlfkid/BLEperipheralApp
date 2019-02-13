@@ -54,6 +54,7 @@
 "MainViewController.tableView.header" = "全部服务";
 
 "ServiceViewController.title.default" = "创建新服务";
+"CharacteristicController.title.default" = "创建新特征";
 
 "ServiceTableViewCell.primaryIndicator.text" = "主服务";
 "ServiceTableViewCell.UUIDLabel.text" = "UUID:";

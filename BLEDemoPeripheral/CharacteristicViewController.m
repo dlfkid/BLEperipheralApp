@@ -8,14 +8,20 @@
 
 #import "CharacteristicViewController.h"
 
+// View
+#import "CharacteristicTabeViewCell.h"
+
 // Helpers
 #import <CoreBluetooth/CBCharacteristic.h>
 
 @interface CharacteristicViewController ()<UITableViewDataSource, UITableViewDelegate>
 
 @property (nonatomic, strong) UITableView *tableView;
+
+@property (nonatomic, strong) CBCharacteristic *sampleCharacteristic;
 @property (nonatomic, assign) CBCharacteristicProperties *currentProperties;
 @property (nonatomic, assign) CBAttributePermissions *currentPermissions;
+@property (nonatomic, copy) void(^charateriticDidSavedHandler)(CBCharacteristic *characteristic);
 
 @end
 
@@ -23,7 +29,17 @@
 
 #pragma mark - LifeCycle
 
+- (instancetype)initWithCharacteristic:(CBCharacteristic *)characteristic Completion:(void (^)(CBCharacteristic * _Nonnull))completionHandler {
+    self = [super init];
+    if (self) {
+        _sampleCharacteristic = characteristic;
+        _charateriticDidSavedHandler = completionHandler;
+    }
+    return self;
+}
+
 - (void)viewDidLoad {
+    self.navigationItem.title = NSLocalizedString(@"CharacteristicController.title.default", "");
     [super viewDidLoad];
 }
 

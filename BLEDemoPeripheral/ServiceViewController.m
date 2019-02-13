@@ -8,6 +8,9 @@
 
 #import "ServiceViewController.h"
 
+// Controllers
+#import "CharacteristicViewController.h"
+
 // Views
 #import "ServiceTableViewCell.h"
 #import "CharacteristicTabeViewCell.h"
@@ -21,7 +24,7 @@
 @interface ServiceViewController ()<CBPeripheralManagerDelegate, UITableViewDataSource, UITableViewDelegate>
 
 @property (nonatomic, strong) UITableView *tableView;
-@property (nonatomic, strong) CBService *sampleService;
+@property (nonatomic, strong) CBMutableService *sampleService;
 @property (nonatomic, strong) CBPeripheralManager *peripheralManager;
 @property (nonatomic, strong) NSArray <CBService *> *includedServices;
 @property (nonatomic, strong) NSArray <CBCharacteristic *> *characteristics;
@@ -29,7 +32,7 @@
 @property (nonatomic, strong) NSArray <ViewModel *> *serviceCellFoldModel;
 @property (nonatomic, strong) NSArray <ViewModel *> *characteristicCellFoldModel;
 
-@property (nonatomic, copy) void(^serviceDidAddHandler)(CBService *);
+@property (nonatomic, copy) void(^serviceDidAddHandler)(CBMutableService *);
 
 @end
 
@@ -45,7 +48,7 @@
 
 #pragma mark - LifeCycle
 
-- (instancetype)initWithService:(CBService *)service CompletionHandler:(void(^)(CBService *service))completion {
+- (instancetype)initWithService:(CBMutableService *)service CompletionHandler:(void(^)(CBMutableService *service))completion {
     self = [super init];
     if (self) {
         _sampleService = service;
@@ -65,7 +68,11 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelButtnDidTappedAction)];
-    self.navigationItem.rightBarButtonItem = self.sampleService ? [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Delete", "") style:UIBarButtonItemStylePlain target:self action:@selector(deleteButtonDidTappedAction)] : [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave target:self action:@selector(saveButtonDidTappedAction)];
+
+    UIBarButtonItem *editBarItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemOrganize target:self action:@selector(saveButtonDidTappedAction)];
+    UIBarButtonItem *deleteBarItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemTrash target:self action:@selector(deleteButtonDidTappedAction)];
+    
+    self.navigationItem.rightBarButtonItems = self.sampleService ? @[deleteBarItem, editBarItem] : @[editBarItem];
     self.navigationItem.title = self.sampleService.UUID.UUIDString ? self.sampleService.UUID.UUIDString : NSLocalizedString(@"ServiceViewController.title.default", "");
     [self setupContents];
 }
@@ -247,9 +254,14 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.section == 0) {
         return;
-    } else if (indexPath.section == 2) {
-
     } else if (indexPath.section == 1) {
+        // 添加特征
+        CBCharacteristic *characteristic = indexPath.row < self.characteristics.count ? self.characteristics[indexPath.row] : nil;
+        CharacteristicViewController *controller = [[CharacteristicViewController alloc] initWithCharacteristic:characteristic Completion:^(CBCharacteristic * _Nonnull characteristic) {
+            
+        }];
+        [self.navigationController pushViewController:controller animated:YES];
+    } else if (indexPath.section == 2) {
 
     }
 }

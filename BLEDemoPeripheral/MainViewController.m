@@ -32,7 +32,7 @@
 @property (nonatomic, strong) UITextField *textContent;
 @property (nonatomic, assign, getter = isBoardcasting) BOOL boardcasting;
 
-@property (nonatomic, strong) NSArray <CBService *> *serviceArray;
+@property (nonatomic, strong) NSArray <CBMutableService *> *serviceArray;
 @property (nonatomic, strong) NSArray <ViewModel *> *foldModel;
 
 @end
@@ -125,7 +125,7 @@
 #pragma mark - Actions
 
 - (void)addButtonDidTappedAction {
-    ServiceViewController *serviceVC = [[ServiceViewController alloc] initWithService:nil CompletionHandler:^(CBService * _Nonnull service) {
+    ServiceViewController *serviceVC = [[ServiceViewController alloc] initWithService:nil CompletionHandler:^(CBMutableService * _Nonnull service) {
         // 此处传入服务被创建成功后的回调
         NSMutableArray *tmpArray = [NSMutableArray arrayWithArray:self.serviceArray];
         if (![tmpArray containsObject:service]) {
@@ -197,7 +197,7 @@
     _boardcasting = boardcasting;
     if (self.isBoardcasting) {
         NSMutableArray *boardcastingServices = [NSMutableArray array];
-        for (CBService *service in self.serviceArray) {
+        for (CBMutableService *service in self.serviceArray) {
             [boardcastingServices addObject:service.UUID];
         }
         [self.peripheralManager startAdvertising:@{CBAdvertisementDataServiceUUIDsKey:boardcastingServices}];
@@ -267,11 +267,11 @@
     self.textContent.text = [[NSString alloc] initWithData:request.value encoding:NSUTF8StringEncoding];
 }
 
-- (void)peripheralManager:(CBPeripheralManager *)peripheral central:(CBCentral *)central didSubscribeToCharacteristic:(CBCharacteristic *)characteristic {
+- (void)peripheralManager:(CBPeripheralManager *)peripheral central:(CBCentral *)central didSubscribeToCharacteristic:(CBMutableCharacteristic *)characteristic {
     NSLog(@"%s",__FUNCTION__);
 }
 
-- (void)peripheralManager:(CBPeripheralManager *)peripheral central:(CBCentral *)central didUnsubscribeFromCharacteristic:(CBCharacteristic *)characteristic {
+- (void)peripheralManager:(CBPeripheralManager *)peripheral central:(CBCentral *)central didUnsubscribeFromCharacteristic:(CBMutableCharacteristic *)characteristic {
     NSLog(@"%s",__FUNCTION__);
 }
 
@@ -306,8 +306,8 @@
 #pragma mark - TableViewDelegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    CBService *service = self.serviceArray[indexPath.row];
-    ServiceViewController *viewController = [[ServiceViewController alloc] initWithService:service CompletionHandler:^(CBService * _Nonnull service) {
+    CBMutableService *service = self.serviceArray[indexPath.row];
+    ServiceViewController *viewController = [[ServiceViewController alloc] initWithService:service CompletionHandler:^(CBMutableService * _Nonnull service) {
         
     }];
     [self.navigationController pushViewController:viewController animated:YES];
