@@ -14,7 +14,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface ServiceViewController : BaseViewController
 
-- (instancetype)initWithService:(nullable CBMutableService *)service CompletionHandler:(void(^)(CBMutableService *service))completion;
+@property (nonatomic, copy) void(^serviceDidSavedHandler)(CBMutableService *service);
+@property (nonatomic, copy) void(^serviceDidRemovedHandler)(CBMutableService *service);
+
+- (instancetype)initWithService:(nullable CBMutableService *)service;
 
 @end
 

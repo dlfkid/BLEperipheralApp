@@ -32,8 +32,6 @@
 @property (nonatomic, strong) NSArray <ViewModel *> *serviceCellFoldModel;
 @property (nonatomic, strong) NSArray <ViewModel *> *characteristicCellFoldModel;
 
-@property (nonatomic, copy) void(^serviceDidAddHandler)(CBMutableService *);
-
 @end
 
 @implementation ServiceViewController
@@ -48,11 +46,10 @@
 
 #pragma mark - LifeCycle
 
-- (instancetype)initWithService:(CBMutableService *)service CompletionHandler:(void(^)(CBMutableService *service))completion {
+- (instancetype)initWithService:(CBMutableService *)service {
     self = [super init];
     if (self) {
         _sampleService = service;
-        _serviceDidAddHandler = completion;
         ViewModel *uuidModel = [[ViewModel alloc] init];
         uuidModel.title = NSLocalizedString(@"ServiceViewController.table.cell.UUID", "");
         uuidModel.subTitle = service.UUID.UUIDString;
@@ -128,11 +125,12 @@
 }
 
 - (void)saveButtonDidTappedAction {
-    // !self.serviceDidAddHandler ?: self.serviceDidAddHandler()
+    !self.serviceDidSavedHandler ?: self.serviceDidSavedHandler(self.sampleService);
     [self.navigationController popViewControllerAnimated:YES];
 }
 
 - (void)deleteButtonDidTappedAction {
+    !self.serviceDidRemovedHandler ?: self.serviceDidRemovedHandler(self.sampleService);
     [self.navigationController popViewControllerAnimated:YES];
 }
 

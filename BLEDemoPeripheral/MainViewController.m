@@ -6,9 +6,6 @@
 //  Copyright © 2017年 Ivan_deng. All rights reserved.
 //
 
-#define SERVICE_UUID @"CDD1"
-#define CHARACTERISTIC_UUID @"CDD2"
-
 #import "MainViewController.h"
 
 // Controllers
@@ -36,6 +33,9 @@
 @property (nonatomic, strong) NSArray <ViewModel *> *foldModel;
 
 @end
+
+static NSString * const kSampleServiceUUID = @"CDD1";
+static NSString * const kSampleCharacteristicUUID = @"CDD2";
 
 @implementation MainViewController
 
@@ -125,15 +125,26 @@
 #pragma mark - Actions
 
 - (void)addButtonDidTappedAction {
-    ServiceViewController *serviceVC = [[ServiceViewController alloc] initWithService:nil CompletionHandler:^(CBMutableService * _Nonnull service) {
+    ServiceViewController *serviceVC = [[ServiceViewController alloc] initWithService:nil];
+    serviceVC.serviceDidSavedHandler = ^(CBMutableService * _Nonnull service) {
         // 此处传入服务被创建成功后的回调
         NSMutableArray *tmpArray = [NSMutableArray arrayWithArray:self.serviceArray];
         if (![tmpArray containsObject:service]) {
             [tmpArray addObject:service];
+            [self.peripheralManager addService:service];
+            self.serviceArray = tmpArray;
+            [self.tableView reloadData];
         }
-        self.serviceArray = tmpArray;
-        [self.tableView reloadData];
-    }];
+    };
+    serviceVC.serviceDidRemovedHandler = ^(CBMutableService * _Nonnull service) {
+        NSMutableArray *tmpArray = [NSMutableArray arrayWithArray:self.serviceArray];
+        if ([tmpArray containsObject:service]) {
+            [tmpArray removeObject:service];
+            [self.peripheralManager removeService:service];
+            self.serviceArray = tmpArray;
+            [self.tableView reloadData];
+        }
+    };
     [self.navigationController pushViewController:serviceVC animated:YES];
 }
 
@@ -207,12 +218,16 @@
 }
 
 - (void)setUpServiceAndCharacteristic {
-    //创建服务
-    CBUUID *serviceID = [CBUUID UUIDWithString:SERVICE_UUID];
+    //创建样例服务
+    CBUUID *serviceID = [CBUUID UUIDWithString:kSampleServiceUUID];
     CBMutableService *service = [[CBMutableService alloc]initWithType:serviceID primary:true];
     //创建服务中的特征
-    CBUUID *characteristicID = [CBUUID UUIDWithString:CHARACTERISTIC_UUID];
+    CBUUID *characteristicID = [CBUUID UUIDWithString:kSampleCharacteristicUUID];
     CBMutableCharacteristic *characteristic = [[CBMutableCharacteristic alloc]initWithType:characteristicID properties:CBCharacteristicPropertyRead | CBCharacteristicPropertyWrite | CBCharacteristicPropertyNotify value:nil permissions:CBAttributePermissionsWriteable];
+    // NSString *sampleValue = @"sampleValue";
+    // 只有将特征设置为只读时才能为特征赋初始值
+    // characteristic.value = [sampleValue dataUsingEncoding:NSUTF8StringEncoding];
+    // characteristic.permissions = CBAttributePermissionsReadable | CBAttributePermissionsWriteable;
     //将特征添加到服务
     service.characteristics = @[characteristic];
     [self.peripheralManager addService:service];
@@ -307,9 +322,25 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     CBMutableService *service = self.serviceArray[indexPath.row];
-    ServiceViewController *viewController = [[ServiceViewController alloc] initWithService:service CompletionHandler:^(CBMutableService * _Nonnull service) {
-        
-    }];
+    ServiceViewController *viewController = [[ServiceViewController alloc] initWithService:service];
+    viewController.serviceDidSavedHandler = ^(CBMutableService * _Nonnull service) {
+        NSMutableArray *services = [NSMutableArray arrayWithArray:self.serviceArray];
+        if (![services containsObject:service]) {
+            [services addObject:service];
+            [self.peripheralManager addService:service];
+            self.serviceArray = services;
+            [self.tableView reloadData];
+        }
+    };
+    viewController.serviceDidRemovedHandler = ^(CBMutableService * _Nonnull service) {
+        NSMutableArray *services = [NSMutableArray arrayWithArray:self.serviceArray];
+        if ([services containsObject:service]) {
+            [services removeObject:service];
+            [self.peripheralManager removeService:service];
+            self.serviceArray = services;
+            [self.tableView reloadData];
+        }
+    };
     [self.navigationController pushViewController:viewController animated:YES];
 }
 
