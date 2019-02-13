@@ -91,3 +91,6 @@
 "ServiceTableViewCell.newService" = "新增服务";
 "CharacteristicTableViewCell.newCharacteristic" = "新增特征";
 
+"ServiceViewController.deleteButton.alert.text" = "你确定要删除该服务吗?";
+"CharacteristicViewController.deleteButton.alert.text" = "你确定要删除该特征吗?";
+

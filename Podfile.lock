@@ -3,6 +3,7 @@ PODS:
   - iOSDeviceScreenAdapter (1.0.2)
   - IQKeyboardManager (6.2.0)
   - Masonry (1.1.0)
+  - PSTAlertController (1.2.0)
   - UIExtensionKit (0.0.2)
 
 DEPENDENCIES:
@@ -10,6 +11,7 @@ DEPENDENCIES:
   - iOSDeviceScreenAdapter (~> 1.0.2)
   - IQKeyboardManager
   - Masonry
+  - PSTAlertController
   - UIExtensionKit
 
 SPEC REPOS:
@@ -18,6 +20,7 @@ SPEC REPOS:
     - iOSDeviceScreenAdapter
     - IQKeyboardManager
     - Masonry
+    - PSTAlertController
     - UIExtensionKit
 
 SPEC CHECKSUMS:
@@ -25,8 +28,9 @@ SPEC CHECKSUMS:
   iOSDeviceScreenAdapter: 359c45fa7398a736978d6432e2686c76f763b9a5
   IQKeyboardManager: 6194101620b73af5e67900b8f89707a99de0b804
   Masonry: 678fab65091a9290e40e2832a55e7ab731aad201
+  PSTAlertController: 9b802dfbda54fee2683bfd6dda7023a6de895d5b
   UIExtensionKit: 839b0092ae7cbb857c4692fb7e4f9379c97fa24c
 
-PODFILE CHECKSUM: 260d605a3328f1ea06db49698ae8830b0807053f
+PODFILE CHECKSUM: 60aff1a93555519a1f5fc43cda45641f6eb27649
 
 COCOAPODS: 1.6.0.rc.2

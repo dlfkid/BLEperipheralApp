@@ -14,12 +14,18 @@
 // Views
 #import "ServiceTableViewCell.h"
 #import "CharacteristicTabeViewCell.h"
+#import "SwitchTableViewCell.h"
 
 // Models
 #import "ViewModel.h"
 
 // Helpers
 #import <CoreBluetooth/CoreBluetooth.h>
+
+typedef struct {
+    char *UUIDstring;
+    bool primary;
+}CBServiceStuct;
 
 @interface ServiceViewController ()<CBPeripheralManagerDelegate, UITableViewDataSource, UITableViewDelegate>
 
@@ -31,6 +37,9 @@
 @property (nonatomic, strong) NSArray <ViewModel *> *viewModels;
 @property (nonatomic, strong) NSArray <ViewModel *> *serviceCellFoldModel;
 @property (nonatomic, strong) NSArray <ViewModel *> *characteristicCellFoldModel;
+// 此方法用于判断控制器是查看模式还是新建模式，如果是新建模式才允许用户操作内容。
+@property (nonatomic, assign, getter = isAddingMode) BOOL addingMode;
+@property (nonatomic, assign) CBServiceStuct *serviceStruct;
 
 @end
 
@@ -50,6 +59,8 @@
     self = [super init];
     if (self) {
         _sampleService = service;
+        // 判断是新增服务还是查看服务详情。
+        self.addingMode = !self.sampleService;
         ViewModel *uuidModel = [[ViewModel alloc] init];
         uuidModel.title = NSLocalizedString(@"ServiceViewController.table.cell.UUID", "");
         uuidModel.subTitle = service.UUID.UUIDString;
@@ -58,6 +69,8 @@
         primaryModel.subTitle = service.isPrimary ? NSLocalizedString(@"Yes", "") : NSLocalizedString(@"No", "");
     
         _viewModels = @[uuidModel, primaryModel];
+        CBServiceStuct sampleStruct;
+        _serviceStruct = &sampleStruct;
     }
     return self;
 }
@@ -69,7 +82,7 @@
     UIBarButtonItem *editBarItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemOrganize target:self action:@selector(saveButtonDidTappedAction)];
     UIBarButtonItem *deleteBarItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemTrash target:self action:@selector(deleteButtonDidTappedAction)];
     
-    self.navigationItem.rightBarButtonItems = self.sampleService ? @[deleteBarItem, editBarItem] : @[editBarItem];
+    self.navigationItem.rightBarButtonItems = self.isAddingMode ? @[editBarItem] : @[deleteBarItem];
     self.navigationItem.title = self.sampleService.UUID.UUIDString ? self.sampleService.UUID.UUIDString : NSLocalizedString(@"ServiceViewController.title.default", "");
     [self setupContents];
 }
@@ -130,8 +143,20 @@
 }
 
 - (void)deleteButtonDidTappedAction {
-    !self.serviceDidRemovedHandler ?: self.serviceDidRemovedHandler(self.sampleService);
-    [self.navigationController popViewControllerAnimated:YES];
+    PSTAlertController *controller = [PSTAlertController alertControllerWithTitle:NSLocalizedString(@"Warning", "") message:NSLocalizedString(@"ServiceViewController.deleteButton.alert.text", "") preferredStyle:PSTAlertControllerStyleAlert];
+    PSTAlertAction *deleteAction = [PSTAlertAction actionWithTitle:NSLocalizedString(@"Delete", "") style:PSTAlertActionStyleDestructive handler:^(PSTAlertAction * _Nonnull action) {
+        !self.serviceDidRemovedHandler ?: self.serviceDidRemovedHandler(self.sampleService);
+    }];
+    PSTAlertAction *cancelAction = [PSTAlertAction actionWithTitle:NSLocalizedString(@"Cancel", "") style:PSTAlertActionStyleCancel handler:^(PSTAlertAction * _Nonnull action) {
+        
+    }];
+    
+    [controller addAction:cancelAction];
+    [controller addAction:deleteAction];
+    
+    [controller showWithSender:nil controller:nil animated:YES completion:^{
+        [self.navigationController popViewControllerAnimated:YES];
+    }];
 }
 
 #pragma mark - CBPeripheralManagerDelegate
@@ -147,15 +172,16 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    NSInteger addingCell = self.isAddingMode ? 1 : 0;
     switch (section) {
         case 0:
             return self.viewModels.count;
             break;
         case 1:
-            return self.characteristicCellFoldModel.count + 1;
+            return self.characteristicCellFoldModel.count + addingCell;
             break;
         case 2:
-            return self.serviceCellFoldModel.count + 1;
+            return self.serviceCellFoldModel.count + addingCell;
             break;
             
         default:
@@ -193,7 +219,8 @@
         case 2: {
             if (indexPath.row < self.serviceCellFoldModel.count) {
                 ServiceTableViewCell *serviceCell = [tableView dequeueReusableCellWithIdentifier:[ServiceTableViewCell reuseIdentifier] forIndexPath:indexPath];
-                serviceCell.service = self.includedServices[indexPath.row];
+                // 此处强转是为了消除警告
+                serviceCell.service = (CBMutableService *)self.includedServices[indexPath.row];
                 serviceCell.unFold = self.serviceCellFoldModel[indexPath.row].isUnfold;
                 serviceCell.foldButtonDidTappedHandler = ^(BOOL isUnfold) {
                     ViewModel *model = self.serviceCellFoldModel[indexPath.row];
@@ -215,14 +242,31 @@
             break;
             
         default: {
-            UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-            if (!cell) {
-                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:kdefaultTableViewCellReuseIdentifier];
-            }
             ViewModel *viewModel = self.viewModels[indexPath.row];
-            cell.textLabel.text = viewModel.title;
-            cell.detailTextLabel.text = viewModel.subTitle;
-            return cell;
+            if ([viewModel.title isEqualToString:NSLocalizedString(@"ServiceViewController.table.cell.primary", "")]) {
+                SwitchTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+                if (!cell) {
+                    cell = [[SwitchTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kdefaultTableViewCellReuseIdentifier];
+                }
+                cell.switchControl.on = self.sampleService.isPrimary;
+                cell.switchControl.enabled = self.isAddingMode;
+                cell.title = viewModel.title;
+                cell.switchValueDidChangedHandler = ^(BOOL switchState) {
+                    CBServiceStuct newStruct = *(self.serviceStruct);
+                    newStruct.primary = switchState;
+                    self.serviceStruct = &newStruct;
+                };
+                return cell;
+            } else {
+                UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+                if (!cell) {
+                    cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:kdefaultTableViewCellReuseIdentifier];
+                }
+                
+                cell.textLabel.text = viewModel.title;
+                cell.detailTextLabel.text = viewModel.subTitle;
+                return cell;
+            }
         }
             break;
     }

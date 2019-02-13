@@ -154,7 +154,7 @@
     return 60;
 }
 
-#warning TODO: Add new characteristic or new service cell in the bottom of the section;
 #warning TODO: Add about View Controller at the top left corner;
+#warning TODO: Finish charateristic View Controller;
 
 @end

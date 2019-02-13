@@ -9,6 +9,7 @@ target 'BLEDemoPeripheral' do
   pod 'Masonry'
   pod 'UIExtensionKit'
   pod 'IQKeyboardManager'
+  pod 'PSTAlertController'
   # Pods for BLEDemoPeripheral
 
 end

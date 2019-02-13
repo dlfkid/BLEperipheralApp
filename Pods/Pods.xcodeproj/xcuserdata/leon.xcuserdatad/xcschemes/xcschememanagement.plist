@@ -25,6 +25,13 @@
 			<key>orderHint</key>
 			<integer>3</integer>
 		</dict>
+		<key>PSTAlertController.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+			<key>orderHint</key>
+			<integer>5</integer>
+		</dict>
 		<key>Pods-BLEDemoPeripheral.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -37,7 +44,7 @@
 			<key>isShown</key>
 			<false/>
 			<key>orderHint</key>
-			<integer>5</integer>
+			<integer>6</integer>
 		</dict>
 		<key>iOSDeviceScreenAdapter.xcscheme</key>
 		<dict>

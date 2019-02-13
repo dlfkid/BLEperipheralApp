@@ -16,6 +16,7 @@
 		3558C00D221174EE0041D02D /* CharacteristicViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3558C00C221174EE0041D02D /* CharacteristicViewController.m */; };
 		3558C01022117E900041D02D /* CBCharacteristic+StringExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 3558C00F22117E900041D02D /* CBCharacteristic+StringExtensions.m */; };
 		3561D2672203D8C1000491D2 /* BaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3561D2662203D8C1000491D2 /* BaseViewController.m */; };
+		35CF4361221403D200107DE4 /* SwitchTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 35CF4360221403D200107DE4 /* SwitchTableViewCell.m */; };
 		35F7DB23220889270045F7B0 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 35F7DB25220889270045F7B0 /* Localizable.strings */; };
 		819F4A0A64B934D5E6793BA9 /* Pods_BLEDemoPeripheral.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EDFDC52ACB2C95D53810726F /* Pods_BLEDemoPeripheral.framework */; };
 		B44D1FA71F3841840011AC95 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = B44D1FA61F3841840011AC95 /* main.m */; };
@@ -47,6 +48,8 @@
 		3558C00F22117E900041D02D /* CBCharacteristic+StringExtensions.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "CBCharacteristic+StringExtensions.m"; sourceTree = "<group>"; };
 		3561D2652203D8C1000491D2 /* BaseViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BaseViewController.h; sourceTree = "<group>"; };
 		3561D2662203D8C1000491D2 /* BaseViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BaseViewController.m; sourceTree = "<group>"; };
+		35CF435F221403D200107DE4 /* SwitchTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SwitchTableViewCell.h; sourceTree = "<group>"; };
+		35CF4360221403D200107DE4 /* SwitchTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SwitchTableViewCell.m; sourceTree = "<group>"; };
 		35F7DB20220888870045F7B0 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/LaunchScreen.strings"; sourceTree = "<group>"; };
 		35F7DB24220889270045F7B0 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		35F7DB26220889390045F7B0 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
@@ -84,6 +87,8 @@
 				350EDF8D22094CEF003AD2D9 /* CharacteristicTabeViewCell.m */,
 				35184C71220C1A77001C8242 /* ServiceTableViewCell.h */,
 				35184C72220C1A77001C8242 /* ServiceTableViewCell.m */,
+				35CF435F221403D200107DE4 /* SwitchTableViewCell.h */,
+				35CF4360221403D200107DE4 /* SwitchTableViewCell.m */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -299,6 +304,7 @@
 				"${BUILT_PRODUCTS_DIR}/FLEX/FLEX.framework",
 				"${BUILT_PRODUCTS_DIR}/IQKeyboardManager/IQKeyboardManager.framework",
 				"${BUILT_PRODUCTS_DIR}/Masonry/Masonry.framework",
+				"${BUILT_PRODUCTS_DIR}/PSTAlertController/PSTAlertController.framework",
 				"${BUILT_PRODUCTS_DIR}/UIExtensionKit/UIExtensionKit.framework",
 				"${BUILT_PRODUCTS_DIR}/iOSDeviceScreenAdapter/iOSDeviceScreenAdapter.framework",
 			);
@@ -309,6 +315,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FLEX.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/IQKeyboardManager.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Masonry.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PSTAlertController.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/UIExtensionKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/iOSDeviceScreenAdapter.framework",
 			);
@@ -325,6 +332,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				350EDF8922094C85003AD2D9 /* BaseTableViewCell.m in Sources */,
+				35CF4361221403D200107DE4 /* SwitchTableViewCell.m in Sources */,
 				B44D1FAA1F3841840011AC95 /* AppDelegate.m in Sources */,
 				3561D2672203D8C1000491D2 /* BaseViewController.m in Sources */,
 				3558C00D221174EE0041D02D /* CharacteristicViewController.m in Sources */,
