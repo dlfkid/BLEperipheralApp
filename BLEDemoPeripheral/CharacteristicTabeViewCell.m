@@ -11,6 +11,7 @@
 // Helpers
 #import <CoreBluetooth/CoreBluetooth.h>
 #import "CBCharacteristic+StringExtensions.h"
+#import "CBCharacteristic+ViewModel.h"
 
 @interface CharacteristicTabeViewCell()
 
@@ -112,6 +113,7 @@
 }
 
 - (void)foldButtonDidTappedAction {
+    self.characteristic.unfold = !self.isUnFold;
     ! self.foldButtonDidTappedHandler ?: self.foldButtonDidTappedHandler(!self.foldButton.isSelected);
 }
 
@@ -134,7 +136,8 @@
 }
 
 - (void)setUnFold:(BOOL)unFold {
-    if (unFold) {
+    _unFold = unFold;
+    if (_unFold) {
         // 展开状态布局
         [self.customContentView addSubview:self.propertyLabel];
         [self.customContentView addSubview:self.valueLabel];
@@ -168,8 +171,7 @@
         [self.propertyLabel removeFromSuperview];
         [self.notifyView removeFromSuperview];
     }
-    // Cell被Reload的时候Button会重置,因此在这里根据是否折叠设置Button的状态
-    self.foldButton.selected = unFold;
+    self.foldButton.selected = _unFold;
 }
 
 @end

@@ -10,6 +10,7 @@
 
 // Helpers
 #import <CoreBluetooth/CoreBluetooth.h>
+#import "CBService+ViewModel.h"
 
 @interface ServiceTableViewCell()
 
@@ -22,6 +23,11 @@
 @end
 
 @implementation ServiceTableViewCell
+
++ (void)initialize {
+    // 利用RunTime机制为CBMutableService增加成员变量Unfold，方便进行折叠操作
+    
+}
 
 - (UIView *)primaryIndiCatorView {
     if (!_primaryIndiCatorView) {
@@ -65,6 +71,8 @@
         _characteristicCountLabel.text = NSLocalizedString(@"ServiceTableViewCell.characteristicLabel.text", @"");
         [self.customContentView addSubview:self.UUIDLabel];
         
+        _unfold = NO;
+        
         _foldButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [_foldButton addTarget:self action:@selector(foldButtonDidTappedAction) forControlEvents:UIControlEventTouchUpInside];
         [_foldButton setImage:[UIImage imageNamed:@"up_arrow"] forState:UIControlStateNormal];
@@ -100,7 +108,8 @@
 #pragma mark - Actions
 
 - (void)foldButtonDidTappedAction {
-    ! self.foldButtonDidTappedHandler ?: self.foldButtonDidTappedHandler(!self.foldButton.isSelected);
+    self.service.unfold = !self.isUnfold;
+    ! self.foldButtonDidTappedHandler ?: self.foldButtonDidTappedHandler(self.isUnfold);
 }
 
 - (void)setService:(CBMutableService *)service {
@@ -111,8 +120,9 @@
     self.primaryIndiCatorView.hidden = !service.isPrimary;
 }
 
-- (void)setUnFold:(BOOL)unFold {
-    if (unFold) {
+- (void)setUnfold:(BOOL)unfold {
+    _unfold = unfold;
+    if (_unfold) {
         // 展开状态布局
         [self.customContentView addSubview:self.includedServiceCountLabel];
         [self.customContentView addSubview:self.characteristicCountLabel];
@@ -146,15 +156,12 @@
         [self.characteristicCountLabel removeFromSuperview];
         [self.primaryIndiCatorView removeFromSuperview];
     }
-    // Cell被Reload的时候Button会重置,因此在这里根据是否折叠设置Button的状态
-    self.foldButton.selected = unFold;
+    self.foldButton.selected = _unfold;
+    NSLog(@"Button seletcted state : %d, Unfold state: %d", self.foldButton.isSelected, self.isUnfold);
 }
 
 +(CGFloat)rowHeight {
     return 60;
 }
-
-#warning TODO: Add about View Controller at the top left corner;
-#warning TODO: Finish charateristic View Controller;
 
 @end

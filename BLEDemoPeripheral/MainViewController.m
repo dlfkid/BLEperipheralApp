@@ -16,6 +16,7 @@
 
 // Models
 #import "ViewModel.h"
+#import "CBService+ViewModel.h"
 
 
 @interface MainViewController () <CBPeripheralManagerDelegate, UITableViewDelegate, UITableViewDataSource>
@@ -30,7 +31,6 @@
 @property (nonatomic, assign, getter = isBoardcasting) BOOL boardcasting;
 
 @property (nonatomic, strong) NSArray <CBMutableService *> *serviceArray;
-@property (nonatomic, strong) NSArray <ViewModel *> *foldModel;
 
 @end
 
@@ -236,8 +236,6 @@ static NSString * const kSampleCharacteristicUUID = @"CDD2";
     self.currentCharacteristic = characteristic;
     
     self.serviceArray = @[service];
-    ViewModel *foldModel = [[ViewModel alloc] init];
-    self.foldModel = @[foldModel];
 }
 
 # pragma mark - BLEDelegate
@@ -303,10 +301,8 @@ static NSString * const kSampleCharacteristicUUID = @"CDD2";
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     ServiceTableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:[ServiceTableViewCell reuseIdentifier]];
     cell.service = self.serviceArray[indexPath.row];
-    cell.unFold = self.foldModel[indexPath.row].isUnfold;
+    cell.unfold = cell.service.isUnfold;
     cell.foldButtonDidTappedHandler = ^(BOOL isUnfold) {
-        ViewModel *foldModel = self.foldModel[indexPath.row];
-        foldModel.unfold = isUnfold;
         [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
     };
     return cell;
@@ -345,8 +341,8 @@ static NSString * const kSampleCharacteristicUUID = @"CDD2";
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    ViewModel *foldModel = self.foldModel[indexPath.row];
-    return foldModel.isUnfold ? [ServiceTableViewCell rowUnfoldHeight] : [ServiceTableViewCell rowHeight];
+    CBService *service = self.serviceArray[indexPath.row];
+    return service.isUnfold ? [ServiceTableViewCell rowUnfoldHeight] : [ServiceTableViewCell rowHeight];
 }
 
 @end

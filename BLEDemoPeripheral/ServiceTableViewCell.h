@@ -14,7 +14,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface ServiceTableViewCell : BaseTableViewCell
 
-@property (nonatomic, assign, getter = isUnFold) BOOL unFold;
+@property (nonatomic, assign, getter = isUnfold) BOOL unfold;
 @property (nonatomic, strong) CBMutableService *service;
 @property (nonatomic, copy) void(^foldButtonDidTappedHandler)(BOOL isUnfold);
 

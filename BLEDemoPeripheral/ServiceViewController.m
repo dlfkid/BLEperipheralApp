@@ -21,19 +21,24 @@
 
 // Helpers
 #import <CoreBluetooth/CoreBluetooth.h>
+#import "CBCharacteristic+StringExtensions.h"
+#import "CBCharacteristic+ViewModel.h"
+#import "CBService+ViewModel.h"
 
 @interface ServiceViewController ()<CBPeripheralManagerDelegate, UITableViewDataSource, UITableViewDelegate>
 
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) CBMutableService *sampleService;
 @property (nonatomic, strong) CBPeripheralManager *peripheralManager;
-@property (nonatomic, strong) NSArray <CBService *> *includedServices;
-@property (nonatomic, strong) NSArray <CBCharacteristic *> *characteristics;
 @property (nonatomic, strong) NSArray <ViewModel *> *viewModels;
-@property (nonatomic, strong) NSArray <ViewModel *> *serviceCellFoldModel;
-@property (nonatomic, strong) NSArray <ViewModel *> *characteristicCellFoldModel;
 // 此方法用于判断控制器是查看模式还是新建模式，如果是新建模式才允许用户操作内容。
 @property (nonatomic, assign, getter = isAddingMode) BOOL addingMode;
+
+// SampleValues
+@property (nonatomic, copy) NSString *UUIDString;
+@property (nonatomic, assign) BOOL primary;
+//@property (nonatomic, strong) NSArray <CBService *> *includedServices;
+//@property (nonatomic, strong) NSArray <CBCharacteristic *> *characteristics;
 
 @end
 
@@ -97,29 +102,6 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     
-    if (self.sampleService) {
-        self.characteristics = self.sampleService.characteristics;
-        
-        NSMutableArray *tmpCharacteristicModelArray = [NSMutableArray array];
-        
-        [self.characteristics enumerateObjectsUsingBlock:^(CBCharacteristic * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-            ViewModel *tmpCharacteristicViewModel = [[ViewModel alloc] init];
-            [tmpCharacteristicModelArray addObject:tmpCharacteristicViewModel];
-        }];
-        
-        self.characteristicCellFoldModel = tmpCharacteristicModelArray;
-        
-        self.includedServices = self.sampleService.includedServices;
-        
-        NSMutableArray *tmpServiceModelArray = [NSMutableArray array];
-        [self.serviceCellFoldModel enumerateObjectsUsingBlock:^(ViewModel * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-            ViewModel *tmpServiceViewModel = [[ViewModel alloc] init];
-            [tmpServiceModelArray addObject:tmpServiceViewModel];
-        }];
-        
-        [self.tableView reloadData];
-    }
-    
     [super viewWillAppear:animated];
 }
 
@@ -170,10 +152,10 @@
             return self.viewModels.count;
             break;
         case 1:
-            return self.characteristicCellFoldModel.count + addingCell;
+            return self.sampleService.characteristics.count + addingCell;
             break;
         case 2:
-            return self.serviceCellFoldModel.count + addingCell;
+            return self.sampleService.includedServices.count + addingCell;
             break;
             
         default:
@@ -185,13 +167,11 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     switch (indexPath.section) {
         case 1: {
-            if (indexPath.row < self.characteristicCellFoldModel.count) {
+            if (indexPath.row < self.sampleService.characteristics.count) {
                 CharacteristicTabeViewCell *characteristicCell = [tableView dequeueReusableCellWithIdentifier:[CharacteristicTabeViewCell reuseIdentifier] forIndexPath:indexPath];
-                characteristicCell.characteristic = self.characteristics[indexPath.row];
-                characteristicCell.unFold = self.characteristicCellFoldModel[indexPath.row].isUnfold;
+                characteristicCell.characteristic = self.sampleService.characteristics[indexPath.row];
+                characteristicCell.unFold = characteristicCell.characteristic.isUnfold;
                 characteristicCell.foldButtonDidTappedHandler = ^(BOOL isUnfold) {
-                    ViewModel *model = self.characteristicCellFoldModel[indexPath.row];
-                    model.unfold = isUnfold;
                     [tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
                 };
                 return characteristicCell;
@@ -209,14 +189,12 @@
             break;
             
         case 2: {
-            if (indexPath.row < self.serviceCellFoldModel.count) {
+            if (indexPath.row < self.sampleService.includedServices.count) {
                 ServiceTableViewCell *serviceCell = [tableView dequeueReusableCellWithIdentifier:[ServiceTableViewCell reuseIdentifier] forIndexPath:indexPath];
                 // 此处强转是为了消除警告
-                serviceCell.service = (CBMutableService *)self.includedServices[indexPath.row];
-                serviceCell.unFold = self.serviceCellFoldModel[indexPath.row].isUnfold;
+                serviceCell.service = (CBMutableService *)self.sampleService.includedServices[indexPath.row];
+                serviceCell.unfold = serviceCell.service.isUnfold;
                 serviceCell.foldButtonDidTappedHandler = ^(BOOL isUnfold) {
-                    ViewModel *model = self.serviceCellFoldModel[indexPath.row];
-                    model.unfold = isUnfold;
                     [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
                 };
                 return serviceCell;
@@ -244,7 +222,7 @@
                 cell.switchControl.enabled = self.isAddingMode;
                 cell.title = viewModel.title;
                 cell.switchValueDidChangedHandler = ^(BOOL switchState) {
-                    
+                    self.primary = switchState;
                 };
                 return cell;
             } else {
@@ -294,7 +272,9 @@
             PSTAlertAction *comfirmAction = [PSTAlertAction actionWithTitle:NSLocalizedString(@"Submit", "") style:PSTAlertActionStyleDefault handler:^(PSTAlertAction * _Nonnull action) {
                 UITextField *textField = controller.textField;
                 if (textField.text.length > 0) {
-                    model.subTitle = textField.text;
+                    NSString *uuid = [CBCharacteristic uuidValid:textField.text];
+                    model.subTitle = uuid;
+                    self.UUIDString = uuid;
                     [tableView reloadData];
                 }
             }];
@@ -314,14 +294,28 @@
         }
         return;
     } else if (indexPath.section == 1) {
-        // 添加特征
-        CBCharacteristic *characteristic = indexPath.row < self.characteristics.count ? self.characteristics[indexPath.row] : nil;
-        CharacteristicViewController *controller = [[CharacteristicViewController alloc] initWithCharacteristic:characteristic Completion:^(CBCharacteristic * _Nonnull characteristic) {
-            
-        }];
+        // 查看或添加特征
+        CBCharacteristic *characteristic = indexPath.row < self.sampleService.characteristics.count ? self.sampleService.characteristics[indexPath.row] : nil;
+        CharacteristicViewController *controller = [[CharacteristicViewController alloc] initWithCharacteristic:characteristic];
         [self.navigationController pushViewController:controller animated:YES];
     } else if (indexPath.section == 2) {
-
+        // 查看或添加服务
+        CBMutableService *service = indexPath.row < self.sampleService.includedServices.count ? (CBMutableService *)self.sampleService.includedServices[indexPath.row] : nil;
+        ServiceViewController *controller = [[ServiceViewController alloc] initWithService:service];
+        controller.serviceDidSavedHandler = ^(CBMutableService * _Nonnull service) {
+            NSArray *newIncludedServiceArray = [self.sampleService.includedServices arrayByAddingObject:service];
+            [self.sampleService setIncludedServices:newIncludedServiceArray];
+            [tableView reloadData];
+        };
+        controller.serviceDidRemovedHandler = ^(CBMutableService * _Nonnull service) {
+            if ([self.sampleService.includedServices containsObject:service]) {
+                NSMutableArray *newIncludedServiceArray = [NSMutableArray arrayWithArray:self.sampleService.includedServices];
+                [newIncludedServiceArray removeObject:service];
+                [self.sampleService setIncludedServices:newIncludedServiceArray];
+                [tableView reloadData];
+            }
+        };
+        [self.navigationController pushViewController:controller animated:YES];
     }
 }
 
@@ -329,16 +323,17 @@
     if (indexPath.section == 0) {
         return [BaseTableViewCell rowHeight];
     } else if (indexPath.section == 2) {
-        if (indexPath.row < self.serviceCellFoldModel.count) {
-            ViewModel *foldModel = self.serviceCellFoldModel[indexPath.row];
-            return foldModel.isUnfold ? [ServiceTableViewCell rowUnfoldHeight] : [ServiceTableViewCell rowHeight];
+        if (indexPath.row < self.sampleService.includedServices.count) {
+            CBService *service = self.sampleService.includedServices[indexPath.row];
+            return service.isUnfold ? [ServiceTableViewCell rowUnfoldHeight] : [ServiceTableViewCell rowHeight];
         } else {
             return 50;
         }
     } else if (indexPath.section == 1) {
-        if (indexPath.row < self.characteristicCellFoldModel.count) {
-            ViewModel *foldModel = self.characteristicCellFoldModel[indexPath.row];
-            return foldModel.isUnfold ? [CharacteristicTabeViewCell rowUnfoldHeight] : [CharacteristicTabeViewCell rowHeight];
+        if (indexPath.row < self.sampleService.characteristics.count) {
+            CBCharacteristic *charater = self.sampleService.characteristics[indexPath.row];
+            
+            return charater.isUnfold ? [CharacteristicTabeViewCell rowUnfoldHeight] : [CharacteristicTabeViewCell rowHeight];
         } else {
             return 50;
         }
@@ -346,7 +341,6 @@
         return 50;
     }
 }
-
 
 @end
 

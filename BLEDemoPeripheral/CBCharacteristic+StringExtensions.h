@@ -16,6 +16,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (NSString *)permissionString:(CBAttributePermissions)permissions;
 
++ (NSString *)uuidValid:(NSString *)UUIDString;
+
 @end
 
 NS_ASSUME_NONNULL_END

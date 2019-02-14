@@ -21,7 +21,6 @@
 @property (nonatomic, strong) CBCharacteristic *sampleCharacteristic;
 @property (nonatomic, assign) CBCharacteristicProperties *currentProperties;
 @property (nonatomic, assign) CBAttributePermissions *currentPermissions;
-@property (nonatomic, copy) void(^charateriticDidSavedHandler)(CBCharacteristic *characteristic);
 
 @end
 
@@ -29,11 +28,10 @@
 
 #pragma mark - LifeCycle
 
-- (instancetype)initWithCharacteristic:(CBCharacteristic *)characteristic Completion:(void (^)(CBCharacteristic * _Nonnull))completionHandler {
+- (instancetype)initWithCharacteristic:(CBCharacteristic *)characteristic {
     self = [super init];
     if (self) {
         _sampleCharacteristic = characteristic;
-        _charateriticDidSavedHandler = completionHandler;
     }
     return self;
 }

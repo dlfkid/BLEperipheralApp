@@ -8,6 +8,8 @@
 
 #import "CBCharacteristic+StringExtensions.h"
 
+#import <UIExtensionKit/NSString+UIKitExtension.h>
+
 @implementation CBCharacteristic (StringExtensions)
 
 + (NSString *)propertiesString:(CBCharacteristicProperties)properties {
@@ -60,6 +62,11 @@
         result = [result stringByAppendingFormat:@"%@, ", NSLocalizedString(@"Characteristic.permission.writeEncryptionRequired", "")];
     }
     return result;
+}
+
++ (NSString *)uuidValid:(NSString *)UUIDString {
+    NSString *sample = [NSString hexStringWithString:UUIDString];
+    return sample.length < 4 ? sample : [sample substringWithRange:NSMakeRange(0, 4)];
 }
 
 @end

@@ -14,7 +14,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface CharacteristicViewController : BaseViewController
 
-- (instancetype)initWithCharacteristic:(nullable CBCharacteristic *)characteristic Completion:(void(^)(CBCharacteristic *characteristic))completionHandler;
+@property (nonatomic, copy) void(^characteristicDidSavedHandler)(CBCharacteristic *characteristic);
+@property (nonatomic, copy) void(^characteristicDidDeletedHandler)(CBCharacteristic *characteristic);
+
+- (instancetype)initWithCharacteristic:(nullable CBCharacteristic *)characteristic;
 
 @end
 
