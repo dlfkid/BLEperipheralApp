@@ -37,12 +37,32 @@
 // SampleValues
 @property (nonatomic, copy) NSString *UUIDString;
 @property (nonatomic, assign) BOOL primary;
-//@property (nonatomic, strong) NSArray <CBService *> *includedServices;
-//@property (nonatomic, strong) NSArray <CBCharacteristic *> *characteristics;
+@property (nonatomic, strong) NSArray <CBService *> *includedServices;
+@property (nonatomic, strong) NSArray <CBCharacteristic *> *characteristics;
 
 @end
 
 @implementation ServiceViewController
+
+- (void)setSampleService:(CBMutableService *)sampleService {
+    _sampleService = sampleService;
+    _includedServices = sampleService.includedServices;
+    _characteristics = sampleService.characteristics;
+}
+
+- (NSArray<CBService *> *)includedServices {
+    if (!_includedServices) {
+        _includedServices = [NSArray array];
+    }
+    return _includedServices;
+}
+
+- (NSArray<CBCharacteristic *> *)characteristics {
+    if (!_characteristics) {
+        _characteristics = [NSArray array];
+    }
+    return _characteristics;
+}
 
 - (CBPeripheralManager *)peripheralManager {
     if (!_peripheralManager) {
@@ -112,6 +132,9 @@
 }
 
 - (void)saveButtonDidTappedAction {
+    self.sampleService = [[CBMutableService alloc] initWithType:[CBUUID UUIDWithString:self.UUIDString] primary:self.primary];
+    [self.sampleService setIncludedServices:self.includedServices];
+    // [self.sampleService setCharacteristics:self.characteristics];
     !self.serviceDidSavedHandler ?: self.serviceDidSavedHandler(self.sampleService);
     [self.navigationController popViewControllerAnimated:YES];
 }
@@ -120,6 +143,7 @@
     PSTAlertController *controller = [PSTAlertController alertControllerWithTitle:NSLocalizedString(@"Warning", "") message:NSLocalizedString(@"ServiceViewController.deleteButton.alert.text", "") preferredStyle:PSTAlertControllerStyleAlert];
     PSTAlertAction *deleteAction = [PSTAlertAction actionWithTitle:NSLocalizedString(@"Delete", "") style:PSTAlertActionStyleDestructive handler:^(PSTAlertAction * _Nonnull action) {
         !self.serviceDidRemovedHandler ?: self.serviceDidRemovedHandler(self.sampleService);
+        [self.navigationController popViewControllerAnimated:YES];
     }];
     PSTAlertAction *cancelAction = [PSTAlertAction actionWithTitle:NSLocalizedString(@"Cancel", "") style:PSTAlertActionStyleCancel handler:^(PSTAlertAction * _Nonnull action) {
         
@@ -152,10 +176,10 @@
             return self.viewModels.count;
             break;
         case 1:
-            return self.sampleService.characteristics.count + addingCell;
+            return self.characteristics.count + addingCell;
             break;
         case 2:
-            return self.sampleService.includedServices.count + addingCell;
+            return self.includedServices.count + addingCell;
             break;
             
         default:
@@ -167,9 +191,9 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     switch (indexPath.section) {
         case 1: {
-            if (indexPath.row < self.sampleService.characteristics.count) {
+            if (indexPath.row < self.characteristics.count) {
                 CharacteristicTabeViewCell *characteristicCell = [tableView dequeueReusableCellWithIdentifier:[CharacteristicTabeViewCell reuseIdentifier] forIndexPath:indexPath];
-                characteristicCell.characteristic = self.sampleService.characteristics[indexPath.row];
+                characteristicCell.characteristic = self.characteristics[indexPath.row];
                 characteristicCell.unFold = characteristicCell.characteristic.isUnfold;
                 characteristicCell.foldButtonDidTappedHandler = ^(BOOL isUnfold) {
                     [tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
@@ -189,10 +213,10 @@
             break;
             
         case 2: {
-            if (indexPath.row < self.sampleService.includedServices.count) {
+            if (indexPath.row < self.includedServices.count) {
                 ServiceTableViewCell *serviceCell = [tableView dequeueReusableCellWithIdentifier:[ServiceTableViewCell reuseIdentifier] forIndexPath:indexPath];
                 // 此处强转是为了消除警告
-                serviceCell.service = (CBMutableService *)self.sampleService.includedServices[indexPath.row];
+                serviceCell.service = (CBMutableService *)self.includedServices[indexPath.row];
                 serviceCell.unfold = serviceCell.service.isUnfold;
                 serviceCell.foldButtonDidTappedHandler = ^(BOOL isUnfold) {
                     [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
@@ -295,23 +319,24 @@
         return;
     } else if (indexPath.section == 1) {
         // 查看或添加特征
-        CBCharacteristic *characteristic = indexPath.row < self.sampleService.characteristics.count ? self.sampleService.characteristics[indexPath.row] : nil;
+        CBCharacteristic *characteristic = indexPath.row < self.characteristics.count ? self.characteristics[indexPath.row] : nil;
         CharacteristicViewController *controller = [[CharacteristicViewController alloc] initWithCharacteristic:characteristic];
         [self.navigationController pushViewController:controller animated:YES];
     } else if (indexPath.section == 2) {
         // 查看或添加服务
-        CBMutableService *service = indexPath.row < self.sampleService.includedServices.count ? (CBMutableService *)self.sampleService.includedServices[indexPath.row] : nil;
+        CBMutableService *service = indexPath.row < self.includedServices.count ? (CBMutableService *)self.includedServices[indexPath.row] : nil;
         ServiceViewController *controller = [[ServiceViewController alloc] initWithService:service];
         controller.serviceDidSavedHandler = ^(CBMutableService * _Nonnull service) {
-            NSArray *newIncludedServiceArray = [self.sampleService.includedServices arrayByAddingObject:service];
-            [self.sampleService setIncludedServices:newIncludedServiceArray];
+            NSArray *newIncludedServiceArray = [self.includedServices arrayByAddingObject:service];
+            // 子服务添加的时候主服务的sampleService还是nil
+            self.includedServices = newIncludedServiceArray;
             [tableView reloadData];
         };
         controller.serviceDidRemovedHandler = ^(CBMutableService * _Nonnull service) {
-            if ([self.sampleService.includedServices containsObject:service]) {
-                NSMutableArray *newIncludedServiceArray = [NSMutableArray arrayWithArray:self.sampleService.includedServices];
+            if ([self.includedServices containsObject:service]) {
+                NSMutableArray *newIncludedServiceArray = [NSMutableArray arrayWithArray:self.includedServices];
                 [newIncludedServiceArray removeObject:service];
-                [self.sampleService setIncludedServices:newIncludedServiceArray];
+                self.includedServices = newIncludedServiceArray;
                 [tableView reloadData];
             }
         };
@@ -323,15 +348,15 @@
     if (indexPath.section == 0) {
         return [BaseTableViewCell rowHeight];
     } else if (indexPath.section == 2) {
-        if (indexPath.row < self.sampleService.includedServices.count) {
-            CBService *service = self.sampleService.includedServices[indexPath.row];
+        if (indexPath.row < self.includedServices.count) {
+            CBService *service = self.includedServices[indexPath.row];
             return service.isUnfold ? [ServiceTableViewCell rowUnfoldHeight] : [ServiceTableViewCell rowHeight];
         } else {
             return 50;
         }
     } else if (indexPath.section == 1) {
-        if (indexPath.row < self.sampleService.characteristics.count) {
-            CBCharacteristic *charater = self.sampleService.characteristics[indexPath.row];
+        if (indexPath.row < self.characteristics.count) {
+            CBCharacteristic *charater = self.characteristics[indexPath.row];
             
             return charater.isUnfold ? [CharacteristicTabeViewCell rowUnfoldHeight] : [CharacteristicTabeViewCell rowHeight];
         } else {
