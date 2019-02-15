@@ -11,6 +11,9 @@
 // View
 #import "CharacteristicTabeViewCell.h"
 
+// Models
+#import "ViewModel.h"
+
 // Helpers
 #import <CoreBluetooth/CBCharacteristic.h>
 
@@ -21,10 +24,35 @@
 @property (nonatomic, strong) CBCharacteristic *sampleCharacteristic;
 @property (nonatomic, assign) CBCharacteristicProperties *currentProperties;
 @property (nonatomic, assign) CBAttributePermissions *currentPermissions;
+@property (nonatomic, strong) NSArray <ViewModel *> *baseAttributeArray;
+@property (nonatomic, strong) NSArray <ViewModel *> *propertiesArray;
+@property (nonatomic, strong) NSArray <ViewModel *> *permissionArray;
+
 
 @end
 
 @implementation CharacteristicViewController
+
+- (NSArray<ViewModel *> *)baseAttributeArray {
+    if (!_baseAttributeArray) {
+        
+    }
+    return _baseAttributeArray;
+}
+
+- (NSArray<ViewModel *> *)propertiesArray {
+    if (!_propertiesArray) {
+        
+    }
+    return _propertiesArray;
+}
+
+- (NSArray<ViewModel *> *)permissionArray {
+    if (!_permissionArray) {
+        
+    }
+    return _permissionArray;
+}
 
 #pragma mark - LifeCycle
 
@@ -44,11 +72,27 @@
 #pragma mark - TableViewDataSource
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 2;
+    return 3;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return 0;
+    switch (section) {
+        case 0:
+            return self.baseAttributeArray.count;
+            break;
+        
+        case 1:
+            return self.propertiesArray.count;
+            break;
+            
+        case 2:
+            return self.permissionArray.count;
+            break;
+            
+        default:
+            return 0;
+            break;
+    }
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {

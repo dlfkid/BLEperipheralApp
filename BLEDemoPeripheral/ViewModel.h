@@ -19,6 +19,12 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, assign, getter = isUnfold) BOOL unfold;
 // 点击事件的Block
 @property (nonatomic, copy) dispatch_block_t didSelectedHandler;
+// Option值
+@property (nonatomic, assign) NSUInteger rawOptionValue;
+// Enum值
+@property (nonatomic, assign) NSInteger rawEnumValue;
+// 是否被选中
+@property (nonatomic, assign, getter = isSelected) BOOL selected;
 
 @end
 
