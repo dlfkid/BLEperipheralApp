@@ -97,18 +97,60 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kdefaultTableViewCellReuseIdentifier forIndexPath:indexPath];
+    switch (indexPath.section) {
+        case 0: {
+            // 基本信息
+        }
+            break;
+        
+        case 1: {
+            // 多选属性
+        }
+            break;
+            
+        case 2: {
+            // 多选特征
+        }
+            break;
+        default:
+            break;
+    }
     return cell;
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     UITableViewHeaderFooterView *view = [tableView dequeueReusableHeaderFooterViewWithIdentifier:kdefaultTableViewHeaderReuseIdentifier];
+    if (section == 0) {
+        view.textLabel.text = NSLocalizedString(@"CoreBlueTableViewCell.header.info", "");
+    } else if (section == 1) {
+        view.textLabel.text = NSLocalizedString(@"CoreBlueTableViewCell.header.properties", "");
+    } else if (section == 2) {
+        view.textLabel.text = NSLocalizedString(@"CoreBlueTableViewCell.header.permissions", "");
+    }
     return view;
 }
 
 #pragma mark - TableViewDelegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    
+    switch (indexPath.section) {
+        case 0: {
+            // 基本信息
+        }
+            break;
+            
+        case 1: {
+            // 多选属性
+        }
+            break;
+            
+        case 2: {
+            // 多选特征
+        }
+            break;
+        default:
+            break;
+    }
 }
 
 @end

@@ -96,3 +96,7 @@
 "ServiceViewController.deleteButton.alert.text" = "Are you sure you want to delete the Service?";
 "CharacteristicViewController.deleteButton.alert.text" = "Are you sure you want to delete the characteristic?";
 "CoreBlueTableViewCell.UUID.alert.text" = "UUID";
+
+"CoreBlueTableViewCell.header.info" = "Information";
+"CoreBlueTableViewCell.header.properties" = "Properties"；
+"CoreBlueTableViewCell.header.permissions" = "Permissions";
