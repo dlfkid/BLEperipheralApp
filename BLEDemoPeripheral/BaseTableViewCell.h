@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import <Masonry/Masonry.h>
 #import <UIColor+UIExtensionKit.h>
+#import <iOSDeviceScreenAdapter/DeviceScreenAdaptor.h>
 
 NS_ASSUME_NONNULL_BEGIN
 

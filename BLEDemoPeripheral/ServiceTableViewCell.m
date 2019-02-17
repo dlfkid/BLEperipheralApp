@@ -93,8 +93,8 @@
     [self.foldButton mas_updateConstraints:^(MASConstraintMaker *make) {
         make.left.mas_equalTo(5);
         make.top.mas_equalTo(5);
-        make.width.mas_equalTo(32);
-        make.height.mas_equalTo(32);
+        make.width.mas_equalTo([DeviceScreenAdaptor adaptedValue:32]);
+        make.height.mas_equalTo([DeviceScreenAdaptor adaptedValue:32]);
     }];
     
     [self.UUIDLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
@@ -139,10 +139,10 @@
         }];
         
         [self.primaryIndiCatorView mas_updateConstraints:^(MASConstraintMaker *make) {
-            make.right.mas_equalTo(-10);
+            make.right.mas_equalTo(-[DeviceScreenAdaptor adaptedValue:10]);
             make.centerY.mas_equalTo(0);
-            make.width.mas_equalTo(80);
-            make.height.mas_equalTo(35);
+            make.width.mas_equalTo([DeviceScreenAdaptor adaptedValue:80]);
+            make.height.mas_equalTo([DeviceScreenAdaptor adaptedValue:35]);
         }];
         
         [self.customContentView layoutIfNeeded];

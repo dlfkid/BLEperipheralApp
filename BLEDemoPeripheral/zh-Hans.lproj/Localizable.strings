@@ -97,7 +97,7 @@
 "CoreBlueTableViewCell.UUID.alert.text" = "UUID";
 
 "CoreBlueTableViewCell.header.info" = "基本信息";
-"CoreBlueTableViewCell.header.properties" = "属性"；
+"CoreBlueTableViewCell.header.properties" = "属性";
 "CoreBlueTableViewCell.header.permissions" = "权限";
 
 
