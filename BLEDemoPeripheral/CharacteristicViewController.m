@@ -226,16 +226,38 @@
     switch (indexPath.section) {
         case 0: {
             // 基本信息
+            UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+            if (!cell) {
+                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:kdefaultTableViewCellReuseIdentifier];
+            }
+            ViewModel *model = self.baseAttributeArray[indexPath.row];
+            cell.textLabel.text = model.title;
+            cell.detailTextLabel.text = model.subTitle;
+            return cell;
         }
             break;
         
         case 1: {
             // 多选属性
+            UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kdefaultTableViewCellReuseIdentifier];
+            ViewModel *model = self.propertiesArray[indexPath.row];
+            cell.textLabel.text = model.title;
+            if (self.currentProperties & model.rawOptionValue) {
+                cell.accessoryType = UITableViewCellAccessoryCheckmark;
+            }
+            return cell;
         }
             break;
             
         case 2: {
-            // 多选特征
+            // 多选权限
+            UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kdefaultTableViewCellReuseIdentifier];
+            ViewModel *model = self.permissionArray[indexPath.row];
+            cell.textLabel.text = model.title;
+            if (self.currentPermissions & model.rawOptionValue) {
+                cell.accessoryType = UITableViewCellAccessoryCheckmark;
+            }
+            return cell;
         }
             break;
         default:
@@ -262,16 +284,88 @@
     switch (indexPath.section) {
         case 0: {
             // 基本信息
+            ViewModel *model = self.baseAttributeArray[indexPath.row];
+            if ([model.title isEqualToString:NSLocalizedString(@"ServiceViewController.table.cell.UUID", "")]) {
+                // 修改UUID
+                PSTAlertController *controller = [PSTAlertController alertControllerWithTitle:NSLocalizedString(@"CoreBlueTableViewCell.UUID.alert.text", "") message:@"" preferredStyle:PSTAlertControllerStyleAlert];
+                PSTAlertAction *cancelAction = [PSTAlertAction actionWithTitle:NSLocalizedString(@"Cancel", "") handler:^(PSTAlertAction * _Nonnull action) {
+                    
+                }];
+                PSTAlertAction *comfirmAction = [PSTAlertAction actionWithTitle:NSLocalizedString(@"Submit", "") style:PSTAlertActionStyleDefault handler:^(PSTAlertAction * _Nonnull action) {
+                    UITextField *textField = controller.textField;
+                    if (textField.text.length > 0) {
+                        NSString *uuid = [CBCharacteristic uuidValid:textField.text];
+                        model.subTitle = uuid;
+                        self.UUIDString = uuid;
+                        [tableView reloadData];
+                    }
+                }];
+                
+                [controller addAction:cancelAction];
+                [controller addAction:comfirmAction];
+                
+                [controller addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
+                    textField.clearButtonMode = UITextFieldViewModeWhileEditing;
+                }];
+                
+                [controller showWithSender:nil controller:nil animated:YES completion:^{
+                    
+                }];
+            }
+            
+            else {
+                // 修改当前值
+                PSTAlertController *controller = [PSTAlertController alertControllerWithTitle:NSLocalizedString(@"CharacteristicTableViewCell.value", "") message:@"" preferredStyle:PSTAlertControllerStyleAlert];
+                PSTAlertAction *cancelAction = [PSTAlertAction actionWithTitle:NSLocalizedString(@"Cancel", "") handler:^(PSTAlertAction * _Nonnull action) {
+                    
+                }];
+                PSTAlertAction *comfirmAction = [PSTAlertAction actionWithTitle:NSLocalizedString(@"Submit", "") style:PSTAlertActionStyleDefault handler:^(PSTAlertAction * _Nonnull action) {
+                    UITextField *textField = controller.textField;
+                    if (textField.text.length > 0) {
+                        NSString *value = [CBCharacteristic uuidValid:textField.text];
+                        model.subTitle = value;
+                        self.valueString = value;
+                        [tableView reloadData];
+                    }
+                }];
+                
+                [controller addAction:cancelAction];
+                [controller addAction:comfirmAction];
+                
+                [controller addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
+                    textField.clearButtonMode = UITextFieldViewModeWhileEditing;
+                }];
+                
+                [controller showWithSender:nil controller:nil animated:YES completion:^{
+                    
+                }];
+            }
         }
             break;
             
         case 1: {
             // 多选属性
+            ViewModel *model = self.propertiesArray[indexPath.row];
+            if (self.currentProperties & model.rawOptionValue) {
+                // 已选中，则取消选中
+                self.currentProperties -= model.rawOptionValue;
+            } else {
+                // 未选中，则选中
+                self.currentProperties += model.rawOptionValue;
+            }
         }
             break;
             
         case 2: {
-            // 多选特征
+            // 多选权限
+            ViewModel *model = self.permissionArray[indexPath.row];
+            if (self.currentPermissions & model.rawOptionValue) {
+                // 已选中，则取消选中
+                self.currentPermissions -= model.rawOptionValue;
+            } else {
+                // 未选中，则选中
+                self.currentPermissions += model.rawOptionValue;
+            }
         }
             break;
         default:

@@ -134,7 +134,7 @@
 - (void)saveButtonDidTappedAction {
     self.sampleService = [[CBMutableService alloc] initWithType:[CBUUID UUIDWithString:self.UUIDString] primary:self.primary];
     [self.sampleService setIncludedServices:self.includedServices];
-    // [self.sampleService setCharacteristics:self.characteristics];
+    [self.sampleService setCharacteristics:self.characteristics];
     !self.serviceDidSavedHandler ?: self.serviceDidSavedHandler(self.sampleService);
     [self.navigationController popViewControllerAnimated:YES];
 }
@@ -321,6 +321,22 @@
         // 查看或添加特征
         CBCharacteristic *characteristic = indexPath.row < self.characteristics.count ? self.characteristics[indexPath.row] : nil;
         CharacteristicViewController *controller = [[CharacteristicViewController alloc] initWithCharacteristic:characteristic];
+        
+        controller.characteristicDidDeletedHandler = ^(CBCharacteristic * _Nonnull characteristic) {
+            NSMutableArray *tempArray = [NSMutableArray arrayWithArray:self.characteristics];
+            if ([tempArray containsObject:characteristic]) {
+                [tempArray removeObject:characteristic];
+                self.characteristics = tempArray;
+                [self.tableView reloadData];
+            }
+        };
+        
+        controller.characteristicDidSavedHandler = ^(CBCharacteristic * _Nonnull characteristic) {
+            NSArray *newCharacteristicArray = [self.characteristics arrayByAddingObject:characteristic];
+            self.characteristics = newCharacteristicArray;
+            [tableView reloadData];
+        };
+        
         [self.navigationController pushViewController:controller animated:YES];
     } else if (indexPath.section == 2) {
         // 查看或添加服务
