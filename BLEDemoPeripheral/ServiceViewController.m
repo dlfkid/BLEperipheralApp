@@ -77,7 +77,7 @@
 - (instancetype)initWithService:(CBMutableService *)service {
     self = [super init];
     if (self) {
-        _sampleService = service;
+        self.sampleService = service;
         // 判断是新增服务还是查看服务详情。
         self.addingMode = !self.sampleService;
         ViewModel *uuidModel = [[ViewModel alloc] init];

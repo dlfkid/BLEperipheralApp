@@ -131,7 +131,7 @@
 - (instancetype)initWithCharacteristic:(CBCharacteristic *)characteristic {
     self = [super init];
     if (self) {
-        _sampleCharacteristic = characteristic;
+        self.sampleCharacteristic = characteristic;
         // 判断是新增服务还是查看服务详情。
         self.addingMode = !self.sampleCharacteristic;
     }
@@ -155,7 +155,7 @@
     _tableView.dataSource = self;
     _tableView.delegate = self;
     [_tableView registerClass:[UITableViewHeaderFooterView class] forHeaderFooterViewReuseIdentifier:kdefaultTableViewHeaderReuseIdentifier];
-    [_tableView registerClass:[UITableViewCell class] forHeaderFooterViewReuseIdentifier:kdefaultTableViewCellReuseIdentifier];
+    [_tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:kdefaultTableViewCellReuseIdentifier];
     [self.view addSubview:self.tableView];
     
     [self.tableView mas_remakeConstraints:^(MASConstraintMaker *make) {
@@ -166,6 +166,12 @@
 }
 
 #pragma mark - Actions
+
+- (void)setSampleCharacteristic:(CBCharacteristic *)sampleCharacteristic {
+    _sampleCharacteristic = sampleCharacteristic;
+    _valueString = [[NSString alloc] initWithData:sampleCharacteristic.value encoding:NSUTF8StringEncoding];
+    _currentProperties = sampleCharacteristic.properties;
+}
 
 - (void)cancelButtnDidTappedAction {
     [self.navigationController popViewControllerAnimated:YES];
@@ -198,7 +204,7 @@
 #pragma mark - TableViewDataSource
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 3;
+    return self.isAddingMode ? 3 : 2;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -222,20 +228,7 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kdefaultTableViewCellReuseIdentifier forIndexPath:indexPath];
     switch (indexPath.section) {
-        case 0: {
-            // 基本信息
-            UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-            if (!cell) {
-                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:kdefaultTableViewCellReuseIdentifier];
-            }
-            ViewModel *model = self.baseAttributeArray[indexPath.row];
-            cell.textLabel.text = model.title;
-            cell.detailTextLabel.text = model.subTitle;
-            return cell;
-        }
-            break;
         
         case 1: {
             // 多选属性
@@ -260,10 +253,19 @@
             return cell;
         }
             break;
-        default:
+        default: {
+            // 基本信息
+            UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+            if (!cell) {
+                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:kdefaultTableViewCellReuseIdentifier];
+            }
+            ViewModel *model = self.baseAttributeArray[indexPath.row];
+            cell.textLabel.text = model.title;
+            cell.detailTextLabel.text = model.subTitle;
+            return cell;
+        }
             break;
     }
-    return cell;
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
@@ -281,6 +283,9 @@
 #pragma mark - TableViewDelegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (!self.isAddingMode) {
+        return;
+    }
     switch (indexPath.section) {
         case 0: {
             // 基本信息
@@ -349,9 +354,11 @@
             if (self.currentProperties & model.rawOptionValue) {
                 // 已选中，则取消选中
                 self.currentProperties -= model.rawOptionValue;
+                [tableView reloadData];
             } else {
                 // 未选中，则选中
                 self.currentProperties += model.rawOptionValue;
+                [tableView reloadData];
             }
         }
             break;
@@ -362,9 +369,11 @@
             if (self.currentPermissions & model.rawOptionValue) {
                 // 已选中，则取消选中
                 self.currentPermissions -= model.rawOptionValue;
+                [tableView reloadData];
             } else {
                 // 未选中，则选中
                 self.currentPermissions += model.rawOptionValue;
+                [tableView reloadData];
             }
         }
             break;
