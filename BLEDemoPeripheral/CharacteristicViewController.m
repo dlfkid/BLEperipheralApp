@@ -51,7 +51,7 @@
         valueModel.title = NSLocalizedString(@"CharacteristicTableViewCell.value", "");
         valueModel.subTitle = [[NSString alloc] initWithData:self.sampleCharacteristic.value encoding:NSUTF8StringEncoding];
         
-        return @[UUIDModel, valueModel];
+        _baseAttributeArray = @[UUIDModel, valueModel];
     }
     return _baseAttributeArray;
 }
@@ -85,7 +85,7 @@
             return model;
         };
         
-        return @[
+        _propertiesArray = @[
         generatePropertyViewModels(NSLocalizedString(@"Characteristic.propperty.boardcast", ""), 1),
         generatePropertyViewModels(NSLocalizedString(@"Characteristic.propperty.read", ""), 2),
         generatePropertyViewModels(NSLocalizedString(@"Characteristic.propperty.writeWithoutResponse", ""), 4),
@@ -97,6 +97,12 @@
         generatePropertyViewModels(NSLocalizedString(@"Characteristic.propperty.notifyEncryptionRequired", ""), 100),
         generatePropertyViewModels(NSLocalizedString(@"Characteristic.propperty.indicateEncryptionRequired", ""), 200),
         ];
+        
+        for (ViewModel *model in _propertiesArray) {
+            if (self.sampleCharacteristic.properties & model.rawOptionValue) {
+                model.selected = YES;
+            }
+        }
     }
     return _propertiesArray;
 }
@@ -116,7 +122,7 @@
             return model;
         };
         
-        return @[
+        _permissionArray = @[
                  generatePermissionViewModels(NSLocalizedString(@"Characteristic.permission.readable", ""), 1),
                  generatePermissionViewModels(NSLocalizedString(@"Characteristic.permission.writeable", ""), 2),
                  generatePermissionViewModels(NSLocalizedString(@"Characteristic.permission.readEncryptionRequired", ""), 4),
@@ -235,8 +241,12 @@
             UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kdefaultTableViewCellReuseIdentifier];
             ViewModel *model = self.propertiesArray[indexPath.row];
             cell.textLabel.text = model.title;
-            if (self.currentProperties & model.rawOptionValue) {
+            if (model.isSelected) {
                 cell.accessoryType = UITableViewCellAccessoryCheckmark;
+                self.currentProperties += model.rawOptionValue;
+            } else {
+                cell.accessoryType = UITableViewCellAccessoryNone;
+                self.currentProperties -= model.rawOptionValue;
             }
             return cell;
         }
@@ -247,8 +257,12 @@
             UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kdefaultTableViewCellReuseIdentifier];
             ViewModel *model = self.permissionArray[indexPath.row];
             cell.textLabel.text = model.title;
-            if (self.currentPermissions & model.rawOptionValue) {
+            if (model.isSelected) {
                 cell.accessoryType = UITableViewCellAccessoryCheckmark;
+                self.currentPermissions += model.rawOptionValue;
+            } else {
+                cell.accessoryType = UITableViewCellAccessoryNone;
+                self.currentPermissions -= model.rawOptionValue;
             }
             return cell;
         }
@@ -257,7 +271,7 @@
             // 基本信息
             UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
             if (!cell) {
-                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:kdefaultTableViewCellReuseIdentifier];
+                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"cell"];
             }
             ViewModel *model = self.baseAttributeArray[indexPath.row];
             cell.textLabel.text = model.title;
@@ -351,30 +365,16 @@
         case 1: {
             // 多选属性
             ViewModel *model = self.propertiesArray[indexPath.row];
-            if (self.currentProperties & model.rawOptionValue) {
-                // 已选中，则取消选中
-                self.currentProperties -= model.rawOptionValue;
-                [tableView reloadData];
-            } else {
-                // 未选中，则选中
-                self.currentProperties += model.rawOptionValue;
-                [tableView reloadData];
-            }
+            model.selected = !model.isSelected;
+            [tableView reloadData];
         }
             break;
             
         case 2: {
             // 多选权限
             ViewModel *model = self.permissionArray[indexPath.row];
-            if (self.currentPermissions & model.rawOptionValue) {
-                // 已选中，则取消选中
-                self.currentPermissions -= model.rawOptionValue;
-                [tableView reloadData];
-            } else {
-                // 未选中，则选中
-                self.currentPermissions += model.rawOptionValue;
-                [tableView reloadData];
-            }
+            model.selected = !model.isSelected;
+            [tableView reloadData];
         }
             break;
         default:

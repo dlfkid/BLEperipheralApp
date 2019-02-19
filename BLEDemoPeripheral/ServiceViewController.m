@@ -132,6 +132,21 @@
 }
 
 - (void)saveButtonDidTappedAction {
+    if ([self.UUIDString isEqualToString:@""] || self.UUIDString.length < 1) {
+        PSTAlertController *controller = [PSTAlertController alertControllerWithTitle:NSLocalizedString(@"ServiceViewController.alert.title", "") message:nil preferredStyle:PSTAlertControllerStyleAlert];
+        PSTAlertAction *okAction = [PSTAlertAction actionWithTitle:NSLocalizedString(@"Ok", "") handler:^(PSTAlertAction * _Nonnull action) {
+            
+        }];
+        
+        [controller addAction:okAction];
+        
+        [controller showWithSender:nil controller:nil animated:YES completion:^{
+            
+        }];
+        
+        return;
+    }
+    
     self.sampleService = [[CBMutableService alloc] initWithType:[CBUUID UUIDWithString:self.UUIDString] primary:self.primary];
     [self.sampleService setIncludedServices:self.includedServices];
     [self.sampleService setCharacteristics:self.characteristics];

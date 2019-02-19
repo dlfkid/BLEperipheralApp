@@ -67,6 +67,7 @@
 "ServiceViewController.table.cell.primary" = "is Primary";
 "ServiceViewController.table.header.characteristic" = "Characteristic";
 "ServiceViewController.table.header.includedServices" = "included Services";
+"ServiceViewController.alert.title" = "Plase input a valid UUID";
 
 "CharacteristicTableViewCell.notifyView.text" = "Notifying";
 "CharacteristicTableViewCell.UUID" = "UUID:";

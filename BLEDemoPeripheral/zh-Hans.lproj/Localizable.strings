@@ -60,6 +60,7 @@
 "ServiceTableViewCell.UUIDLabel.text" = "UUID:";
 "ServiceTableViewCell.includedServicesLabel.text" = "子服务:";
 "ServiceTableViewCell.characteristicLabel.text" = "特征:";
+"ServiceViewController.alert.title" = "请输入有效的UUID";
 
 "ServiceViewController.table.cell.UUID" = "UUID";
 "ServiceViewController.table.cell.primary" = "主要服务";
