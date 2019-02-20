@@ -40,7 +40,9 @@
         [_notifyView addSubview:text];
         
         [text mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.center.equalTo(@0);
+            make.left.mas_equalTo(10);
+            make.right.mas_equalTo(-10);
+            make.centerY.mas_equalTo(0);
         }];
     }
     return _notifyView;
@@ -144,20 +146,20 @@
         [self.customContentView addSubview:self.notifyView];
         
         [self.valueLabel mas_updateConstraints:^(MASConstraintMaker *make) {
-            make.left.mas_equalTo(10);
-            make.top.mas_equalTo(self.UUIDLabel.mas_bottom).mas_offset(10);
+            make.top.mas_equalTo(self.UUIDLabel.mas_bottom).mas_offset(5);
+            make.left.mas_equalTo(self.foldButton.mas_right).offset(10);
         }];
         
         [self.propertyLabel mas_updateConstraints:^(MASConstraintMaker *make) {
-            make.left.mas_equalTo(self.valueLabel.mas_right).mas_offset(10);
-            make.top.mas_equalTo(self.UUIDLabel.mas_bottom).mas_offset(10);
+            make.centerX.mas_equalTo(0);
+            make.bottom.mas_equalTo(0).mas_offset(- 10);
         }];
         
         [self.notifyView mas_updateConstraints:^(MASConstraintMaker *make) {
             make.right.mas_equalTo(-10);
             make.centerY.mas_equalTo(0);
-            make.width.mas_equalTo(80);
-            make.height.mas_equalTo(35);
+            make.width.mas_greaterThanOrEqualTo(80);
+            make.height.mas_equalTo(30);
         }];
         
         [self.customContentView layoutIfNeeded];

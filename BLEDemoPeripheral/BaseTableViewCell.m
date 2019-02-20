@@ -28,7 +28,7 @@
 }
 
 + (CGFloat)rowUnfoldHeight {
-    return 90;
+    return 110;
 }
 
 + (NSString *)reuseIdentifier {

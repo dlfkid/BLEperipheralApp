@@ -44,7 +44,9 @@
         [_primaryIndiCatorView addSubview:text];
         
         [text mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.center.equalTo(@0);
+            make.left.mas_equalTo(10);
+            make.right.mas_equalTo(-10);
+            make.centerY.mas_equalTo(0);
         }];
     }
     return _primaryIndiCatorView;
@@ -130,19 +132,19 @@
         
         [self.includedServiceCountLabel mas_updateConstraints:^(MASConstraintMaker *make) {
             make.left.mas_equalTo(10);
-            make.top.mas_equalTo(self.UUIDLabel.mas_bottom).mas_offset(10);
-        }];
-        
-        [self.characteristicCountLabel mas_updateConstraints:^(MASConstraintMaker *make) {
-            make.left.mas_equalTo(self.includedServiceCountLabel.mas_right).mas_offset(10);
-            make.top.mas_equalTo(self.UUIDLabel.mas_bottom).mas_offset(10);
+            make.bottom.mas_equalTo(0).mas_offset(- 10);
         }];
         
         [self.primaryIndiCatorView mas_updateConstraints:^(MASConstraintMaker *make) {
             make.right.mas_equalTo(-[DeviceScreenAdaptor adaptedValue:10]);
             make.centerY.mas_equalTo(0);
-            make.width.mas_equalTo([DeviceScreenAdaptor adaptedValue:80]);
-            make.height.mas_equalTo([DeviceScreenAdaptor adaptedValue:35]);
+            make.width.mas_greaterThanOrEqualTo([DeviceScreenAdaptor adaptedValue:80]);
+            make.height.mas_equalTo([DeviceScreenAdaptor adaptedValue:30]);
+        }];
+        
+        [self.characteristicCountLabel mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.right.mas_equalTo(self.includedServiceCountLabel.mas_right);
+            make.bottom.mas_equalTo(self.includedServiceCountLabel.mas_top).mas_offset(-10);
         }];
         
         [self.customContentView layoutIfNeeded];

@@ -173,10 +173,24 @@
 
 #pragma mark - Actions
 
+- (void)reloadData {
+    [self.tableView reloadData];
+}
+
 - (void)setSampleCharacteristic:(CBCharacteristic *)sampleCharacteristic {
     _sampleCharacteristic = sampleCharacteristic;
     _valueString = [[NSString alloc] initWithData:sampleCharacteristic.value encoding:NSUTF8StringEncoding];
-    _currentProperties = sampleCharacteristic.properties;
+    self.currentProperties = sampleCharacteristic.properties;
+}
+
+- (void)setCurrentProperties:(CBCharacteristicProperties)currentProperties {
+    _currentProperties = currentProperties;
+    NSLog(@"Current Properties was set to %lu", (unsigned long)currentProperties);
+}
+
+- (void)setCurrentPermissions:(CBAttributePermissions)currentPermissions {
+    _currentPermissions = currentPermissions;
+    NSLog(@"Current Perissions was set to %lu", (unsigned long)currentPermissions);
 }
 
 - (void)cancelButtnDidTappedAction {
@@ -184,7 +198,34 @@
 }
 
 - (void)saveButtonDidTappedAction {
-    self.sampleCharacteristic = [[CBMutableCharacteristic alloc] initWithType:[CBUUID UUIDWithString:[CBCharacteristic uuidValid:self.UUIDString]] properties:self.currentProperties value:nil permissions:self.currentPermissions];
+    if ([self.UUIDString isEqualToString:@""] || self.UUIDString.length < 1) {
+        PSTAlertController *controller = [PSTAlertController alertControllerWithTitle:NSLocalizedString(@"ServiceViewController.alert.title", "") message:nil preferredStyle:PSTAlertControllerStyleAlert];
+        PSTAlertAction *okAction = [PSTAlertAction actionWithTitle:NSLocalizedString(@"Ok", "") handler:^(PSTAlertAction * _Nonnull action) {
+            
+        }];
+        
+        [controller addAction:okAction];
+        
+        [controller showWithSender:nil controller:nil animated:YES completion:^{
+            
+        }];
+        
+        return;
+    }
+    
+    // 如果不是只读属性的特征，无法写入当前值
+    if (self.currentProperties & CBCharacteristicPropertyWrite || self.currentProperties & CBCharacteristicPropertyWriteWithoutResponse || self.currentProperties & CBCharacteristicPropertyAuthenticatedSignedWrites) {
+        self.valueString = nil;
+    }
+    
+    // 如果不是只读属性的权限，无法写入当前值
+    if (self.currentPermissions & CBAttributePermissionsWriteable || self.currentPermissions & CBAttributePermissionsWriteEncryptionRequired) {
+        self.valueString = nil;
+    }
+    
+    NSData *value = self.valueString ? [self.valueString dataUsingEncoding:NSUTF8StringEncoding] : nil;
+    
+    _sampleCharacteristic = [[CBMutableCharacteristic alloc] initWithType:[CBUUID UUIDWithString:[CBCharacteristic uuidValid:self.UUIDString]] properties:self.currentProperties value:value permissions:self.currentPermissions];
     !self.characteristicDidSavedHandler ?: self.characteristicDidSavedHandler(self.sampleCharacteristic);
     [self.navigationController popViewControllerAnimated:YES];
 }
@@ -241,13 +282,7 @@
             UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kdefaultTableViewCellReuseIdentifier];
             ViewModel *model = self.propertiesArray[indexPath.row];
             cell.textLabel.text = model.title;
-            if (model.isSelected) {
-                cell.accessoryType = UITableViewCellAccessoryCheckmark;
-                self.currentProperties += model.rawOptionValue;
-            } else {
-                cell.accessoryType = UITableViewCellAccessoryNone;
-                self.currentProperties -= model.rawOptionValue;
-            }
+            cell.accessoryType = model.isSelected ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
             return cell;
         }
             break;
@@ -257,13 +292,7 @@
             UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kdefaultTableViewCellReuseIdentifier];
             ViewModel *model = self.permissionArray[indexPath.row];
             cell.textLabel.text = model.title;
-            if (model.isSelected) {
-                cell.accessoryType = UITableViewCellAccessoryCheckmark;
-                self.currentPermissions += model.rawOptionValue;
-            } else {
-                cell.accessoryType = UITableViewCellAccessoryNone;
-                self.currentPermissions -= model.rawOptionValue;
-            }
+            cell.accessoryType = model.isSelected ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
             return cell;
         }
             break;
@@ -316,7 +345,7 @@
                         NSString *uuid = [CBCharacteristic uuidValid:textField.text];
                         model.subTitle = uuid;
                         self.UUIDString = uuid;
-                        [tableView reloadData];
+                        [self reloadData];
                     }
                 }];
                 
@@ -334,7 +363,14 @@
             
             else {
                 // 如果不是只读属性的特征，无法写入当前值
-                return;
+                if (self.currentProperties & CBCharacteristicPropertyWrite || self.currentProperties & CBCharacteristicPropertyWriteWithoutResponse || self.currentProperties & CBCharacteristicPropertyAuthenticatedSignedWrites) {
+                    return;
+                }
+                
+                // 如果不是只读属性的权限，无法写入当前值
+                if (self.currentPermissions & CBAttributePermissionsWriteable || self.currentPermissions & CBAttributePermissionsWriteEncryptionRequired) {
+                    return;
+                }
                 
                 // 修改当前值
                 PSTAlertController *controller = [PSTAlertController alertControllerWithTitle:NSLocalizedString(@"CharacteristicTableViewCell.value", "") message:@"" preferredStyle:PSTAlertControllerStyleAlert];
@@ -347,7 +383,7 @@
                         NSString *value = [CBCharacteristic uuidValid:textField.text];
                         model.subTitle = value;
                         self.valueString = value;
-                        [tableView reloadData];
+                        [self reloadData];
                     }
                 }];
                 
@@ -369,7 +405,12 @@
             // 多选属性
             ViewModel *model = self.propertiesArray[indexPath.row];
             model.selected = !model.isSelected;
-            [tableView reloadData];
+            if (model.isSelected) {
+                self.currentProperties += model.rawOptionValue;
+            } else {
+                self.currentProperties -= model.rawOptionValue;
+            }
+            [self reloadData];
         }
             break;
             
@@ -377,7 +418,12 @@
             // 多选权限
             ViewModel *model = self.permissionArray[indexPath.row];
             model.selected = !model.isSelected;
-            [tableView reloadData];
+            if (model.isSelected) {
+                self.currentPermissions += model.rawOptionValue;
+            } else {
+                self.currentProperties -= model.rawOptionValue;
+            }
+            [self reloadData];
         }
             break;
         default:
