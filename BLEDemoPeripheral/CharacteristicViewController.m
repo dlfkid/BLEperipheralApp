@@ -184,7 +184,7 @@
 }
 
 - (void)saveButtonDidTappedAction {
-    self.sampleCharacteristic = [[CBMutableCharacteristic alloc] initWithType:[CBUUID UUIDWithString:[CBCharacteristic uuidValid:self.UUIDString]] properties:self.currentProperties value:[self.valueString dataUsingEncoding:NSUTF8StringEncoding] permissions:self.currentPermissions];
+    self.sampleCharacteristic = [[CBMutableCharacteristic alloc] initWithType:[CBUUID UUIDWithString:[CBCharacteristic uuidValid:self.UUIDString]] properties:self.currentProperties value:nil permissions:self.currentPermissions];
     !self.characteristicDidSavedHandler ?: self.characteristicDidSavedHandler(self.sampleCharacteristic);
     [self.navigationController popViewControllerAnimated:YES];
 }
@@ -333,6 +333,9 @@
             }
             
             else {
+                // 如果不是只读属性的特征，无法写入当前值
+                return;
+                
                 // 修改当前值
                 PSTAlertController *controller = [PSTAlertController alertControllerWithTitle:NSLocalizedString(@"CharacteristicTableViewCell.value", "") message:@"" preferredStyle:PSTAlertControllerStyleAlert];
                 PSTAlertAction *cancelAction = [PSTAlertAction actionWithTitle:NSLocalizedString(@"Cancel", "") handler:^(PSTAlertAction * _Nonnull action) {

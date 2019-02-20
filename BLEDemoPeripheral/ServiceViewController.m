@@ -146,8 +146,8 @@
         
         return;
     }
-    
-    self.sampleService = [[CBMutableService alloc] initWithType:[CBUUID UUIDWithString:self.UUIDString] primary:self.primary];
+    // 不能调用Set方法，否则会重置子服务和特征
+    _sampleService = [[CBMutableService alloc] initWithType:[CBUUID UUIDWithString:self.UUIDString] primary:self.primary];
     [self.sampleService setIncludedServices:self.includedServices];
     [self.sampleService setCharacteristics:self.characteristics];
     !self.serviceDidSavedHandler ?: self.serviceDidSavedHandler(self.sampleService);
@@ -342,13 +342,14 @@
             if ([tempArray containsObject:characteristic]) {
                 [tempArray removeObject:characteristic];
                 self.characteristics = tempArray;
-                [self.tableView reloadData];
+                [tableView reloadData];
             }
         };
         
         controller.characteristicDidSavedHandler = ^(CBCharacteristic * _Nonnull characteristic) {
-            NSArray *newCharacteristicArray = [self.characteristics arrayByAddingObject:characteristic];
-            self.characteristics = newCharacteristicArray;
+            NSMutableArray *tempArray = [NSMutableArray arrayWithArray:self.characteristics];
+            [tempArray addObject:characteristic];
+            self.characteristics = tempArray;
             [tableView reloadData];
         };
         
