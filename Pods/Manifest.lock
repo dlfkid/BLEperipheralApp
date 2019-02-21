@@ -1,5 +1,8 @@
 PODS:
   - FLEX (2.4.0)
+  - FMDB (2.7.5):
+    - FMDB/standard (= 2.7.5)
+  - FMDB/standard (2.7.5)
   - iOSDeviceScreenAdapter (1.0.2)
   - IQKeyboardManager (6.2.0)
   - Masonry (1.1.0)
@@ -8,6 +11,7 @@ PODS:
 
 DEPENDENCIES:
   - FLEX
+  - FMDB
   - iOSDeviceScreenAdapter (~> 1.0.2)
   - IQKeyboardManager
   - Masonry
@@ -17,6 +21,7 @@ DEPENDENCIES:
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
     - FLEX
+    - FMDB
     - iOSDeviceScreenAdapter
     - IQKeyboardManager
     - Masonry
@@ -25,12 +30,13 @@ SPEC REPOS:
 
 SPEC CHECKSUMS:
   FLEX: bd1a39e55b56bb413b6f1b34b3c10a0dc44ef079
+  FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
   iOSDeviceScreenAdapter: 359c45fa7398a736978d6432e2686c76f763b9a5
   IQKeyboardManager: 6194101620b73af5e67900b8f89707a99de0b804
   Masonry: 678fab65091a9290e40e2832a55e7ab731aad201
   PSTAlertController: 9b802dfbda54fee2683bfd6dda7023a6de895d5b
   UIExtensionKit: 839b0092ae7cbb857c4692fb7e4f9379c97fa24c
 
-PODFILE CHECKSUM: 60aff1a93555519a1f5fc43cda45641f6eb27649
+PODFILE CHECKSUM: 144a3a581de607e94bd1b4cdd7fb8f186316afc3
 
-COCOAPODS: 1.6.0.rc.2
+COCOAPODS: 1.6.0.beta.2

@@ -26,6 +26,7 @@
 		B44D1FB21F3841840011AC95 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B44D1FB11F3841840011AC95 /* Assets.xcassets */; };
 		B44D1FB51F3841840011AC95 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B44D1FB31F3841840011AC95 /* LaunchScreen.storyboard */; };
 		B44D1FBE1F3842770011AC95 /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B44D1FBD1F3842770011AC95 /* MainViewController.m */; };
+		B4C2881F221EFD7A00E528AE /* DataBaseManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B4C2881E221EFD7A00E528AE /* DataBaseManager.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -69,6 +70,8 @@
 		B44D1FB61F3841840011AC95 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B44D1FBC1F3842770011AC95 /* MainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainViewController.h; sourceTree = "<group>"; };
 		B44D1FBD1F3842770011AC95 /* MainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainViewController.m; sourceTree = "<group>"; };
+		B4C2881D221EFD7A00E528AE /* DataBaseManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DataBaseManager.h; sourceTree = "<group>"; };
+		B4C2881E221EFD7A00E528AE /* DataBaseManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DataBaseManager.m; sourceTree = "<group>"; };
 		EDFDC52ACB2C95D53810726F /* Pods_BLEDemoPeripheral.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BLEDemoPeripheral.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -128,6 +131,8 @@
 			children = (
 				3558C0072211733A0041D02D /* ControllerAnimationManager.h */,
 				3558C0082211733A0041D02D /* ControllerAnimationManager.m */,
+				B4C2881D221EFD7A00E528AE /* DataBaseManager.h */,
+				B4C2881E221EFD7A00E528AE /* DataBaseManager.m */,
 			);
 			name = Helpers;
 			sourceTree = "<group>";
@@ -312,6 +317,7 @@
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-BLEDemoPeripheral/Pods-BLEDemoPeripheral-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/FLEX/FLEX.framework",
+				"${BUILT_PRODUCTS_DIR}/FMDB/FMDB.framework",
 				"${BUILT_PRODUCTS_DIR}/IQKeyboardManager/IQKeyboardManager.framework",
 				"${BUILT_PRODUCTS_DIR}/Masonry/Masonry.framework",
 				"${BUILT_PRODUCTS_DIR}/PSTAlertController/PSTAlertController.framework",
@@ -323,6 +329,7 @@
 			);
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FLEX.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FMDB.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/IQKeyboardManager.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Masonry.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PSTAlertController.framework",
@@ -353,6 +360,7 @@
 				3558C01022117E900041D02D /* CBCharacteristic+StringExtensions.m in Sources */,
 				35184C73220C1A77001C8242 /* ServiceTableViewCell.m in Sources */,
 				35184C76220C2746001C8242 /* ViewModel.m in Sources */,
+				B4C2881F221EFD7A00E528AE /* DataBaseManager.m in Sources */,
 				3558C0092211733A0041D02D /* ControllerAnimationManager.m in Sources */,
 				350EDF8E22094CEF003AD2D9 /* CharacteristicTabeViewCell.m in Sources */,
 				B44D1FA71F3841840011AC95 /* main.m in Sources */,
