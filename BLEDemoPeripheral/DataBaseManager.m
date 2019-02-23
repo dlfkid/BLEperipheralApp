@@ -20,6 +20,11 @@
 
 static DataBaseManager * sharedInstance = nil;
 static dispatch_once_t onceToken;
+static NSInteger const lastestDBVersion = 1;
+
+NSString * const kTableDBVersion = @"db_version";
+NSString * const kTableServices = @"service_list";
+NSString * const kTableCharacteristics = @"characteristic_list";
 
 @implementation DataBaseManager
 
@@ -80,6 +85,52 @@ static dispatch_once_t onceToken;
     
     // 关闭数据库
     [self.dataBase close];
+}
+
+- (void)dataBaseUpdate {
+    [self.dataBase open];
+    NSInteger currentVersion = 1;
+    NSString *queryDBVersion = [NSString stringWithFormat:@"SELECTE 'verision' FROM %@ ORDERD BY 'update_time' DESC", kTableDBVersion];
+    FMResultSet *queryResult = [self.dataBase executeQuery:queryDBVersion];
+    while ([queryResult next]) {
+        // 根据查询结果获取当前最新版本
+        NSInteger version = [queryResult intForColumn:@"version"];
+        if (version > currentVersion) {
+            currentVersion = version;
+        }
+    }
+    // 执行升级操作
+    
+}
+
+- (void)updateToLastestVersion:(NSInteger)currentVersion {
+    for (NSInteger version = currentVersion; version < lastestDBVersion; version ++) {
+        [self updateToNextDBVersion:version];
+    }
+    NSLog(@"DataBaseManager : DataBase Update Finished");
+    // 更新完毕，将数据库更新信息插入数据库版本信息表
+    NSString *updateTime = [NSDate date].description;
+    if (![self.dataBase executeUpdateWithFormat:@"INSERT INTO %@ (version, update_time) VALUES (%zd, %@)", kTableDBVersion, lastestDBVersion, updateTime]) {
+        NSLog(@"DataBaseManager : database version insert failed");
+    }
+}
+
+- (void)updateToNextDBVersion:(NSInteger)currentVersion {
+    switch (currentVersion) {
+        case 1: {
+            // 当前是第1版数据库，需要升级到第2版
+        }
+            break;
+            
+        case 2: {
+            // 当前是第2版数据库，需要升级到第3版
+        }
+            break;
+            
+        default:
+            // 未定义的版本不作处理
+            break;
+    }
 }
 
 @end

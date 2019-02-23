@@ -10,6 +10,10 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+extern NSString * const kTableDBVersion;
+extern NSString * const kTableServices;
+extern NSString * const kTableCharacteristics;
+
 @interface DataBaseManager : NSObject
 
 + (instancetype)sharedDataBaseManager;
