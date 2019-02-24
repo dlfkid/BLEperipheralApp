@@ -27,6 +27,8 @@
 		B44D1FB51F3841840011AC95 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B44D1FB31F3841840011AC95 /* LaunchScreen.storyboard */; };
 		B44D1FBE1F3842770011AC95 /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B44D1FBD1F3842770011AC95 /* MainViewController.m */; };
 		B4C2881F221EFD7A00E528AE /* DataBaseManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B4C2881E221EFD7A00E528AE /* DataBaseManager.m */; };
+		B4C288252222748900E528AE /* CBService+DataPersistence.m in Sources */ = {isa = PBXBuildFile; fileRef = B4C288242222748900E528AE /* CBService+DataPersistence.m */; };
+		B4C28828222274A700E528AE /* CBCharacteristic+DataPersistence.m in Sources */ = {isa = PBXBuildFile; fileRef = B4C28827222274A700E528AE /* CBCharacteristic+DataPersistence.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -72,6 +74,10 @@
 		B44D1FBD1F3842770011AC95 /* MainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainViewController.m; sourceTree = "<group>"; };
 		B4C2881D221EFD7A00E528AE /* DataBaseManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DataBaseManager.h; sourceTree = "<group>"; };
 		B4C2881E221EFD7A00E528AE /* DataBaseManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DataBaseManager.m; sourceTree = "<group>"; };
+		B4C288232222748900E528AE /* CBService+DataPersistence.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "CBService+DataPersistence.h"; sourceTree = "<group>"; };
+		B4C288242222748900E528AE /* CBService+DataPersistence.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "CBService+DataPersistence.m"; sourceTree = "<group>"; };
+		B4C28826222274A700E528AE /* CBCharacteristic+DataPersistence.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "CBCharacteristic+DataPersistence.h"; sourceTree = "<group>"; };
+		B4C28827222274A700E528AE /* CBCharacteristic+DataPersistence.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "CBCharacteristic+DataPersistence.m"; sourceTree = "<group>"; };
 		EDFDC52ACB2C95D53810726F /* Pods_BLEDemoPeripheral.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BLEDemoPeripheral.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -146,6 +152,10 @@
 				35CF436322150CEA00107DE4 /* CBCharacteristic+ViewModel.m */,
 				35CF4365221511C900107DE4 /* CBService+ViewModel.h */,
 				35CF4366221511C900107DE4 /* CBService+ViewModel.m */,
+				B4C288232222748900E528AE /* CBService+DataPersistence.h */,
+				B4C288242222748900E528AE /* CBService+DataPersistence.m */,
+				B4C28826222274A700E528AE /* CBCharacteristic+DataPersistence.h */,
+				B4C28827222274A700E528AE /* CBCharacteristic+DataPersistence.m */,
 			);
 			name = Category;
 			sourceTree = "<group>";
@@ -353,6 +363,7 @@
 				B44D1FAA1F3841840011AC95 /* AppDelegate.m in Sources */,
 				3561D2672203D8C1000491D2 /* BaseViewController.m in Sources */,
 				3558C00D221174EE0041D02D /* CharacteristicViewController.m in Sources */,
+				B4C28828222274A700E528AE /* CBCharacteristic+DataPersistence.m in Sources */,
 				35184C70220ADE82001C8242 /* ServiceViewController.m in Sources */,
 				35CF4367221511C900107DE4 /* CBService+ViewModel.m in Sources */,
 				35CF436422150CEA00107DE4 /* CBCharacteristic+ViewModel.m in Sources */,
@@ -360,6 +371,7 @@
 				3558C01022117E900041D02D /* CBCharacteristic+StringExtensions.m in Sources */,
 				35184C73220C1A77001C8242 /* ServiceTableViewCell.m in Sources */,
 				35184C76220C2746001C8242 /* ViewModel.m in Sources */,
+				B4C288252222748900E528AE /* CBService+DataPersistence.m in Sources */,
 				B4C2881F221EFD7A00E528AE /* DataBaseManager.m in Sources */,
 				3558C0092211733A0041D02D /* ControllerAnimationManager.m in Sources */,
 				350EDF8E22094CEF003AD2D9 /* CharacteristicTabeViewCell.m in Sources */,

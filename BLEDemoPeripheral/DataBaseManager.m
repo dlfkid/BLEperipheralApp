@@ -14,14 +14,17 @@
 @interface DataBaseManager()
 
 @property (nonatomic, copy) NSString *dataBasePath;
-@property (nonatomic, strong) FMDatabase *dataBase;
 
 @end
 
 static DataBaseManager * sharedInstance = nil;
 static dispatch_once_t onceToken;
+
+// 最新数据库版本，每次更新版本需要在这里备注
+// 第1版数据库建立时间：2019-02-23
 static NSInteger const lastestDBVersion = 1;
 
+static NSString * const kdataBaseName = @"ble_peripheral_db.sqlite";
 NSString * const kTableDBVersion = @"db_version";
 NSString * const kTableServices = @"service_list";
 NSString * const kTableCharacteristics = @"characteristic_list";
@@ -32,7 +35,7 @@ NSString * const kTableCharacteristics = @"characteristic_list";
     if (!_dataBasePath) {
         NSArray *documents = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
         NSString *paths = [documents objectAtIndex:0];
-        NSString *dbPath = [paths stringByAppendingPathComponent:@"ble_peripheral_db"];
+        NSString *dbPath = [paths stringByAppendingPathComponent:kdataBaseName];
         NSLog(@"DataBase generated at path %@", dbPath);
         _dataBasePath = dbPath;
     }
@@ -90,7 +93,7 @@ NSString * const kTableCharacteristics = @"characteristic_list";
 - (void)dataBaseUpdate {
     [self.dataBase open];
     NSInteger currentVersion = 1;
-    NSString *queryDBVersion = [NSString stringWithFormat:@"SELECTE 'verision' FROM %@ ORDERD BY 'update_time' DESC", kTableDBVersion];
+    NSString *queryDBVersion = [NSString stringWithFormat:@"SELECT 'verision' FROM %@ ORDERD BY 'update_time' DESC", kTableDBVersion];
     FMResultSet *queryResult = [self.dataBase executeQuery:queryDBVersion];
     while ([queryResult next]) {
         // 根据查询结果获取当前最新版本
@@ -100,7 +103,9 @@ NSString * const kTableCharacteristics = @"characteristic_list";
         }
     }
     // 执行升级操作
-    
+    if (currentVersion < lastestDBVersion) {
+        [self updateToLastestVersion:currentVersion];
+    }
 }
 
 - (void)updateToLastestVersion:(NSInteger)currentVersion {
