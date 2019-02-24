@@ -14,9 +14,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (NSArray <CBService *> *)loadService;
 
-- (BOOL)addService;
+- (BOOL)addServiceToDB;
 
-- (BOOL)removeService;
+- (BOOL)removeServiceFromDB;
 
 @end
 

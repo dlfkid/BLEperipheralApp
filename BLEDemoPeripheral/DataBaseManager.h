@@ -22,6 +22,8 @@ extern NSString * const kTableCharacteristics;
 
 + (instancetype)sharedDataBaseManager;
 
+- (void)dataBaseInitialization;
+
 @end
 
 NS_ASSUME_NONNULL_END

@@ -81,17 +81,19 @@ NSString * const kTableCharacteristics = @"characteristic_list";
     }
     
     // 3.蓝牙特征表
-    NSString *createCBCharacteristicTable = @"CREATE TABLE IF NOT EXISTS characteristic_list (id INTEGER PRIMARY KEY AUTOINCREMENT, uuid TEXT NOT NULL, value TEXT, properties INTEGER DEFAULT 0)";
+    NSString *createCBCharacteristicTable = @"CREATE TABLE IF NOT EXISTS characteristic_list (id INTEGER PRIMARY KEY AUTOINCREMENT, uuid TEXT NOT NULL, value TEXT, properties INTEGER DEFAULT 0, permission INTEGER DEFAULT 0)";
     if (![self.dataBase executeUpdate:createCBCharacteristicTable]) {
         NSLog(@"DataBaseManager : %@", NSStringFromSelector(_cmd));
     }
+    
+    // 对数据库进行更新
+    [self dataBaseUpdate];
     
     // 关闭数据库
     [self.dataBase close];
 }
 
 - (void)dataBaseUpdate {
-    [self.dataBase open];
     NSInteger currentVersion = 1;
     NSString *queryDBVersion = [NSString stringWithFormat:@"SELECT 'verision' FROM %@ ORDERD BY 'update_time' DESC", kTableDBVersion];
     FMResultSet *queryResult = [self.dataBase executeQuery:queryDBVersion];

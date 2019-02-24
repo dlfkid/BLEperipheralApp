@@ -16,6 +16,7 @@
 
 // Models
 #import "ViewModel.h"
+#import "CBService+DataPersistence.h"
 #import "CBService+ViewModel.h"
 
 

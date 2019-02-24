@@ -9,7 +9,7 @@
 #import "CBService+DataPersistence.h"
 #import "DataBaseManager.h"
 #import <FMDB/FMDB.h>
-#import "CBCharacteristic+DataPersistence.m"
+#import "CBCharacteristic+DataPersistence.h"
 
 @implementation CBService (DataPersistence)
 
@@ -66,12 +66,12 @@
     return services.firstObject;
 }
 
-- (BOOL)removeService {
+- (BOOL)removeServiceFromDB {
     NSString *removeUUID = self.UUID.UUIDString;
     return [[DataBaseManager sharedDataBaseManager].dataBase executeQueryWithFormat:@"DELETE FROM %@ WHERE uuid = '%@'", kTableServices, removeUUID];
 }
 
-- (BOOL)addService {
+- (BOOL)addServiceToDB {
     NSString *addUUID = self.UUID.UUIDString;
     NSInteger isPrimary = self.isPrimary;
     NSMutableArray *includedUUID = [NSMutableArray array];
@@ -82,13 +82,13 @@
     NSString *includedString = [includedUUID componentsJoinedByString:@","];
     
     NSMutableArray *characters = [NSMutableArray array];
-    for (CBService *characteristic in self.characteristics) {
+    for (CBCharacteristic *characteristic in self.characteristics) {
         NSString *uuid = characteristic.UUID.UUIDString;
         [characters addObject:uuid];
     }
     NSString *characterString = [characters componentsJoinedByString:@","];
     
-    return [[DataBaseManager sharedDataBaseManager].dataBase executeQueryWithFormat:@"INSERT INTO %@ (uuid, is_primary, inluded_services_uuid, characteristics_uuid) VALUES (%@, %zd, %@, %@)", kTableServices, addUUID, isPrimary, includedString, characterString];
+    return [[DataBaseManager sharedDataBaseManager].dataBase executeQueryWithFormat:@"INSERT INTO %@ (uuid, is_primary, inluded_services_uuid, characteristics_uuid) VALUES ('%@', %zd, '%@', '%@')", kTableServices, addUUID, isPrimary, includedString, characterString];
 }
 
 @end

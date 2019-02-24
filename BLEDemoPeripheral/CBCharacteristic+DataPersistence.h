@@ -14,6 +14,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (CBCharacteristic *)loadCharacteristicWithUUID:(NSString *)uuidString;
 
+- (BOOL)addCharacteristicToDB:(NSUInteger)permission;
+
+- (BOOL)RemoveCharacteristicFromDB;
+
 @end
 
 NS_ASSUME_NONNULL_END
