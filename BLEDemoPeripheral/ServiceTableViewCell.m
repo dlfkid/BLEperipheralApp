@@ -8,9 +8,9 @@
 
 #import "ServiceTableViewCell.h"
 
-// Helpers
-#import <CoreBluetooth/CoreBluetooth.h>
-#import "CBService+ViewModel.h"
+// Models
+#import "ViewModel.h"
+#import "DPService.h"
 
 @interface ServiceTableViewCell()
 
@@ -110,15 +110,15 @@
 #pragma mark - Actions
 
 - (void)foldButtonDidTappedAction {
-    self.service.unfold = !self.isUnfold;
+    self.service.viewModel.unfold = !self.isUnfold;
     ! self.foldButtonDidTappedHandler ?: self.foldButtonDidTappedHandler(self.isUnfold);
 }
 
-- (void)setService:(CBMutableService *)service {
+- (void)setService:(DPService *)service {
     _service = service;
-    self.UUIDLabel.text = [NSString stringWithFormat:@"%@ %@", NSLocalizedString(@"ServiceTableViewCell.UUIDLabel.text", @""), service.UUID.UUIDString];
-    self.includedServiceCountLabel.text = [NSString stringWithFormat:@"%@ %tu", NSLocalizedString(@"ServiceTableViewCell.includedServicesLabel.text", @""), service.includedServices.count];
-    self.characteristicCountLabel.text = [NSString stringWithFormat:@"%@ %tu", NSLocalizedString(@"ServiceTableViewCell.characteristicLabel.text", @""), service.characteristics.count];
+    self.UUIDLabel.text = [NSString stringWithFormat:@"%@ %@", NSLocalizedString(@"ServiceTableViewCell.UUIDLabel.text", @""), service.uuid];
+    self.includedServiceCountLabel.text = [NSString stringWithFormat:@"%@ %tu", NSLocalizedString(@"ServiceTableViewCell.includedServicesLabel.text", @""), service.includedService.count];
+    self.characteristicCountLabel.text = [NSString stringWithFormat:@"%@ %tu", NSLocalizedString(@"ServiceTableViewCell.characteristicLabel.text", @""), service.characters.count];
     self.primaryIndiCatorView.hidden = !service.isPrimary;
 }
 

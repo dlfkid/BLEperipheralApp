@@ -8,10 +8,12 @@
 
 #import "CharacteristicTabeViewCell.h"
 
+// Model
+#import "DPCharacteristic.h"
+#import "ViewModel.h"
+
 // Helpers
-#import <CoreBluetooth/CoreBluetooth.h>
 #import "CBCharacteristic+StringExtensions.h"
-#import "CBCharacteristic+ViewModel.h"
 
 @interface CharacteristicTabeViewCell()
 
@@ -115,26 +117,24 @@
 }
 
 - (void)foldButtonDidTappedAction {
-    self.characteristic.unfold = !self.isUnFold;
+    self.characteristic.viewModel.unfold = !self.isUnFold;
     ! self.foldButtonDidTappedHandler ?: self.foldButtonDidTappedHandler(!self.foldButton.isSelected);
 }
 
-- (void)setCharacteristic:(CBCharacteristic *)characteristic {
+- (void)setCharacteristic:(DPCharacteristic *)characteristic {
     _characteristic = characteristic;
     NSString *uuidText = NSLocalizedString(@"CharacteristicTableViewCell.UUID", "");
-    self.UUIDLabel.text = [uuidText stringByAppendingFormat:@" %@", characteristic.UUID.UUIDString];
+    self.UUIDLabel.text = [uuidText stringByAppendingFormat:@" %@", characteristic.uuid];
     NSString *propertyText = NSLocalizedString(@"CharacteristicTableViewCell.property", "");
     NSString *properties = [CBCharacteristic propertiesString:self.characteristic.properties];
     self.propertyLabel.text = [propertyText stringByAppendingFormat:@" %@", properties];
     
     NSString *valueText = NSLocalizedString(@"CharacteristicTableViewCell.value", "");
-    NSString *valueString = [[NSString alloc] initWithData:characteristic.value encoding:NSUTF8StringEncoding];
+    NSString *valueString = characteristic.value;
     if (!characteristic.value) {
         valueString = @"nil";
     }
     self.valueLabel.text = [valueText stringByAppendingFormat:@" %@", valueString];
-    
-    self.notifyView.hidden = !characteristic.isNotifying;
 }
 
 - (void)setUnFold:(BOOL)unFold {

@@ -6,7 +6,7 @@
 //  Copyright © 2019 Ivan_deng. All rights reserved.
 //
 
-@class ViewModel, DPCharacteristic;
+@class ViewModel, DPCharacteristic, CBMutableService;
 
 #import <Foundation/Foundation.h>
 
@@ -26,6 +26,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy) NSString *descriptionText;
 
 - (instancetype)initWithUUID:(NSString *)uuid Primary:(BOOL)primary;
+
+- (CBMutableService *)convertToCBService;
 
 @end
 

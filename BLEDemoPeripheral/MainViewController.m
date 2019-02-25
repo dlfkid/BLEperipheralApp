@@ -16,7 +16,8 @@
 
 // Models
 #import "ViewModel.h"
-#import "CBService+ViewModel.h"
+#import "DPService.h"
+#import "DPCharacteristic.h"
 
 
 @interface MainViewController () <CBPeripheralManagerDelegate, UITableViewDelegate, UITableViewDataSource>
@@ -30,7 +31,7 @@
 @property (nonatomic, strong) UITextField *textContent;
 @property (nonatomic, assign, getter = isBoardcasting) BOOL boardcasting;
 
-@property (nonatomic, strong) NSArray <CBMutableService *> *serviceArray;
+@property (nonatomic, strong) NSArray <DPService *> *serviceArray;
 
 @end
 
@@ -49,7 +50,7 @@ static NSString * const kSampleCharacteristicUUID = @"CDD2";
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addButtonDidTappedAction)];
-    [self setUpServiceAndCharacteristic];
+    // [self setUpServiceAndCharacteristic];
     [self UIBuild];
 }
 
@@ -126,21 +127,19 @@ static NSString * const kSampleCharacteristicUUID = @"CDD2";
 
 - (void)addButtonDidTappedAction {
     ServiceViewController *serviceVC = [[ServiceViewController alloc] initWithService:nil];
-    serviceVC.serviceDidSavedHandler = ^(CBMutableService * _Nonnull service) {
+    serviceVC.serviceDidSavedHandler = ^(DPService * _Nonnull service) {
         // 此处传入服务被创建成功后的回调
         NSMutableArray *tmpArray = [NSMutableArray arrayWithArray:self.serviceArray];
         if (![tmpArray containsObject:service]) {
             [tmpArray addObject:service];
-            [self.peripheralManager addService:service];
             self.serviceArray = tmpArray;
             [self.tableView reloadData];
         }
     };
-    serviceVC.serviceDidRemovedHandler = ^(CBMutableService * _Nonnull service) {
+    serviceVC.serviceDidRemovedHandler = ^(DPService * _Nonnull service) {
         NSMutableArray *tmpArray = [NSMutableArray arrayWithArray:self.serviceArray];
         if ([tmpArray containsObject:service]) {
             [tmpArray removeObject:service];
-            [self.peripheralManager removeService:service];
             self.serviceArray = tmpArray;
             [self.tableView reloadData];
         }
@@ -301,7 +300,7 @@ static NSString * const kSampleCharacteristicUUID = @"CDD2";
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     ServiceTableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:[ServiceTableViewCell reuseIdentifier]];
     cell.service = self.serviceArray[indexPath.row];
-    cell.unfold = cell.service.isUnfold;
+    cell.unfold = cell.service.viewModel.isUnfold;
     cell.foldButtonDidTappedHandler = ^(BOOL isUnfold) {
         [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
     };
@@ -317,22 +316,20 @@ static NSString * const kSampleCharacteristicUUID = @"CDD2";
 #pragma mark - TableViewDelegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    CBMutableService *service = self.serviceArray[indexPath.row];
+    DPService *service = self.serviceArray[indexPath.row];
     ServiceViewController *viewController = [[ServiceViewController alloc] initWithService:service];
-    viewController.serviceDidSavedHandler = ^(CBMutableService * _Nonnull service) {
+    viewController.serviceDidSavedHandler = ^(DPService * _Nonnull service) {
         NSMutableArray *services = [NSMutableArray arrayWithArray:self.serviceArray];
         if (![services containsObject:service]) {
             [services addObject:service];
-            [self.peripheralManager addService:service];
             self.serviceArray = services;
             [self.tableView reloadData];
         }
     };
-    viewController.serviceDidRemovedHandler = ^(CBMutableService * _Nonnull service) {
+    viewController.serviceDidRemovedHandler = ^(DPService * _Nonnull service) {
         NSMutableArray *services = [NSMutableArray arrayWithArray:self.serviceArray];
         if ([services containsObject:service]) {
             [services removeObject:service];
-            [self.peripheralManager removeService:service];
             self.serviceArray = services;
             [self.tableView reloadData];
         }
@@ -341,8 +338,8 @@ static NSString * const kSampleCharacteristicUUID = @"CDD2";
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    CBService *service = self.serviceArray[indexPath.row];
-    return service.isUnfold ? [ServiceTableViewCell rowUnfoldHeight] : [ServiceTableViewCell rowHeight];
+    DPService *service = self.serviceArray[indexPath.row];
+    return service.viewModel.isUnfold ? [ServiceTableViewCell rowUnfoldHeight] : [ServiceTableViewCell rowHeight];
 }
 
 @end

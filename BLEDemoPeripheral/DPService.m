@@ -9,8 +9,10 @@
 #import "DPService.h"
 
 #import <FMDB/FMDB.h>
+#import "ViewModel.h"
 #import "DataBaseManager.h"
 #import "DPCharacteristic.h"
+#import <CoreBluetooth/CoreBluetooth.h>
 
 @interface DPService()
 
@@ -23,6 +25,7 @@
     if (self) {
         _uuid = uuid;
         _primary = primary;
+        _viewModel = [[ViewModel alloc] init];
     }
     return self;
 }
@@ -101,7 +104,27 @@
     }
     NSString *characterString = [characters componentsJoinedByString:@","];
     
-    [[DataBaseManager sharedDataBaseManager].dataBase executeQueryWithFormat:@"INSERT INTO %@ (uuid, is_primary, inluded_services_uuid, characteristics_uuid) VALUES ('%@', %zd, '%@', '%@')", kTableServices, addUUID, isPrimary, includedString, characterString];
+    [[DataBaseManager sharedDataBaseManager].dataBase executeQuery:@"INSERT INTO %@ (uuid, is_primary, inluded_services_uuid, characteristics_uuid) VALUES (?, ?, ?, ?)", kTableServices, addUUID, isPrimary, includedString, characterString];
+}
+
+- (CBMutableService *)convertToCBService {
+    CBUUID *cbUUID = [CBUUID UUIDWithString:self.uuid];
+    CBMutableService *service = [[CBMutableService alloc] initWithType:cbUUID primary:self.isPrimary];
+    NSMutableArray *characteristics = [NSMutableArray array];
+    for (DPCharacteristic *character in self.characters) {
+        CBCharacteristic *chara = [character convertToCBCharacteristic];
+        [characteristics addObject:chara];
+    }
+    [service setCharacteristics:characteristics];
+    
+    NSMutableArray *includedServices = [NSMutableArray array];
+    for (DPService *service in self.includedService) {
+        CBService *cbService = [service convertToCBService];
+        [includedServices addObject:cbService];
+    }
+    [service setIncludedServices:includedServices];
+    
+    return service;
 }
 
 @end

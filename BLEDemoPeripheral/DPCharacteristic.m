@@ -9,7 +9,9 @@
 #import "DPCharacteristic.h"
 
 #import <FMDB/FMDB.h>
+#import "ViewModel.h"
 #import "DataBaseManager.h"
+#import <CoreBluetooth/CoreBluetooth.h>
 
 @interface DPCharacteristic()
 
@@ -21,6 +23,7 @@
     self= [super init];
     if (self) {
         _uuid = uuid;
+        _viewModel = [[ViewModel alloc] init];
     }
     return self;
 }
@@ -55,6 +58,13 @@
 - (void)RemoveCharacteristicFromDB {
     NSString *uuid = self.uuid;
     [[DataBaseManager sharedDataBaseManager].dataBase executeUpdate:@"DELETE FROM %@ WHERE uuid = ?", kTableCharacteristics, uuid];
+}
+
+- (CBMutableCharacteristic *)convertToCBCharacteristic {
+    CBUUID *cbuuid = [CBUUID UUIDWithString:self.uuid];
+    NSData *cbValue = [self.value dataUsingEncoding:NSUTF8StringEncoding];
+    CBMutableCharacteristic *chacteristic = [[CBMutableCharacteristic alloc] initWithType:cbuuid properties:self.properties value:cbValue permissions:self.permission];
+    return chacteristic;
 }
 
 @end

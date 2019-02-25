@@ -6,7 +6,7 @@
 //  Copyright © 2019 Ivan_deng. All rights reserved.
 //
 
-@class CBMutableService;
+@class DPService, DPCharacteristic;
 
 #import "BaseViewController.h"
 
@@ -14,10 +14,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface ServiceViewController : BaseViewController
 
-@property (nonatomic, copy) void(^serviceDidSavedHandler)(CBMutableService *service);
-@property (nonatomic, copy) void(^serviceDidRemovedHandler)(CBMutableService *service);
+@property (nonatomic, copy) void(^serviceDidSavedHandler)(DPService *service);
+@property (nonatomic, copy) void(^serviceDidRemovedHandler)(DPService *service);
 
-- (instancetype)initWithService:(nullable CBMutableService *)service;
+- (instancetype)initWithService:(nullable DPService *)service;
 
 @end
 

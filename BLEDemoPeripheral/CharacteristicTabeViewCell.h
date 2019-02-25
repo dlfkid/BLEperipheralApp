@@ -6,7 +6,7 @@
 //  Copyright © 2019 Ivan_deng. All rights reserved.
 //
 
-@class CBCharacteristic;
+@class DPCharacteristic;
 
 #import <UIKit/UIKit.h>
 #import "BaseTableViewCell.h"
@@ -16,7 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface CharacteristicTabeViewCell : BaseTableViewCell
 
 @property (nonatomic, assign, getter = isUnFold) BOOL unFold;
-@property (nonatomic, strong) CBCharacteristic *characteristic;
+@property (nonatomic, strong) DPCharacteristic *characteristic;
 @property (nonatomic, copy) void(^foldButtonDidTappedHandler)(BOOL isUnfold);
 
 @end

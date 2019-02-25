@@ -6,7 +6,7 @@
 //  Copyright © 2019 Ivan_deng. All rights reserved.
 //
 
-@class ViewModel;
+@class ViewModel, CBMutableCharacteristic;
 
 #import <Foundation/Foundation.h>
 
@@ -18,7 +18,7 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @interface DPCharacteristic : NSObject
 
-@property (nonatomic, strong) ViewModel *model;
+@property (nonatomic, strong) ViewModel *viewModel;
 @property (nonatomic, copy) NSString *uuid;
 @property (nonatomic, copy) NSString *value;
 @property (nonatomic, assign) NSUInteger properties;
@@ -28,6 +28,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)initWithUUID:(NSString *)uuid;
 
 + (DPCharacteristic *)loadCharacteristicWithUUID:(NSString *)uuidString;
+
+- (CBMutableCharacteristic *)convertToCBCharacteristic;
 
 @end
 

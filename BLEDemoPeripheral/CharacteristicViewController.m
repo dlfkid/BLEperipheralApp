@@ -13,9 +13,9 @@
 
 // Models
 #import "ViewModel.h"
+#import "DPCharacteristic.h"
 
 // Helpers
-#import <CoreBluetooth/CoreBluetooth.h>
 #import "CBCharacteristic+StringExtensions.h"
 
 @interface CharacteristicViewController ()<UITableViewDataSource, UITableViewDelegate>
@@ -25,7 +25,7 @@
 // 此方法用于判断控制器是查看模式还是新建模式，如果是新建模式才允许用户操作内容。
 @property (nonatomic, assign, getter = isAddingMode) BOOL addingMode;
 
-@property (nonatomic, strong) CBCharacteristic *sampleCharacteristic;
+@property (nonatomic, strong) DPCharacteristic *sampleCharacteristic;
 @property (nonatomic, strong) NSArray <ViewModel *> *baseAttributeArray;
 @property (nonatomic, strong) NSArray <ViewModel *> *propertiesArray;
 @property (nonatomic, strong) NSArray <ViewModel *> *permissionArray;
@@ -45,11 +45,11 @@
     if (!_baseAttributeArray) {
         ViewModel *UUIDModel = [[ViewModel alloc] init];
         UUIDModel.title = @"UUID";
-        UUIDModel.subTitle = self.sampleCharacteristic.UUID.UUIDString;
+        UUIDModel.subTitle = self.sampleCharacteristic.uuid;
         
         ViewModel *valueModel = [[ViewModel alloc] init];
         valueModel.title = NSLocalizedString(@"CharacteristicTableViewCell.value", "");
-        valueModel.subTitle = [[NSString alloc] initWithData:self.sampleCharacteristic.value encoding:NSUTF8StringEncoding];
+        valueModel.subTitle = self.sampleCharacteristic.value;
         
         _baseAttributeArray = @[UUIDModel, valueModel];
     }
@@ -134,7 +134,7 @@
 
 #pragma mark - LifeCycle
 
-- (instancetype)initWithCharacteristic:(CBCharacteristic *)characteristic {
+- (instancetype)initWithCharacteristic:(DPCharacteristic *)characteristic {
     self = [super init];
     if (self) {
         self.sampleCharacteristic = characteristic;
@@ -152,7 +152,7 @@
     UIBarButtonItem *deleteBarItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemTrash target:self action:@selector(deleteButtonDidTappedAction)];
     
     self.navigationItem.rightBarButtonItems = self.isAddingMode ? @[editBarItem] : @[deleteBarItem];
-    self.navigationItem.title = self.sampleCharacteristic.UUID.UUIDString ? self.sampleCharacteristic.UUID.UUIDString : NSLocalizedString(@"CharacteristicController.title.default", "");
+    self.navigationItem.title = self.sampleCharacteristic.uuid ? self.sampleCharacteristic.uuid : NSLocalizedString(@"CharacteristicController.title.default", "");
     [self setupContents];
 }
 
@@ -177,9 +177,9 @@
     [self.tableView reloadData];
 }
 
-- (void)setSampleCharacteristic:(CBCharacteristic *)sampleCharacteristic {
+- (void)setSampleCharacteristic:(DPCharacteristic *)sampleCharacteristic {
     _sampleCharacteristic = sampleCharacteristic;
-    _valueString = [[NSString alloc] initWithData:sampleCharacteristic.value encoding:NSUTF8StringEncoding];
+    _valueString = sampleCharacteristic.uuid;
     self.currentProperties = sampleCharacteristic.properties;
 }
 
@@ -222,10 +222,11 @@
     if (self.currentPermissions & CBAttributePermissionsWriteable || self.currentPermissions & CBAttributePermissionsWriteEncryptionRequired) {
         self.valueString = nil;
     }
-    
-    NSData *value = self.valueString ? [self.valueString dataUsingEncoding:NSUTF8StringEncoding] : nil;
-    
-    _sampleCharacteristic = [[CBMutableCharacteristic alloc] initWithType:[CBUUID UUIDWithString:[CBCharacteristic uuidValid:self.UUIDString]] properties:self.currentProperties value:value permissions:self.currentPermissions];
+
+    _sampleCharacteristic = [[DPCharacteristic alloc] initWithUUID:self.UUIDString];
+    _sampleCharacteristic.properties = self.currentProperties;
+    _sampleCharacteristic.permission = self.currentPermissions;
+//    _sampleCharacteristic = [[CBMutableCharacteristic alloc] initWithType:[CBUUID UUIDWithString:[CBCharacteristic uuidValid:self.UUIDString]] properties:self.currentProperties value:value permissions:self.currentPermissions];
     !self.characteristicDidSavedHandler ?: self.characteristicDidSavedHandler(self.sampleCharacteristic);
     [self.navigationController popViewControllerAnimated:YES];
 }
