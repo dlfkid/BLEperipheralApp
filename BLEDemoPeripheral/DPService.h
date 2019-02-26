@@ -29,6 +29,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (CBMutableService *)convertToCBService;
 
++ (NSArray<DPService *> *)loadService;
+- (void)addServiceToDB;
+- (void)removeServiceFromDB;
+
 @end
 
 NS_ASSUME_NONNULL_END

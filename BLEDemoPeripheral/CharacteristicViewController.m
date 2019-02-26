@@ -185,12 +185,12 @@
 
 - (void)setCurrentProperties:(CBCharacteristicProperties)currentProperties {
     _currentProperties = currentProperties;
-    NSLog(@"Current Properties was set to %lu", (unsigned long)currentProperties);
+    // NSLog(@"Current Properties was set to %lu", (unsigned long)currentProperties);
 }
 
 - (void)setCurrentPermissions:(CBAttributePermissions)currentPermissions {
     _currentPermissions = currentPermissions;
-    NSLog(@"Current Perissions was set to %lu", (unsigned long)currentPermissions);
+    // NSLog(@"Current Perissions was set to %lu", (unsigned long)currentPermissions);
 }
 
 - (void)cancelButtnDidTappedAction {

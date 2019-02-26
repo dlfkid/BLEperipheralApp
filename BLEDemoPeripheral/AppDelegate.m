@@ -62,8 +62,4 @@
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 }
 
-#warning TODO: 狗日的服务和特征模型一点都不好用，改成用自己的模型类实现，只有到实际广播的时候才转换成蓝牙对应类！
-
-#warning TODO: 实现中间类和目标类的互相转换
-
 @end

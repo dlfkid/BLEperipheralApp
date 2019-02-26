@@ -32,18 +32,21 @@
 
 + (NSArray<DPService *> *)loadService {
     NSString *queryFormat = [NSString stringWithFormat:@"SELECT (uuid) FROM %@", kTableServices];
+    [[DataBaseManager sharedDataBaseManager].dataBase open];
     FMResultSet *result = [[DataBaseManager sharedDataBaseManager].dataBase executeQuery:queryFormat];
     NSMutableArray *servicesArray = [NSMutableArray array];
     while ([result next]) {
-        NSString *serviceUUID = [result stringForColumn:@"uuid"];
+        NSString *serviceUUID = [result stringForColumnIndex:0];
         DPService *service = [self loadServiceWithUUIDString:serviceUUID];
         [servicesArray addObject:service];
     }
+    [[DataBaseManager sharedDataBaseManager].dataBase close];
     return servicesArray;
 }
 
 + (DPService *)loadServiceWithUUIDString:(NSString *)uuidString {
-    NSString *queryFormat = [NSString stringWithFormat:@"SELECT (uuid, is_primary, characteristics_uuid, included_services_uuid) FROM %@ WHERE uuid = '%@'", kTableServices, uuidString];
+    [[DataBaseManager sharedDataBaseManager].dataBase open];
+    NSString *queryFormat = [NSString stringWithFormat:@"SELECT * FROM %@ WHERE uuid = '%@'", kTableServices, uuidString];
     FMResultSet *result = [[DataBaseManager sharedDataBaseManager].dataBase executeQuery:queryFormat];
     NSMutableArray *services = [NSMutableArray array];
     while ([result next]) {
@@ -57,7 +60,9 @@
         
         for (NSString *uuid in includedServicesStringArray) {
             DPService *includedService = [self loadServiceWithUUIDString:uuid];
-            [includedServicesArray addObject:includedService];
+            if (includedService) {
+                [includedServicesArray addObject:includedService];
+            }
         }
         
         DPService *service = [[DPService alloc] initWithUUID:uuidString Primary:isPrimary];
@@ -71,23 +76,29 @@
         
         for (NSString *uuid in characteristicsStringArray) {
             DPCharacteristic *characteristic = [DPCharacteristic loadCharacteristicWithUUID:uuid];
-            [characteristicsArray addObject:characteristic];
+            if (characteristic) {
+                [characteristicsArray addObject:characteristic];
+            }
         }
         
         service.characters = characteristicsArray;
         
         [services addObject:service];
     }
-    
+    [[DataBaseManager sharedDataBaseManager].dataBase close];
     return services.firstObject;
 }
 
 - (void)removeServiceFromDB {
+    [[DataBaseManager sharedDataBaseManager].dataBase open];
     NSString *removeUUID = self.uuid;
-    [[DataBaseManager sharedDataBaseManager].dataBase executeQuery:@"DELETE FROM %@ WHERE uuid = ?", kTableServices, removeUUID];
+    NSString *sqlStatement = [NSString stringWithFormat:@"DELETE FROM %@ WHERE uuid = '%@'", kTableServices, removeUUID];
+    [[DataBaseManager sharedDataBaseManager].dataBase executeUpdate:sqlStatement];
+    [[DataBaseManager sharedDataBaseManager].dataBase close];
 }
 
 - (void)addServiceToDB {
+    [[DataBaseManager sharedDataBaseManager].dataBase open];
     NSString *addUUID = self.uuid;
     NSInteger isPrimary = self.isPrimary;
     NSMutableArray *includedUUID = [NSMutableArray array];
@@ -95,16 +106,19 @@
         NSString *uuid = service.uuid;
         [includedUUID addObject:uuid];
     }
-    NSString *includedString = [includedUUID componentsJoinedByString:@","];
+    NSString *includedString = self.includedService.count > 0 ? [includedUUID componentsJoinedByString:@","] : @"";
     
     NSMutableArray *characters = [NSMutableArray array];
     for (DPCharacteristic *characteristic in self.characters) {
         NSString *uuid = characteristic.uuid;
         [characters addObject:uuid];
     }
-    NSString *characterString = [characters componentsJoinedByString:@","];
+    NSString *characterString = self.characters.count > 0 ? [characters componentsJoinedByString:@","] : @"";
     
-    [[DataBaseManager sharedDataBaseManager].dataBase executeQuery:@"INSERT INTO %@ (uuid, is_primary, inluded_services_uuid, characteristics_uuid) VALUES (?, ?, ?, ?)", kTableServices, addUUID, isPrimary, includedString, characterString];
+    NSString *sqlStatement = [NSString stringWithFormat:@"INSERT INTO %@ (uuid, is_primary, included_services_uuid, characteristics_uuid) VALUES ('%@', %zd, '%@', '%@')",kTableServices , addUUID, isPrimary, includedString, characterString];
+    
+    [[DataBaseManager sharedDataBaseManager].dataBase executeUpdate:sqlStatement];
+    [[DataBaseManager sharedDataBaseManager].dataBase close];
 }
 
 - (CBMutableService *)convertToCBService {

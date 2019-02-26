@@ -159,7 +159,6 @@
         [self.primaryIndiCatorView removeFromSuperview];
     }
     self.foldButton.selected = _unfold;
-    NSLog(@"Button seletcted state : %d, Unfold state: %d", self.foldButton.isSelected, self.isUnfold);
 }
 
 +(CGFloat)rowHeight {

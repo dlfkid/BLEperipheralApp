@@ -141,9 +141,6 @@
     _sampleService = [[DPService alloc] initWithUUID:self.UUIDString Primary:self.primary];
     self.sampleService.includedService = self.includedServices;
     self.sampleService.characters = self.characteristics;
-//    _sampleService = [[CBMutableService alloc] initWithType:[CBUUID UUIDWithString:self.UUIDString] primary:self.primary];
-//    [self.sampleService setIncludedServices:self.includedServices];
-//    [self.sampleService setCharacteristics:self.characteristics];
     !self.serviceDidSavedHandler ?: self.serviceDidSavedHandler(self.sampleService);
     [self.navigationController popViewControllerAnimated:YES];
 }

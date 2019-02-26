@@ -28,7 +28,6 @@
 @property (nonatomic, strong) UILabel *stateLabel;
 @property (nonatomic, strong) UIView *stateView;
 @property (nonatomic, strong) CBMutableCharacteristic *currentCharacteristic;
-@property (nonatomic, strong) UITextField *textContent;
 @property (nonatomic, assign, getter = isBoardcasting) BOOL boardcasting;
 
 @property (nonatomic, strong) NSArray <DPService *> *serviceArray;
@@ -50,7 +49,7 @@ static NSString * const kSampleCharacteristicUUID = @"CDD2";
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addButtonDidTappedAction)];
-    // [self setUpServiceAndCharacteristic];
+    self.serviceArray = [DPService loadService];
     [self UIBuild];
 }
 
@@ -134,6 +133,7 @@ static NSString * const kSampleCharacteristicUUID = @"CDD2";
             [tmpArray addObject:service];
             self.serviceArray = tmpArray;
             [self.tableView reloadData];
+            [service addServiceToDB];
         }
     };
     serviceVC.serviceDidRemovedHandler = ^(DPService * _Nonnull service) {
@@ -142,6 +142,7 @@ static NSString * const kSampleCharacteristicUUID = @"CDD2";
             [tmpArray removeObject:service];
             self.serviceArray = tmpArray;
             [self.tableView reloadData];
+            [service removeServiceFromDB];
         }
     };
     [self.navigationController pushViewController:serviceVC animated:YES];
@@ -174,22 +175,6 @@ static NSString * const kSampleCharacteristicUUID = @"CDD2";
     return currentState;
 }
 
-- (void)didClickPost {
-    BOOL sendSuccess = [self.peripheralManager updateValue:[self.textContent.text dataUsingEncoding:NSUTF8StringEncoding] forCharacteristic:self.currentCharacteristic onSubscribedCentrals:nil];
-    
-    if(sendSuccess) {
-        UIAlertController *alertControl = [UIAlertController alertControllerWithTitle:@"DataPost" message:@"Success" preferredStyle:UIAlertControllerStyleAlert];
-        UIAlertAction *alertAction = [UIAlertAction actionWithTitle:@"confirm" style:UIAlertActionStyleDefault handler:nil];
-        [alertControl addAction:alertAction];
-        [self presentViewController:alertControl animated:true completion:nil];
-    }else {
-        UIAlertController *alertControl = [UIAlertController alertControllerWithTitle:@"DataPost" message:@"Failure" preferredStyle:UIAlertControllerStyleAlert];
-        UIAlertAction *alertAction = [UIAlertAction actionWithTitle:@"confirm" style:UIAlertActionStyleDefault handler:nil];
-        [alertControl addAction:alertAction];
-        [self presentViewController:alertControl animated:true completion:nil];
-    }
-}
-
 - (void)boardcastButtonDidTappedAction:(UIButton *)sender {
     sender.selected = !sender.isSelected;
     self.boardcasting = sender.isSelected;
@@ -207,12 +192,16 @@ static NSString * const kSampleCharacteristicUUID = @"CDD2";
     _boardcasting = boardcasting;
     if (self.isBoardcasting) {
         NSMutableArray *boardcastingServices = [NSMutableArray array];
-        for (CBMutableService *service in self.serviceArray) {
-            [boardcastingServices addObject:service.UUID];
+        for (DPService *service in self.serviceArray) {
+            CBMutableService *mutableService = [service convertToCBService];
+            [self.peripheralManager addService:mutableService];
+            [boardcastingServices addObject:mutableService.UUID];
         }
         [self.peripheralManager startAdvertising:@{CBAdvertisementDataServiceUUIDsKey:boardcastingServices}];
+        
     } else {
         [self.peripheralManager stopAdvertising];
+        [self.peripheralManager removeAllServices];
     }
 }
 
@@ -270,13 +259,12 @@ static NSString * const kSampleCharacteristicUUID = @"CDD2";
 }
 
 - (void)peripheralManager:(CBPeripheralManager *)peripheral didReceiveReadRequest:(CBATTRequest *)request {
-    request.value = [_textContent.text dataUsingEncoding:NSUTF8StringEncoding];
     [peripheral respondToRequest:request withResult:CBATTErrorSuccess];
 }
 
 - (void)peripheralManager:(CBPeripheralManager *)peripheral didReceiveWriteRequests:(NSArray<CBATTRequest *> *)requests {
     CBATTRequest *request = requests.lastObject;
-    self.textContent.text = [[NSString alloc] initWithData:request.value encoding:NSUTF8StringEncoding];
+    [peripheral respondToRequest:request withResult:CBATTErrorSuccess];
 }
 
 - (void)peripheralManager:(CBPeripheralManager *)peripheral central:(CBCentral *)central didSubscribeToCharacteristic:(CBMutableCharacteristic *)characteristic {
@@ -324,6 +312,7 @@ static NSString * const kSampleCharacteristicUUID = @"CDD2";
             [services addObject:service];
             self.serviceArray = services;
             [self.tableView reloadData];
+            [service addServiceToDB];
         }
     };
     viewController.serviceDidRemovedHandler = ^(DPService * _Nonnull service) {
@@ -332,6 +321,7 @@ static NSString * const kSampleCharacteristicUUID = @"CDD2";
             [services removeObject:service];
             self.serviceArray = services;
             [self.tableView reloadData];
+            [service removeServiceFromDB];
         }
     };
     [self.navigationController pushViewController:viewController animated:YES];

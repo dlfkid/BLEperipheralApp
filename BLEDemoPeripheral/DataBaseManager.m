@@ -95,7 +95,7 @@ NSString * const kTableCharacteristics = @"characteristic_list";
 
 - (void)dataBaseUpdate {
     NSInteger currentVersion = 1;
-    NSString *queryDBVersion = [NSString stringWithFormat:@"SELECT 'verision' FROM %@ ORDERD BY 'update_time' DESC", kTableDBVersion];
+    NSString *queryDBVersion = [NSString stringWithFormat:@"SELECT version FROM %@ ORDER BY id DESC", kTableDBVersion];
     FMResultSet *queryResult = [self.dataBase executeQuery:queryDBVersion];
     while ([queryResult next]) {
         // 根据查询结果获取当前最新版本
@@ -105,9 +105,11 @@ NSString * const kTableCharacteristics = @"characteristic_list";
         }
     }
     // 执行升级操作
-    if (currentVersion < lastestDBVersion) {
+    BOOL needToUpdate = currentVersion < lastestDBVersion;
+    if (needToUpdate) {
         [self updateToLastestVersion:currentVersion];
     }
+    NSLog(@"Current DB Version: %zd, Lastest DB Version: %zd, Need update: %d", currentVersion, lastestDBVersion, needToUpdate);
 }
 
 - (void)updateToLastestVersion:(NSInteger)currentVersion {
