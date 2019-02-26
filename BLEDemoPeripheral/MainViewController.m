@@ -49,7 +49,7 @@ static NSString * const kSampleCharacteristicUUID = @"CDD2";
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addButtonDidTappedAction)];
-    self.serviceArray = [DPService loadService];
+    self.serviceArray = [DPService loadMainService];
     [self UIBuild];
 }
 
@@ -194,6 +194,9 @@ static NSString * const kSampleCharacteristicUUID = @"CDD2";
         NSMutableArray *boardcastingServices = [NSMutableArray array];
         for (DPService *service in self.serviceArray) {
             CBMutableService *mutableService = [service convertToCBService];
+            for (CBService *subService in mutableService.includedServices) {
+                [boardcastingServices addObject:subService.UUID];
+            }
             [self.peripheralManager addService:mutableService];
             [boardcastingServices addObject:mutableService.UUID];
         }

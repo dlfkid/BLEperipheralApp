@@ -22,7 +22,8 @@ static dispatch_once_t onceToken;
 
 // 最新数据库版本，每次更新版本需要在这里备注
 // 第1版数据库建立时间：2019-02-23
-static NSInteger const lastestDBVersion = 1;
+// 第2版数据库建立时间：2019-02-26
+static NSInteger const lastestDBVersion = 2;
 
 static NSString * const kdataBaseName = @"ble_peripheral_db.sqlite";
 NSString * const kTableDBVersion = @"db_version";
@@ -95,7 +96,7 @@ NSString * const kTableCharacteristics = @"characteristic_list";
 
 - (void)dataBaseUpdate {
     NSInteger currentVersion = 1;
-    NSString *queryDBVersion = [NSString stringWithFormat:@"SELECT version FROM %@ ORDER BY id DESC", kTableDBVersion];
+    NSString *queryDBVersion = [NSString stringWithFormat:@"SELECT * FROM %@ ORDER BY id", kTableDBVersion];
     FMResultSet *queryResult = [self.dataBase executeQuery:queryDBVersion];
     while ([queryResult next]) {
         // 根据查询结果获取当前最新版本
@@ -118,8 +119,13 @@ NSString * const kTableCharacteristics = @"characteristic_list";
     }
     NSLog(@"DataBaseManager : DataBase Update Finished");
     // 更新完毕，将数据库更新信息插入数据库版本信息表
-    NSString *updateTime = [NSDate date].description;
-    if (![self.dataBase executeUpdateWithFormat:@"INSERT INTO %@ (version, update_time) VALUES (%zd, %@)", kTableDBVersion, lastestDBVersion, updateTime]) {
+    NSDateFormatter *timeFormatter = [[NSDateFormatter alloc] init];
+    timeFormatter.locale = [NSLocale systemLocale];
+    timeFormatter.dateFormat = @"yyyy-MM-dd HH:mm";
+    NSString *timeString = [timeFormatter stringFromDate:[NSDate date]];
+    
+    NSString *sqlStatement = [NSString stringWithFormat:@"INSERT INTO %@ (version, update_time) VALUES (%zd, '%@')", kTableDBVersion, lastestDBVersion, timeString];
+    if (![self.dataBase executeUpdate:sqlStatement]) {
         NSLog(@"DataBaseManager : database version insert failed");
     }
 }
@@ -128,6 +134,14 @@ NSString * const kTableCharacteristics = @"characteristic_list";
     switch (currentVersion) {
         case 1: {
             // 当前是第1版数据库，需要升级到第2版
+            // 改动内容：1.为服务和特征增加描述内容 2.为服务增加是否是子服务标识
+            NSString *addServiceIncluded = [NSString stringWithFormat:@"ALTER TABLE %@ ADD is_included INTEGER DEFAULT 0", kTableServices];
+            NSString *addServiceDescription = [NSString stringWithFormat:@"ALTER TABLE %@ ADD service_description TEXT", kTableServices];
+            NSString *addCharacterDescription = [NSString stringWithFormat:@"ALTER TABLE %@ ADD characteristic_descroption TEXT", kTableCharacteristics];
+            
+            [self.dataBase executeUpdate:addServiceIncluded];
+            [self.dataBase executeUpdate:addServiceDescription];
+            [self.dataBase executeUpdate:addCharacterDescription];
         }
             break;
             

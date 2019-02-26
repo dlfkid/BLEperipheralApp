@@ -30,8 +30,8 @@
     return self;
 }
 
-+ (NSArray<DPService *> *)loadService {
-    NSString *queryFormat = [NSString stringWithFormat:@"SELECT (uuid) FROM %@", kTableServices];
++ (NSArray<DPService *> *)loadMainService {
+    NSString *queryFormat = [NSString stringWithFormat:@"SELECT (uuid) FROM %@ WHERE is_included = %d", kTableServices, NO];
     [[DataBaseManager sharedDataBaseManager].dataBase open];
     FMResultSet *result = [[DataBaseManager sharedDataBaseManager].dataBase executeQuery:queryFormat];
     NSMutableArray *servicesArray = [NSMutableArray array];
@@ -111,11 +111,11 @@
     NSString *addUUID = self.uuid;
     NSInteger isPrimary = self.isPrimary;
     NSMutableArray *includedUUID = [NSMutableArray array];
-    for (DPService *service in self.includedService) {
-        NSString *uuid = service.uuid;
-        [includedUUID addObject:uuid];
-        [service addServiceToDB];
-    }
+//    for (DPService *service in self.includedService) {
+//        NSString *uuid = service.uuid;
+//        [includedUUID addObject:uuid];
+//        [service addServiceToDB];
+//    }
     NSString *includedString = self.includedService.count > 0 ? [includedUUID componentsJoinedByString:@","] : @"";
     
     NSMutableArray *characters = [NSMutableArray array];
@@ -126,7 +126,7 @@
     }
     NSString *characterString = self.characters.count > 0 ? [characters componentsJoinedByString:@","] : @"";
     
-    NSString *sqlStatement = [NSString stringWithFormat:@"INSERT INTO %@ (uuid, is_primary, included_services_uuid, characteristics_uuid) VALUES ('%@', %zd, '%@', '%@')",kTableServices , addUUID, isPrimary, includedString, characterString];
+    NSString *sqlStatement = [NSString stringWithFormat:@"INSERT INTO %@ (uuid, is_primary, included_services_uuid, characteristics_uuid, is_included) VALUES ('%@', %zd, '%@', '%@', %d)",kTableServices , addUUID, isPrimary, includedString, characterString, self.isSubService];
     
     [[DataBaseManager sharedDataBaseManager].dataBase executeUpdate:sqlStatement];
     [[DataBaseManager sharedDataBaseManager].dataBase close];

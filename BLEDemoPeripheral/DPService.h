@@ -24,12 +24,13 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) NSArray <DPCharacteristic *> *characters;
 @property (nonatomic, strong) NSArray <DPService *> *includedService;
 @property (nonatomic, copy) NSString *descriptionText;
+@property (nonatomic, assign, getter = isSubService) BOOL subService;
 
 - (instancetype)initWithUUID:(NSString *)uuid Primary:(BOOL)primary;
 
 - (CBMutableService *)convertToCBService;
 
-+ (NSArray<DPService *> *)loadService;
++ (NSArray<DPService *> *)loadMainService;
 - (void)addServiceToDB;
 - (void)removeServiceFromDB;
 
