@@ -91,6 +91,15 @@
 
 - (void)removeServiceFromDB {
     [[DataBaseManager sharedDataBaseManager].dataBase open];
+    
+    for (DPCharacteristic *character in self.characters) {
+        [character RemoveCharacteristicFromDB];
+    }
+    
+    for (DPService *service in self.includedService) {
+        [service removeServiceFromDB];
+    }
+    
     NSString *removeUUID = self.uuid;
     NSString *sqlStatement = [NSString stringWithFormat:@"DELETE FROM %@ WHERE uuid = '%@'", kTableServices, removeUUID];
     [[DataBaseManager sharedDataBaseManager].dataBase executeUpdate:sqlStatement];
@@ -105,6 +114,7 @@
     for (DPService *service in self.includedService) {
         NSString *uuid = service.uuid;
         [includedUUID addObject:uuid];
+        [service addServiceToDB];
     }
     NSString *includedString = self.includedService.count > 0 ? [includedUUID componentsJoinedByString:@","] : @"";
     
@@ -112,6 +122,7 @@
     for (DPCharacteristic *characteristic in self.characters) {
         NSString *uuid = characteristic.uuid;
         [characters addObject:uuid];
+        [characteristic addCharacteristicToDB];
     }
     NSString *characterString = self.characters.count > 0 ? [characters componentsJoinedByString:@","] : @"";
     
