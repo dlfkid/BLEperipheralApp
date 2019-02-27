@@ -101,3 +101,5 @@
 "CoreBlueTableViewCell.header.info" = "Information";
 "CoreBlueTableViewCell.header.properties" = "Properties";
 "CoreBlueTableViewCell.header.permissions" = "Permissions";
+
+"ServiceViewController.cancelButton.alert.text" = "You have unsaved services / characteristics, are your sure to leave without saving?";

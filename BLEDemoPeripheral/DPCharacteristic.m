@@ -29,7 +29,6 @@
 }
 
 + (DPCharacteristic *)loadCharacteristicWithUUID:(NSString *)uuidString {
-    [[DataBaseManager sharedDataBaseManager].dataBase open];
     NSString *characterQuery = [NSString stringWithFormat:@"SELECT * FROM %@ WHERE uuid = '%@'", kTableCharacteristics, uuidString];
     FMResultSet *result = [[DataBaseManager sharedDataBaseManager].dataBase executeQuery:characterQuery];
     NSMutableArray *characterArray = [NSMutableArray array];
@@ -49,23 +48,18 @@
         
         [characterArray addObject:characteristic];
     }
-    [[DataBaseManager sharedDataBaseManager].dataBase close];
     return characterArray.firstObject;
 }
 
 - (void)addCharacteristicToDB {
-    [[DataBaseManager sharedDataBaseManager].dataBase open];
     NSString *sqlStatement = [NSString stringWithFormat:@"INSERT INTO %@ (uuid, value, properties, permission) VALUES ('%@', '%@', %zd, %zd)", kTableCharacteristics, self.uuid, self.value, self.properties, self.permission];
     [[DataBaseManager sharedDataBaseManager].dataBase executeUpdate:sqlStatement];
-    [[DataBaseManager sharedDataBaseManager].dataBase close];
 }
 
 - (void)RemoveCharacteristicFromDB {
-    [[DataBaseManager sharedDataBaseManager].dataBase open];
     NSString *uuid = self.uuid;
     NSString *sqlStatement = [NSString stringWithFormat:@"DELETE FROM %@ WHERE uuid = '%@'", kTableCharacteristics, uuid];
     [[DataBaseManager sharedDataBaseManager].dataBase executeUpdate:sqlStatement];
-    [[DataBaseManager sharedDataBaseManager].dataBase close];
 }
 
 - (CBMutableCharacteristic *)convertToCBCharacteristic {

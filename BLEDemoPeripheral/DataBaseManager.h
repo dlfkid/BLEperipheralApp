@@ -24,6 +24,10 @@ extern NSString * const kTableCharacteristics;
 
 - (void)dataBaseInitialization;
 
+- (void)dbOpen;
+
+- (void)dbClose;
+
 @end
 
 NS_ASSUME_NONNULL_END

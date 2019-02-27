@@ -32,7 +32,6 @@
 
 + (NSArray<DPService *> *)loadMainService {
     NSString *queryFormat = [NSString stringWithFormat:@"SELECT (uuid) FROM %@ WHERE is_included = %d", kTableServices, NO];
-    [[DataBaseManager sharedDataBaseManager].dataBase open];
     FMResultSet *result = [[DataBaseManager sharedDataBaseManager].dataBase executeQuery:queryFormat];
     NSMutableArray *servicesArray = [NSMutableArray array];
     while ([result next]) {
@@ -40,12 +39,10 @@
         DPService *service = [self loadServiceWithUUIDString:serviceUUID];
         [servicesArray addObject:service];
     }
-    [[DataBaseManager sharedDataBaseManager].dataBase close];
     return servicesArray;
 }
 
 + (DPService *)loadServiceWithUUIDString:(NSString *)uuidString {
-    [[DataBaseManager sharedDataBaseManager].dataBase open];
     NSString *queryFormat = [NSString stringWithFormat:@"SELECT * FROM %@ WHERE uuid = '%@'", kTableServices, uuidString];
     FMResultSet *result = [[DataBaseManager sharedDataBaseManager].dataBase executeQuery:queryFormat];
     NSMutableArray *services = [NSMutableArray array];
@@ -53,6 +50,7 @@
         NSString *characteristics = [result stringForColumn:@"characteristics_uuid"];
         NSString *includedServices = [result stringForColumn:@"included_services_uuid"];
         NSInteger isPrimary = [result intForColumn:@"is_primary"];
+        NSInteger subService = [result intForColumn:@"is_included"];
         
         NSArray *includedServicesStringArray = [includedServices componentsSeparatedByString:@","];
         
@@ -67,6 +65,7 @@
         
         DPService *service = [[DPService alloc] initWithUUID:uuidString Primary:isPrimary];
         
+        service.subService = subService;
         
         service.includedService = includedServicesArray;
         
@@ -85,51 +84,44 @@
         
         [services addObject:service];
     }
-    [[DataBaseManager sharedDataBaseManager].dataBase close];
     return services.firstObject;
 }
 
 - (void)removeServiceFromDB {
-    [[DataBaseManager sharedDataBaseManager].dataBase open];
     
-    for (DPCharacteristic *character in self.characters) {
-        [character RemoveCharacteristicFromDB];
-    }
-    
-    for (DPService *service in self.includedService) {
-        [service removeServiceFromDB];
-    }
+//    for (DPCharacteristic *character in self.characters) {
+//        [character RemoveCharacteristicFromDB];
+//    }
+//
+//    for (DPService *service in self.includedService) {
+//        [service removeServiceFromDB];
+//    }
     
     NSString *removeUUID = self.uuid;
     NSString *sqlStatement = [NSString stringWithFormat:@"DELETE FROM %@ WHERE uuid = '%@'", kTableServices, removeUUID];
     [[DataBaseManager sharedDataBaseManager].dataBase executeUpdate:sqlStatement];
-    [[DataBaseManager sharedDataBaseManager].dataBase close];
 }
 
 - (void)addServiceToDB {
-    [[DataBaseManager sharedDataBaseManager].dataBase open];
     NSString *addUUID = self.uuid;
     NSInteger isPrimary = self.isPrimary;
     NSMutableArray *includedUUID = [NSMutableArray array];
-//    for (DPService *service in self.includedService) {
-//        NSString *uuid = service.uuid;
-//        [includedUUID addObject:uuid];
-//        [service addServiceToDB];
-//    }
+    for (DPService *service in self.includedService) {
+        NSString *uuid = service.uuid;
+        [includedUUID addObject:uuid];
+    }
     NSString *includedString = self.includedService.count > 0 ? [includedUUID componentsJoinedByString:@","] : @"";
     
     NSMutableArray *characters = [NSMutableArray array];
     for (DPCharacteristic *characteristic in self.characters) {
         NSString *uuid = characteristic.uuid;
         [characters addObject:uuid];
-        [characteristic addCharacteristicToDB];
     }
     NSString *characterString = self.characters.count > 0 ? [characters componentsJoinedByString:@","] : @"";
     
     NSString *sqlStatement = [NSString stringWithFormat:@"INSERT INTO %@ (uuid, is_primary, included_services_uuid, characteristics_uuid, is_included) VALUES ('%@', %zd, '%@', '%@', %d)",kTableServices , addUUID, isPrimary, includedString, characterString, self.isSubService];
     
     [[DataBaseManager sharedDataBaseManager].dataBase executeUpdate:sqlStatement];
-    [[DataBaseManager sharedDataBaseManager].dataBase close];
 }
 
 - (CBMutableService *)convertToCBService {

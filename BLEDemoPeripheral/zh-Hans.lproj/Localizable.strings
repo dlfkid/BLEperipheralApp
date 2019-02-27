@@ -101,4 +101,6 @@
 "CoreBlueTableViewCell.header.properties" = "属性";
 "CoreBlueTableViewCell.header.permissions" = "权限";
 
+"ServiceViewController.cancelButton.alert.text" = "您有尚未保存的特征 / 服务，确定要放弃吗?";
+
 

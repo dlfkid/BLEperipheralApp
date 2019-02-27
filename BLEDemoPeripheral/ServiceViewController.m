@@ -23,6 +23,7 @@
 
 // Helpers
 #import "CBCharacteristic+StringExtensions.h"
+#import "DataBaseManager.h"
 
 @interface ServiceViewController ()<UITableViewDataSource, UITableViewDelegate>
 
@@ -119,7 +120,27 @@
 #pragma mark - Actions
 
 - (void)cancelButtnDidTappedAction {
-    [self.navigationController popViewControllerAnimated:YES];
+    if (!self.sampleService && (self.includedServices.count > 0 || self.characteristics.count > 0)) {
+        PSTAlertController *controller = [PSTAlertController alertWithTitle:NSLocalizedString(@"ServiceViewController.cancelButton.alert.text", "") message:nil];
+        PSTAlertAction *yesAction = [PSTAlertAction actionWithTitle:NSLocalizedString(@"Yes", "") handler:^(PSTAlertAction * _Nonnull action) {
+            for (DPCharacteristic *character in self.characteristics) {
+                [[DataBaseManager sharedDataBaseManager] dbOpen];
+                [character RemoveCharacteristicFromDB];
+                [[DataBaseManager sharedDataBaseManager] dbClose];
+            }
+            [self.navigationController popViewControllerAnimated:YES];
+        }];
+        PSTAlertAction *noAction = [PSTAlertAction actionWithTitle:NSLocalizedString(@"No", "") handler:^(PSTAlertAction * _Nonnull action) {
+            return;
+        }];
+        
+        [controller addAction:noAction];
+        [controller addAction:yesAction];
+        
+        [controller showWithSender:nil controller:nil animated:YES completion:nil];
+    } else {
+        [self.navigationController popViewControllerAnimated:YES];
+    }
 }
 
 - (void)saveButtonDidTappedAction {
@@ -334,6 +355,9 @@
                 [tempArray removeObject:characteristic];
                 self.characteristics = tempArray;
                 [tableView reloadData];
+                [[DataBaseManager sharedDataBaseManager] dbOpen];
+                [characteristic RemoveCharacteristicFromDB];
+                [[DataBaseManager sharedDataBaseManager] dbClose];
             }
         };
         
@@ -342,6 +366,9 @@
             [tempArray addObject:characteristic];
             self.characteristics = tempArray;
             [tableView reloadData];
+            [[DataBaseManager sharedDataBaseManager] dbOpen];
+            [characteristic addCharacteristicToDB];
+            [[DataBaseManager sharedDataBaseManager] dbClose];
         };
         
         [self.navigationController pushViewController:controller animated:YES];
@@ -350,10 +377,14 @@
         DPService *service = indexPath.row < self.includedServices.count ? (DPService *)self.includedServices[indexPath.row] : nil;
         ServiceViewController *controller = [[ServiceViewController alloc] initWithService:service];
         controller.serviceDidSavedHandler = ^(DPService * _Nonnull service) {
+            service.subService = YES;
             NSArray *newIncludedServiceArray = [self.includedServices arrayByAddingObject:service];
             // 子服务添加的时候主服务的sampleService还是nil
             self.includedServices = newIncludedServiceArray;
             [tableView reloadData];
+            [[DataBaseManager sharedDataBaseManager] dbOpen];
+            [service addServiceToDB];
+            [[DataBaseManager sharedDataBaseManager] dbClose];
         };
         controller.serviceDidRemovedHandler = ^(DPService * _Nonnull service) {
             if ([self.includedServices containsObject:service]) {
@@ -361,6 +392,9 @@
                 [newIncludedServiceArray removeObject:service];
                 self.includedServices = newIncludedServiceArray;
                 [tableView reloadData];
+                [[DataBaseManager sharedDataBaseManager] dbOpen];
+                [service removeServiceFromDB];
+                [[DataBaseManager sharedDataBaseManager] dbClose];
             }
         };
         [self.navigationController pushViewController:controller animated:YES];

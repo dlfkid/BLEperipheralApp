@@ -19,6 +19,9 @@
 #import "DPService.h"
 #import "DPCharacteristic.h"
 
+// Helpers
+#import "DataBaseManager.h"
+
 
 @interface MainViewController () <CBPeripheralManagerDelegate, UITableViewDelegate, UITableViewDataSource>
 
@@ -49,7 +52,9 @@ static NSString * const kSampleCharacteristicUUID = @"CDD2";
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addButtonDidTappedAction)];
+    [[DataBaseManager sharedDataBaseManager] dbOpen];
     self.serviceArray = [DPService loadMainService];
+    [[DataBaseManager sharedDataBaseManager] dbClose];
     [self UIBuild];
 }
 
@@ -133,7 +138,9 @@ static NSString * const kSampleCharacteristicUUID = @"CDD2";
             [tmpArray addObject:service];
             self.serviceArray = tmpArray;
             [self.tableView reloadData];
+            [[DataBaseManager sharedDataBaseManager] dbOpen];
             [service addServiceToDB];
+            [[DataBaseManager sharedDataBaseManager] dbClose];
         }
     };
     serviceVC.serviceDidRemovedHandler = ^(DPService * _Nonnull service) {
@@ -142,7 +149,9 @@ static NSString * const kSampleCharacteristicUUID = @"CDD2";
             [tmpArray removeObject:service];
             self.serviceArray = tmpArray;
             [self.tableView reloadData];
+            [[DataBaseManager sharedDataBaseManager] dbOpen];
             [service removeServiceFromDB];
+            [[DataBaseManager sharedDataBaseManager] dbClose];
         }
     };
     [self.navigationController pushViewController:serviceVC animated:YES];
@@ -315,7 +324,9 @@ static NSString * const kSampleCharacteristicUUID = @"CDD2";
             [services addObject:service];
             self.serviceArray = services;
             [self.tableView reloadData];
+            [[DataBaseManager sharedDataBaseManager] dbOpen];
             [service addServiceToDB];
+            [[DataBaseManager sharedDataBaseManager] dbClose];
         }
     };
     viewController.serviceDidRemovedHandler = ^(DPService * _Nonnull service) {
@@ -324,7 +335,9 @@ static NSString * const kSampleCharacteristicUUID = @"CDD2";
             [services removeObject:service];
             self.serviceArray = services;
             [self.tableView reloadData];
+            [[DataBaseManager sharedDataBaseManager] dbOpen];
             [service removeServiceFromDB];
+            [[DataBaseManager sharedDataBaseManager] dbClose];
         }
     };
     [self.navigationController pushViewController:viewController animated:YES];

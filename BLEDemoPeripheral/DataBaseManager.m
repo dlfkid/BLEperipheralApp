@@ -60,6 +60,15 @@ NSString * const kTableCharacteristics = @"characteristic_list";
 }
 
 #pragma mark - Actions
+
+- (void)dbOpen {
+    [self.dataBase open];
+}
+
+- (void)dbClose {
+    [self.dataBase close];
+}
+
 // 数据库初始化
 - (void)dataBaseInitialization {
     // 打开数据库
