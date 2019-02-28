@@ -67,7 +67,7 @@
 "ServiceViewController.table.header.characteristic" = "特征";
 "ServiceViewController.table.header.includedServices" = "子服务";
 
-"CharacteristicTableViewCell.notifyView.text" = "订阅通知";
+"CharacteristicTableViewCell.notifyView.text" = "只读";
 "CharacteristicTableViewCell.UUID" = "UUID:";
 "CharacteristicTableViewCell.value" = "当前值:";
 "CharacteristicTableViewCell.property" = "属性:";
@@ -102,5 +102,8 @@
 "CoreBlueTableViewCell.header.permissions" = "权限";
 
 "ServiceViewController.cancelButton.alert.text" = "您有尚未保存的特征 / 服务，确定要放弃吗?";
+
+"MainViewController.alert.subscribedCharacter.title" = "特征被订阅";
+"MainViewController.alert.subscribedCharacter.text" = "被订阅的特征UUID:";
 
 

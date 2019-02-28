@@ -270,6 +270,8 @@ static NSString * const kSampleCharacteristicUUID = @"CDD2";
     self.stateLabel.text = [NSString stringWithFormat:@"%@%@", NSLocalizedString(@"MainViewController.stateLabel.text", @""), [self peripherialStateString:peripheral.state]];
 }
 
+#warning TODO: 在这里处理中心设备对外设的读写请求
+
 - (void)peripheralManager:(CBPeripheralManager *)peripheral didReceiveReadRequest:(CBATTRequest *)request {
     [peripheral respondToRequest:request withResult:CBATTErrorSuccess];
 }
@@ -281,6 +283,20 @@ static NSString * const kSampleCharacteristicUUID = @"CDD2";
 
 - (void)peripheralManager:(CBPeripheralManager *)peripheral central:(CBCentral *)central didSubscribeToCharacteristic:(CBMutableCharacteristic *)characteristic {
     NSLog(@"%s",__FUNCTION__);
+    // 有特征被中心设备订阅
+    
+    NSString *uuid = characteristic.UUID.UUIDString;
+    
+    PSTAlertController *controller = [PSTAlertController alertControllerWithTitle:NSLocalizedString(@"MainViewController.alert.subscribedCharacter.title", "") message:[NSString stringWithFormat:@"%@%@", NSLocalizedString(@"MainViewController.alert.subscribedCharacter.text", ""), uuid] preferredStyle:PSTAlertControllerStyleAlert];
+    PSTAlertAction *okAction = [PSTAlertAction actionWithTitle:NSLocalizedString(@"Ok", "") handler:^(PSTAlertAction * _Nonnull action) {
+        
+    }];
+    
+    [controller addAction:okAction];
+    
+    [controller showWithSender:nil controller:nil animated:YES completion:^{
+        
+    }];
 }
 
 - (void)peripheralManager:(CBPeripheralManager *)peripheral central:(CBCentral *)central didUnsubscribeFromCharacteristic:(CBMutableCharacteristic *)characteristic {

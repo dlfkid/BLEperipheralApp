@@ -24,11 +24,6 @@
 
 @implementation ServiceTableViewCell
 
-+ (void)initialize {
-    // 利用RunTime机制为CBMutableService增加成员变量Unfold，方便进行折叠操作
-    
-}
-
 - (UIView *)primaryIndiCatorView {
     if (!_primaryIndiCatorView) {
         _primaryIndiCatorView = [[UIView alloc] initWithFrame:CGRectZero];

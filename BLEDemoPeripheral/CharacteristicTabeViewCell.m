@@ -135,6 +135,10 @@
         valueString = @"nil";
     }
     self.valueLabel.text = [valueText stringByAppendingFormat:@" %@", valueString];
+    
+    BOOL isReadOnly = !(self.characteristic.permission & CBAttributePermissionsWriteable) || !(self.characteristic.permission & CBAttributePermissionsWriteEncryptionRequired);
+    
+    self.notifyView.hidden = !isReadOnly;
 }
 
 - (void)setUnFold:(BOOL)unFold {

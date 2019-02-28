@@ -2122,11 +2122,10 @@
 			};
 			name = Debug;
 		};
-		583F832179BE6E4724028D3693971DEB /* Release */ = {
+		66DAD7CF2F1A0B8CED3351D53425BF3E /* Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 7EA7605852DFC443B1B44DCB819F2FBF /* iOSDeviceScreenAdapter.xcconfig */;
 			buildSettings = {
-				CLANG_ENABLE_OBJC_WEAK = NO;
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
@@ -2139,7 +2138,7 @@
 				GCC_PREFIX_HEADER = "Target Support Files/iOSDeviceScreenAdapter/iOSDeviceScreenAdapter-prefix.pch";
 				INFOPLIST_FILE = "Target Support Files/iOSDeviceScreenAdapter/iOSDeviceScreenAdapter-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MODULEMAP_FILE = "Target Support Files/iOSDeviceScreenAdapter/iOSDeviceScreenAdapter.modulemap";
 				PRODUCT_MODULE_NAME = iOSDeviceScreenAdapter;
@@ -2148,11 +2147,10 @@
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
 				TARGETED_DEVICE_FAMILY = "1,2";
-				VALIDATE_PRODUCT = YES;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
-			name = Release;
+			name = Debug;
 		};
 		7624FBD8D278F7CE70FF51C4C1574C39 /* Release */ = {
 			isa = XCBuildConfiguration;
@@ -2206,37 +2204,6 @@
 				MODULEMAP_FILE = "Target Support Files/Masonry/Masonry.modulemap";
 				PRODUCT_MODULE_NAME = Masonry;
 				PRODUCT_NAME = Masonry;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Debug;
-		};
-		7DF7F27B0DC54DF253686C62909B75A2 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 7EA7605852DFC443B1B44DCB819F2FBF /* iOSDeviceScreenAdapter.xcconfig */;
-			buildSettings = {
-				CLANG_ENABLE_OBJC_WEAK = NO;
-				CODE_SIGN_IDENTITY = "";
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				CURRENT_PROJECT_VERSION = 1;
-				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				GCC_PREFIX_HEADER = "Target Support Files/iOSDeviceScreenAdapter/iOSDeviceScreenAdapter-prefix.pch";
-				INFOPLIST_FILE = "Target Support Files/iOSDeviceScreenAdapter/iOSDeviceScreenAdapter-Info.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MODULEMAP_FILE = "Target Support Files/iOSDeviceScreenAdapter/iOSDeviceScreenAdapter.modulemap";
-				PRODUCT_MODULE_NAME = iOSDeviceScreenAdapter;
-				PRODUCT_NAME = iOSDeviceScreenAdapter;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
@@ -2465,6 +2432,37 @@
 			};
 			name = Debug;
 		};
+		E751C3CB0C86128A3AE3094B783E3B70 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 7EA7605852DFC443B1B44DCB819F2FBF /* iOSDeviceScreenAdapter.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_PREFIX_HEADER = "Target Support Files/iOSDeviceScreenAdapter/iOSDeviceScreenAdapter-prefix.pch";
+				INFOPLIST_FILE = "Target Support Files/iOSDeviceScreenAdapter/iOSDeviceScreenAdapter-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MODULEMAP_FILE = "Target Support Files/iOSDeviceScreenAdapter/iOSDeviceScreenAdapter.modulemap";
+				PRODUCT_MODULE_NAME = iOSDeviceScreenAdapter;
+				PRODUCT_NAME = iOSDeviceScreenAdapter;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -2489,8 +2487,8 @@
 		4E8F39752A188EB0F9DC86991636E189 /* Build configuration list for PBXNativeTarget "iOSDeviceScreenAdapter" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				7DF7F27B0DC54DF253686C62909B75A2 /* Debug */,
-				583F832179BE6E4724028D3693971DEB /* Release */,
+				66DAD7CF2F1A0B8CED3351D53425BF3E /* Debug */,
+				E751C3CB0C86128A3AE3094B783E3B70 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

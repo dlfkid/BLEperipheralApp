@@ -65,6 +65,10 @@
 - (CBMutableCharacteristic *)convertToCBCharacteristic {
     CBUUID *cbuuid = [CBUUID UUIDWithString:self.uuid];
     NSData *cbValue = [self.value dataUsingEncoding:NSUTF8StringEncoding];
+    BOOL isReadOnly = !(self.permission & CBAttributePermissionsWriteable) || !(self.permission & CBAttributePermissionsWriteEncryptionRequired);
+    if (!isReadOnly) {
+        cbValue = nil;
+    }
     CBMutableCharacteristic *chacteristic = [[CBMutableCharacteristic alloc] initWithType:cbuuid properties:self.properties value:cbValue permissions:self.permission];
     return chacteristic;
 }

@@ -6,11 +6,15 @@
 //  Copyright © 2019 LeonDeng. All rights reserved.
 //
 
+
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
-
 NS_ASSUME_NONNULL_BEGIN
+
+#define DSAdaptedValue(standardValue) (adaptedValue(standardValue))
+#define DSStatusBarMargin (statusBarMargin())
+#define DSBottomMargin (bottomMargin())
 
 typedef NS_ENUM(NSInteger, DeviceScreenType) {
     /// 未知屏幕尺寸
@@ -22,10 +26,10 @@ typedef NS_ENUM(NSInteger, DeviceScreenType) {
     /// SE, 5s, 5c, 5, iPod Touch 5~6
     DeviceScreenType4_0,
     
-    /// 6s, 6
+    /// 6s, 6, 7, 8
     DeviceScreenType4_7,
     
-    /// 6s Plus, 6 Plus
+    /// 6s Plus, 6 Plus, 7Plus, 8Plus
     DeviceScreenType5_5,
     
     /// X
@@ -55,28 +59,28 @@ typedef NS_ENUM(NSInteger, DeviceScreenType) {
 typedef NS_ENUM(NSInteger,DeviceType) {
     
     Unknown = 0,
-    Simulator,
-    IPhone_1G,          //基本不用
-    IPhone_3G,          //基本不用
-    IPhone_3GS,         //基本不用
-    IPhone_4,           //基本不用
-    IPhone_4S,          //基本不用
-    IPhone_5,
-    IPhone_5C,
-    IPhone_5S,
-    IPhone_SE,
-    IPhone_6,
-    IPhone_6P,
-    IPhone_6S,
-    IPhone_6S_P,
-    IPhone_7,
-    IPhone_7P,
-    IPhone_8,
-    IPhone_8P,
-    IPhone_X,
-    IPhone_XS,
-    IPhone_XSMax,
-    IPhone_XR,
+    Simulator = 1,
+    IPhone_1G = 2,          //基本不用
+    IPhone_3G = 3,          //基本不用
+    IPhone_3GS = 4,         //基本不用
+    IPhone_4 = 5,           //基本不用
+    IPhone_4S = 6,          //基本不用
+    IPhone_5 = 7,
+    IPhone_5C = 8,
+    IPhone_5S = 9,
+    IPhone_SE = 10,
+    IPhone_6 = 11,
+    IPhone_6P = 12,
+    IPhone_6S = 13,
+    IPhone_6S_P = 14,
+    IPhone_7 = 15,
+    IPhone_7P = 16,
+    IPhone_8 = 17,
+    IPhone_8P = 18,
+    IPhone_X = 19,
+    IPhone_XS = 20,
+    IPhone_XSMax = 21,
+    IPhone_XR = 22,
 };
 
 
@@ -153,6 +157,24 @@ typedef NS_ENUM(NSInteger,DeviceType) {
  */
 + (CGFloat)bottomIndicatorMargin;
 
+
+/**
+ Set the screen type you are using when developing
+ */
+- (void)setDeveloperScreenType:(DeviceScreenType)type;
+
 @end
+
+CG_INLINE CGFloat adaptedValue(CGFloat standardValue) {
+    return [DeviceScreenAdaptor adaptedValue:standardValue];
+}
+
+CG_INLINE CGFloat statusBarMargin() {
+    return [DeviceScreenAdaptor statusBarMargin];
+}
+
+CG_INLINE CGFloat bottomMargin() {
+    return [DeviceScreenAdaptor bottomIndicatorMargin];
+}
 
 NS_ASSUME_NONNULL_END

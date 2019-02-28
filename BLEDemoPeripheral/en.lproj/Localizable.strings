@@ -69,7 +69,7 @@
 "ServiceViewController.table.header.includedServices" = "included Services";
 "ServiceViewController.alert.title" = "Plase input a valid UUID";
 
-"CharacteristicTableViewCell.notifyView.text" = "Notifying";
+"CharacteristicTableViewCell.notifyView.text" = "Read Only";
 "CharacteristicTableViewCell.UUID" = "UUID:";
 "CharacteristicTableViewCell.value" = "Value:";
 "CharacteristicTableViewCell.property" = "Properties:";
@@ -103,3 +103,6 @@
 "CoreBlueTableViewCell.header.permissions" = "Permissions";
 
 "ServiceViewController.cancelButton.alert.text" = "You have unsaved services / characteristics, are your sure to leave without saving?";
+
+"MainViewController.alert.subscribedCharacter.title" = "Characteristic was subscribed by central device";
+"MainViewController.alert.subscribedCharacter.text" = "Characteristic UUID:";

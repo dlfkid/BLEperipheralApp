@@ -3,7 +3,7 @@ PODS:
   - FMDB (2.7.5):
     - FMDB/standard (= 2.7.5)
   - FMDB/standard (2.7.5)
-  - iOSDeviceScreenAdapter (1.0.2)
+  - iOSDeviceScreenAdapter (1.0.3)
   - IQKeyboardManager (6.2.0)
   - Masonry (1.1.0)
   - PSTAlertController (1.2.0)
@@ -31,7 +31,7 @@ SPEC REPOS:
 SPEC CHECKSUMS:
   FLEX: bd1a39e55b56bb413b6f1b34b3c10a0dc44ef079
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
-  iOSDeviceScreenAdapter: 359c45fa7398a736978d6432e2686c76f763b9a5
+  iOSDeviceScreenAdapter: 4e5008b600996bd511e4b7f88c2d8d4b9b21398c
   IQKeyboardManager: 6194101620b73af5e67900b8f89707a99de0b804
   Masonry: 678fab65091a9290e40e2832a55e7ab731aad201
   PSTAlertController: 9b802dfbda54fee2683bfd6dda7023a6de895d5b

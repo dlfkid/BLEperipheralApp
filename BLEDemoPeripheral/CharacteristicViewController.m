@@ -165,7 +165,7 @@
     [self.view addSubview:self.tableView];
     
     [self.tableView mas_remakeConstraints:^(MASConstraintMaker *make) {
-        make.top.mas_equalTo(0).mas_offset(44);
+        make.top.mas_equalTo(0);
         make.left.right.mas_equalTo(0);
         make.bottom.mas_equalTo(0).mas_offset(- [DeviceScreenAdaptor bottomIndicatorMargin]);
     }];

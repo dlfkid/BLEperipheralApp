@@ -12,7 +12,7 @@
 
 @interface DeviceScreenAdaptor()
 
-// Remember to reload the getter. When coding, choose the screen type you are using as develop device, it helps the adaptor to adjust UI values when your app is running in other screen types;
+// Remember to set the standard screen type When coding, choose the screen type you are using as develop device, it helps the adaptor to adjust UI values when your app is running in other screen types;
 @property (nonatomic, assign) DeviceScreenType developStrandardScreenType;
 
 @end
@@ -21,9 +21,17 @@
 
 #pragma mark - Private
 
-- (DeviceScreenType)developStrandardScreenType {
-    // I am using iPhone7Pluse for coding, so I choosed 5.5 inch screen.
-    return DeviceScreenType5_5;
+- (instancetype)init {
+    self = [super init];
+    if (self) {
+        // If not defined standard screen type, instance use your current type;
+        _developStrandardScreenType = [self screenType];
+    }
+    return self;
+}
+
+- (void)setDeveloperScreenType:(DeviceScreenType)type {
+    _developStrandardScreenType = type;
 }
 
 - (BOOL)isLandscape {
