@@ -106,4 +106,7 @@
 "MainViewController.alert.subscribedCharacter.title" = "特征被订阅";
 "MainViewController.alert.subscribedCharacter.text" = "被订阅的特征UUID:";
 
+"ServiceViewController.tableView.cell.descriptionText" = "说明";
+"ServiceViewController.tableView.cell.descriptionAlert.title" = "输入服务的说明";
+"CharacterisitcViewController.tableView.cell.descriptionText" = "说明";
 

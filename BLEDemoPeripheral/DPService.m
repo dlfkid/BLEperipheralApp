@@ -51,7 +51,7 @@
         NSString *includedServices = [result stringForColumn:@"included_services_uuid"];
         NSInteger isPrimary = [result intForColumn:@"is_primary"];
         NSInteger subService = [result intForColumn:@"is_included"];
-        
+        NSString *description = [result stringForColumn:@"service_description"];
         NSArray *includedServicesStringArray = [includedServices componentsSeparatedByString:@","];
         
         NSMutableArray *includedServicesArray = [NSMutableArray array];
@@ -68,6 +68,8 @@
         service.subService = subService;
         
         service.includedService = includedServicesArray;
+        
+        service.descriptionText = description;
         
         NSArray *characteristicsStringArray = [characteristics componentsSeparatedByString:@","];
         
@@ -119,7 +121,7 @@
     }
     NSString *characterString = self.characters.count > 0 ? [characters componentsJoinedByString:@","] : @"";
     
-    NSString *sqlStatement = [NSString stringWithFormat:@"INSERT INTO %@ (uuid, is_primary, included_services_uuid, characteristics_uuid, is_included) VALUES ('%@', %zd, '%@', '%@', %d)",kTableServices , addUUID, isPrimary, includedString, characterString, self.isSubService];
+    NSString *sqlStatement = [NSString stringWithFormat:@"INSERT INTO %@ (uuid, is_primary, included_services_uuid, characteristics_uuid, is_included, service_description) VALUES ('%@', %zd, '%@', '%@', %d, '%@')",kTableServices , addUUID, isPrimary, includedString, characterString, self.isSubService, self.descriptionText];
     
     [[DataBaseManager sharedDataBaseManager].dataBase executeUpdate:sqlStatement];
 }

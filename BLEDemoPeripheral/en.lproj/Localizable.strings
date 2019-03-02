@@ -106,3 +106,7 @@
 
 "MainViewController.alert.subscribedCharacter.title" = "Characteristic was subscribed by central device";
 "MainViewController.alert.subscribedCharacter.text" = "Characteristic UUID:";
+
+"ServiceViewController.tableView.cell.descriptionText" = "Description";
+"ServiceViewController.tableView.cell.descriptionAlert.title" = "Input description";
+"CharacterisitcViewController.tableView.cell.descriptionText" = "Description";

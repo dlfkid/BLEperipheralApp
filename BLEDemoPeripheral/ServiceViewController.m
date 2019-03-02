@@ -46,6 +46,7 @@
 
 - (void)setSampleService:(DPService *)sampleService {
     _sampleService = sampleService;
+    _primary = sampleService.isPrimary;
     _includedServices = sampleService.includedService;
     _characteristics = sampleService.characters;
 }
@@ -78,8 +79,11 @@
         ViewModel *primaryModel = [[ViewModel alloc] init];
         primaryModel.title = NSLocalizedString(@"ServiceViewController.table.cell.primary", "");
         primaryModel.subTitle = service.isPrimary ? NSLocalizedString(@"Yes", "") : NSLocalizedString(@"No", "");
+        ViewModel *descriptionModel = [[ViewModel alloc] init];
+        descriptionModel.title = NSLocalizedString(@"ServiceViewController.tableView.cell.descriptionText", "");
+        descriptionModel.subTitle = service.descriptionText;
     
-        _viewModels = @[uuidModel, primaryModel];
+        _viewModels = @[uuidModel, primaryModel, descriptionModel];
     }
     return self;
 }
@@ -160,6 +164,8 @@
     }
     // 不能调用Set方法，否则会重置子服务和特征
     _sampleService = [[DPService alloc] initWithUUID:self.UUIDString Primary:self.primary];
+    ViewModel *descriptionModel = self.viewModels[2];
+    self.sampleService.descriptionText = descriptionModel.subTitle;
     self.sampleService.includedService = self.includedServices;
     self.sampleService.characters = self.characteristics;
     !self.serviceDidSavedHandler ?: self.serviceDidSavedHandler(self.sampleService);
@@ -269,14 +275,24 @@
                 if (!cell) {
                     cell = [[SwitchTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kdefaultTableViewCellReuseIdentifier];
                 }
-                cell.switchControl.on = self.sampleService.isPrimary;
+                cell.switchControl.on = self.primary;
                 cell.switchControl.enabled = self.isAddingMode;
                 cell.title = viewModel.title;
                 cell.switchValueDidChangedHandler = ^(BOOL switchState) {
                     self.primary = switchState;
                 };
                 return cell;
-            } else {
+            }
+            else if ([viewModel.title isEqualToString:NSLocalizedString(@"ServiceViewController.tableView.cell.descriptionText", "")]) {
+                UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+                if (!cell) {
+                    cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:kdefaultTableViewCellReuseIdentifier];
+                }
+                cell.textLabel.text = viewModel.title;
+                cell.detailTextLabel.text = viewModel.subTitle;
+                return cell;
+            }
+            else {
                 UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
                 if (!cell) {
                     cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:kdefaultTableViewCellReuseIdentifier];
@@ -315,7 +331,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.section == 0) {
         ViewModel *model = self.viewModels[indexPath.row];
-        if ([model.title isEqualToString:NSLocalizedString(@"ServiceViewController.table.cell.UUID", "")]) {
+        if (!self.sampleService && [model.title isEqualToString:NSLocalizedString(@"ServiceViewController.table.cell.UUID", "")]) {
             PSTAlertController *controller = [PSTAlertController alertControllerWithTitle:NSLocalizedString(@"CoreBlueTableViewCell.UUID.alert.text", "") message:@"" preferredStyle:PSTAlertControllerStyleAlert];
             PSTAlertAction *cancelAction = [PSTAlertAction actionWithTitle:NSLocalizedString(@"Cancel", "") handler:^(PSTAlertAction * _Nonnull action) {
                 
@@ -342,6 +358,30 @@
             }];
             
             
+        }
+        else if ([model.title isEqualToString:NSLocalizedString(@"ServiceViewController.tableView.cell.descriptionText", "")]) {
+            PSTAlertController *controller = [PSTAlertController alertControllerWithTitle:NSLocalizedString(@"ServiceViewController.tableView.cell.descriptionAlert.title", "") message:@"" preferredStyle:PSTAlertControllerStyleAlert];
+            PSTAlertAction *cancelAction = [PSTAlertAction actionWithTitle:NSLocalizedString(@"Cancel", "") handler:^(PSTAlertAction * _Nonnull action) {
+                
+            }];
+            PSTAlertAction *comfirmAction = [PSTAlertAction actionWithTitle:NSLocalizedString(@"Submit", "") style:PSTAlertActionStyleDefault handler:^(PSTAlertAction * _Nonnull action) {
+                UITextField *textField = controller.textField;
+                if (textField.text.length > 0) {
+                    model.subTitle = textField.text;
+                    [tableView reloadData];
+                }
+            }];
+            
+            [controller addAction:cancelAction];
+            [controller addAction:comfirmAction];
+            
+            [controller addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
+                textField.clearButtonMode = UITextFieldViewModeWhileEditing;
+            }];
+            
+            [controller showWithSender:nil controller:nil animated:YES completion:^{
+                
+            }];
         }
         return;
     } else if (indexPath.section == 1) {

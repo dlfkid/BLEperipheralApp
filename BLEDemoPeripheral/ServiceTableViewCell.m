@@ -18,6 +18,7 @@
 @property (nonatomic, strong) UIView *primaryIndiCatorView;
 @property (nonatomic, strong) UILabel *includedServiceCountLabel;
 @property (nonatomic, strong) UILabel *characteristicCountLabel;
+@property (nonatomic, strong) UILabel *descriptionLabel;
 @property (nonatomic, strong) UIButton *foldButton;
 
 @end
@@ -59,6 +60,12 @@
         self.customContentView.layer.shadowOffset = CGSizeMake(0, 1);
         self.customContentView.layer.shadowRadius = 1;
         self.customContentView.layer.shadowOpacity = 0.4f;
+        
+        _descriptionLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+        _descriptionLabel.textAlignment = NSTextAlignmentCenter;
+        _descriptionLabel.numberOfLines = 0;
+        _descriptionLabel.lineBreakMode = NSLineBreakByWordWrapping;
+        _descriptionLabel.textColor = [UIColor darkGrayColor];
         
         _UUIDLabel = [[UILabel alloc] initWithFrame:CGRectZero];
         _UUIDLabel.text = NSLocalizedString(@"ServiceTableViewCell.UUIDLabel.text", @"");
@@ -115,6 +122,7 @@
     self.includedServiceCountLabel.text = [NSString stringWithFormat:@"%@ %tu", NSLocalizedString(@"ServiceTableViewCell.includedServicesLabel.text", @""), service.includedService.count];
     self.characteristicCountLabel.text = [NSString stringWithFormat:@"%@ %tu", NSLocalizedString(@"ServiceTableViewCell.characteristicLabel.text", @""), service.characters.count];
     self.primaryIndiCatorView.hidden = !service.isPrimary;
+    self.descriptionLabel.text = service.descriptionText;
 }
 
 - (void)setUnfold:(BOOL)unfold {
@@ -124,6 +132,7 @@
         [self.customContentView addSubview:self.includedServiceCountLabel];
         [self.customContentView addSubview:self.characteristicCountLabel];
         [self.customContentView addSubview:self.primaryIndiCatorView];
+        [self.customContentView addSubview:self.descriptionLabel];
         
         [self.includedServiceCountLabel mas_updateConstraints:^(MASConstraintMaker *make) {
             make.left.mas_equalTo(10);
@@ -142,6 +151,12 @@
             make.bottom.mas_equalTo(self.includedServiceCountLabel.mas_top).mas_offset(-10);
         }];
         
+        [self.descriptionLabel mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.left.mas_equalTo(self.characteristicCountLabel.mas_right).mas_offset(5);
+            make.right.mas_equalTo(self.primaryIndiCatorView.mas_left).offset(-5);
+            make.top.mas_equalTo(self.UUIDLabel.mas_bottom).offset(10);
+        }];
+        
         [self.customContentView layoutIfNeeded];
     } else {
         // 折叠状态布局
@@ -152,6 +167,7 @@
         [self.includedServiceCountLabel removeFromSuperview];
         [self.characteristicCountLabel removeFromSuperview];
         [self.primaryIndiCatorView removeFromSuperview];
+        [self.descriptionLabel removeFromSuperview];
     }
     self.foldButton.selected = _unfold;
 }
