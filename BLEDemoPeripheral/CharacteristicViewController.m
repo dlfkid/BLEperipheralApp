@@ -35,6 +35,7 @@
 @property (nonatomic, copy) NSString *UUIDString;
 @property (nonatomic, assign) CBCharacteristicProperties currentProperties;
 @property (nonatomic, assign) CBAttributePermissions currentPermissions;
+@property (nonatomic, copy) NSString *descriptionText;
 
 
 @end
@@ -51,7 +52,11 @@
         valueModel.title = NSLocalizedString(@"CharacteristicTableViewCell.value", "");
         valueModel.subTitle = self.sampleCharacteristic.value;
         
-        _baseAttributeArray = @[UUIDModel, valueModel];
+        ViewModel *descriptionModel = [[ViewModel alloc] init];
+        descriptionModel.title = NSLocalizedString(@"ServiceViewController.tableView.cell.descriptionText", "");
+        descriptionModel.subTitle = self.sampleCharacteristic.descriptionText;
+        
+        _baseAttributeArray = @[UUIDModel, valueModel, descriptionModel];
     }
     return _baseAttributeArray;
 }
@@ -180,6 +185,7 @@
 - (void)setSampleCharacteristic:(DPCharacteristic *)sampleCharacteristic {
     _sampleCharacteristic = sampleCharacteristic;
     _valueString = sampleCharacteristic.uuid;
+    _descriptionText = sampleCharacteristic.descriptionText;
     self.currentProperties = sampleCharacteristic.properties;
 }
 
@@ -226,6 +232,7 @@
     _sampleCharacteristic = [[DPCharacteristic alloc] initWithUUID:self.UUIDString];
     _sampleCharacteristic.properties = self.currentProperties;
     _sampleCharacteristic.permission = self.currentPermissions;
+    _sampleCharacteristic.descriptionText = self.descriptionText;
 //    _sampleCharacteristic = [[CBMutableCharacteristic alloc] initWithType:[CBUUID UUIDWithString:[CBCharacteristic uuidValid:self.UUIDString]] properties:self.currentProperties value:value permissions:self.currentPermissions];
     !self.characteristicDidSavedHandler ?: self.characteristicDidSavedHandler(self.sampleCharacteristic);
     [self.navigationController popViewControllerAnimated:YES];
@@ -361,7 +368,31 @@
                     
                 }];
             }
-            
+            else if ([model.title isEqualToString:NSLocalizedString(@"ServiceViewController.tableView.cell.descriptionText", "")]) {
+                PSTAlertController *controller = [PSTAlertController alertControllerWithTitle:NSLocalizedString(@"ServiceViewController.tableView.cell.descriptionAlert.title", "") message:@"" preferredStyle:PSTAlertControllerStyleAlert];
+                PSTAlertAction *cancelAction = [PSTAlertAction actionWithTitle:NSLocalizedString(@"Cancel", "") handler:^(PSTAlertAction * _Nonnull action) {
+                    
+                }];
+                PSTAlertAction *comfirmAction = [PSTAlertAction actionWithTitle:NSLocalizedString(@"Submit", "") style:PSTAlertActionStyleDefault handler:^(PSTAlertAction * _Nonnull action) {
+                    UITextField *textField = controller.textField;
+                    if (textField.text.length > 0) {
+                        model.subTitle = textField.text;
+                        self.descriptionText = textField.text;
+                        [tableView reloadData];
+                    }
+                }];
+                
+                [controller addAction:cancelAction];
+                [controller addAction:comfirmAction];
+                
+                [controller addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
+                    textField.clearButtonMode = UITextFieldViewModeWhileEditing;
+                }];
+                
+                [controller showWithSender:nil controller:nil animated:YES completion:^{
+                    
+                }];
+            }
             else {
                 // 如果不是只读属性的特征，无法写入当前值
                 if (self.currentProperties & CBCharacteristicPropertyWrite || self.currentProperties & CBCharacteristicPropertyWriteWithoutResponse || self.currentProperties & CBCharacteristicPropertyAuthenticatedSignedWrites) {

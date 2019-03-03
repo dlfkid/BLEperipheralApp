@@ -37,6 +37,7 @@
         NSString *value = [result stringForColumn:@"value"];
         NSUInteger properties = [result intForColumn:@"properties"];
         NSUInteger permission = [result intForColumn:@"permission"];
+        NSString *descriptionText = [result stringForColumn:@"characteristic_descroption"];
         
         DPCharacteristic *characteristic = [[DPCharacteristic alloc] initWithUUID:uuid];
         
@@ -46,13 +47,15 @@
         
         characteristic.permission = permission;
         
+        characteristic.descriptionText = descriptionText;
+        
         [characterArray addObject:characteristic];
     }
     return characterArray.firstObject;
 }
 
 - (void)addCharacteristicToDB {
-    NSString *sqlStatement = [NSString stringWithFormat:@"INSERT INTO %@ (uuid, value, properties, permission) VALUES ('%@', '%@', %zd, %zd)", kTableCharacteristics, self.uuid, self.value, self.properties, self.permission];
+    NSString *sqlStatement = [NSString stringWithFormat:@"INSERT INTO %@ (uuid, value, properties, permission, characteristic_descroption) VALUES ('%@', '%@', %zd, %zd, '%@')", kTableCharacteristics, self.uuid, self.value, self.properties, self.permission, self.descriptionText];
     [[DataBaseManager sharedDataBaseManager].dataBase executeUpdate:sqlStatement];
 }
 
