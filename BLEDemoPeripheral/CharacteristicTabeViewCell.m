@@ -136,9 +136,11 @@
     }
     self.valueLabel.text = [valueText stringByAppendingFormat:@" %@", valueString];
     
-    BOOL isReadOnly = !(self.characteristic.permission & CBAttributePermissionsWriteable) || !(self.characteristic.permission & CBAttributePermissionsWriteEncryptionRequired);
-    
-    self.notifyView.hidden = !isReadOnly;
+    self.notifyView.hidden = ![self isReadOnly];
+}
+
+- (BOOL)isReadOnly {
+    return !((self.characteristic.permission & CBAttributePermissionsWriteable) || (self.characteristic.permission & CBAttributePermissionsWriteEncryptionRequired) ||  (self.characteristic.properties & CBCharacteristicPropertyWrite) || (self.characteristic.properties & CBCharacteristicPropertyWriteWithoutResponse) || (self.characteristic.properties & CBCharacteristicPropertyAuthenticatedSignedWrites));
 }
 
 - (void)setUnFold:(BOOL)unFold {

@@ -94,7 +94,7 @@
         make.edges.mas_equalTo(0).insets(padding);
     }];
     
-    [self.foldButton mas_updateConstraints:^(MASConstraintMaker *make) {
+    [self.foldButton mas_remakeConstraints:^(MASConstraintMaker *make) {
         make.left.mas_equalTo(5);
         make.top.mas_equalTo(5);
         make.width.mas_equalTo(32);
@@ -134,27 +134,28 @@
         [self.customContentView addSubview:self.primaryIndiCatorView];
         [self.customContentView addSubview:self.descriptionLabel];
         
-        [self.includedServiceCountLabel mas_updateConstraints:^(MASConstraintMaker *make) {
+        [self.includedServiceCountLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
             make.left.mas_equalTo(10);
             make.bottom.mas_equalTo(0).mas_offset(- 10);
         }];
         
-        [self.primaryIndiCatorView mas_updateConstraints:^(MASConstraintMaker *make) {
+        [self.primaryIndiCatorView mas_remakeConstraints:^(MASConstraintMaker *make) {
             make.right.mas_equalTo(-10);
             make.centerY.mas_equalTo(0);
             make.width.mas_greaterThanOrEqualTo(80);
             make.height.mas_equalTo(30);
         }];
         
-        [self.characteristicCountLabel mas_updateConstraints:^(MASConstraintMaker *make) {
+        [self.characteristicCountLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
             make.right.mas_equalTo(self.includedServiceCountLabel.mas_right);
             make.bottom.mas_equalTo(self.includedServiceCountLabel.mas_top).mas_offset(-10);
         }];
         
-        [self.descriptionLabel mas_updateConstraints:^(MASConstraintMaker *make) {
-            make.left.mas_equalTo(self.characteristicCountLabel.mas_right).mas_offset(5);
-            make.right.mas_equalTo(self.primaryIndiCatorView.mas_left).offset(-5);
-            make.top.mas_equalTo(self.UUIDLabel.mas_bottom).offset(10);
+        [self.descriptionLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
+            make.centerY.mas_equalTo(0);
+            make.centerX.mas_equalTo(0);
+            make.width.mas_equalTo(200);
+            make.height.mas_equalTo(100);
         }];
         
         [self.customContentView layoutIfNeeded];

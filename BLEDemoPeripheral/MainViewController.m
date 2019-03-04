@@ -93,6 +93,9 @@ static NSString * const kSampleCharacteristicUUID = @"CDD2";
     [_boardCastButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [_boardCastButton setTitle:NSLocalizedString(@"MainViewController.boardcastButton.title", @"") forState:UIControlStateNormal];
     [_boardCastButton setTitle:NSLocalizedString(@"MainViewController.boardcastButton.title.selected", @"") forState:UIControlStateSelected];
+    _boardCastButton.layer.shadowOffset = CGSizeMake(1, 1);
+    _boardCastButton.layer.shadowRadius = 2;
+    _boardCastButton.layer.shadowOpacity = 0.4;
     _boardCastButton.layer.cornerRadius = 10;
     [self.view addSubview:self.boardCastButton];
     

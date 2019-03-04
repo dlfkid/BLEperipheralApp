@@ -91,22 +91,20 @@
         };
         
         _propertiesArray = @[
-        generatePropertyViewModels(NSLocalizedString(@"Characteristic.propperty.boardcast", ""), 1),
-        generatePropertyViewModels(NSLocalizedString(@"Characteristic.propperty.read", ""), 2),
-        generatePropertyViewModels(NSLocalizedString(@"Characteristic.propperty.writeWithoutResponse", ""), 4),
-        generatePropertyViewModels(NSLocalizedString(@"Characteristic.propperty.write", ""), 8),
-        generatePropertyViewModels(NSLocalizedString(@"Characteristic.propperty.notify", ""), 10),
-        generatePropertyViewModels(NSLocalizedString(@"Characteristic.propperty.indicate", ""), 20),
-        generatePropertyViewModels(NSLocalizedString(@"Characteristic.propperty.authendicatedSignedWrite", ""), 40),
-        generatePropertyViewModels(NSLocalizedString(@"Characteristic.propperty.extendedProperties", ""), 80),
-        generatePropertyViewModels(NSLocalizedString(@"Characteristic.propperty.notifyEncryptionRequired", ""), 100),
-        generatePropertyViewModels(NSLocalizedString(@"Characteristic.propperty.indicateEncryptionRequired", ""), 200),
+        generatePropertyViewModels(NSLocalizedString(@"Characteristic.propperty.boardcast", ""), 0x01),
+        generatePropertyViewModels(NSLocalizedString(@"Characteristic.propperty.read", ""), 0x02),
+        generatePropertyViewModels(NSLocalizedString(@"Characteristic.propperty.writeWithoutResponse", ""), 0x04),
+        generatePropertyViewModels(NSLocalizedString(@"Characteristic.propperty.write", ""), 0x08),
+        generatePropertyViewModels(NSLocalizedString(@"Characteristic.propperty.notify", ""), 0x10),
+        generatePropertyViewModels(NSLocalizedString(@"Characteristic.propperty.indicate", ""), 0x20),
+        generatePropertyViewModels(NSLocalizedString(@"Characteristic.propperty.authendicatedSignedWrite", ""), 0x40),
+        generatePropertyViewModels(NSLocalizedString(@"Characteristic.propperty.extendedProperties", ""), 0x80),
+        generatePropertyViewModels(NSLocalizedString(@"Characteristic.propperty.notifyEncryptionRequired", ""), 0x100),
+        generatePropertyViewModels(NSLocalizedString(@"Characteristic.propperty.indicateEncryptionRequired", ""), 0x200),
         ];
         
         for (ViewModel *model in _propertiesArray) {
-            if (self.sampleCharacteristic.properties & model.rawOptionValue) {
-                model.selected = YES;
-            }
+            model.selected = self.sampleCharacteristic.properties & model.rawOptionValue;
         }
     }
     return _propertiesArray;
@@ -128,10 +126,10 @@
         };
         
         _permissionArray = @[
-                 generatePermissionViewModels(NSLocalizedString(@"Characteristic.permission.readable", ""), 1),
-                 generatePermissionViewModels(NSLocalizedString(@"Characteristic.permission.writeable", ""), 2),
-                 generatePermissionViewModels(NSLocalizedString(@"Characteristic.permission.readEncryptionRequired", ""), 4),
-                 generatePermissionViewModels(NSLocalizedString(@"Characteristic.permission.writeEncryptionRequired", ""), 8),
+                 generatePermissionViewModels(NSLocalizedString(@"Characteristic.permission.readable", ""), 0x01),
+                 generatePermissionViewModels(NSLocalizedString(@"Characteristic.permission.writeable", ""), 0x02),
+                 generatePermissionViewModels(NSLocalizedString(@"Characteristic.permission.readEncryptionRequired", ""), 0x04),
+                 generatePermissionViewModels(NSLocalizedString(@"Characteristic.permission.writeEncryptionRequired", ""), 0x08),
                  ];
     }
     return _permissionArray;
@@ -178,6 +176,10 @@
 
 #pragma mark - Actions
 
+- (BOOL)isReadOnly {
+    return !((self.currentPermissions & CBAttributePermissionsWriteable) || (self.currentPermissions & CBAttributePermissionsWriteEncryptionRequired) ||  (self.currentProperties & CBCharacteristicPropertyWrite) || (self.currentProperties & CBCharacteristicPropertyWriteWithoutResponse) || (self.currentProperties & CBCharacteristicPropertyAuthenticatedSignedWrites));
+}
+
 - (void)reloadData {
     [self.tableView reloadData];
 }
@@ -187,16 +189,17 @@
     _valueString = sampleCharacteristic.uuid;
     _descriptionText = sampleCharacteristic.descriptionText;
     self.currentProperties = sampleCharacteristic.properties;
+    self.currentPermissions = sampleCharacteristic.permission;
 }
 
 - (void)setCurrentProperties:(CBCharacteristicProperties)currentProperties {
     _currentProperties = currentProperties;
-    // NSLog(@"Current Properties was set to %lu", (unsigned long)currentProperties);
+    NSLog(@"Current Properties was set to %lu", (unsigned long)currentProperties);
 }
 
 - (void)setCurrentPermissions:(CBAttributePermissions)currentPermissions {
     _currentPermissions = currentPermissions;
-    // NSLog(@"Current Perissions was set to %lu", (unsigned long)currentPermissions);
+    NSLog(@"Current Perissions was set to %lu", (unsigned long)currentPermissions);
 }
 
 - (void)cancelButtnDidTappedAction {
@@ -225,7 +228,7 @@
     }
     
     // 如果不是只读属性的权限，无法写入当前值
-    if (self.currentPermissions & CBAttributePermissionsWriteable || self.currentPermissions & CBAttributePermissionsWriteEncryptionRequired) {
+    if ([self isReadOnly]) {
         self.valueString = nil;
     }
 
@@ -394,13 +397,7 @@
                 }];
             }
             else {
-                // 如果不是只读属性的特征，无法写入当前值
-                if (self.currentProperties & CBCharacteristicPropertyWrite || self.currentProperties & CBCharacteristicPropertyWriteWithoutResponse || self.currentProperties & CBCharacteristicPropertyAuthenticatedSignedWrites) {
-                    return;
-                }
-                
-                // 如果不是只读属性的权限，无法写入当前值
-                if (self.currentPermissions & CBAttributePermissionsWriteable || self.currentPermissions & CBAttributePermissionsWriteEncryptionRequired) {
+                if ([self isReadOnly]) {
                     return;
                 }
                 
@@ -438,9 +435,9 @@
             ViewModel *model = self.propertiesArray[indexPath.row];
             model.selected = !model.isSelected;
             if (model.isSelected) {
-                self.currentProperties += model.rawOptionValue;
+                self.currentProperties = self.currentProperties | model.rawOptionValue;
             } else {
-                self.currentProperties -= model.rawOptionValue;
+                self.currentProperties = self.currentProperties & (~model.rawOptionValue);
             }
             [self reloadData];
         }
@@ -451,9 +448,9 @@
             ViewModel *model = self.permissionArray[indexPath.row];
             model.selected = !model.isSelected;
             if (model.isSelected) {
-                self.currentPermissions += model.rawOptionValue;
+                self.currentPermissions = self.currentPermissions | model.rawOptionValue;
             } else {
-                self.currentProperties -= model.rawOptionValue;
+                self.currentPermissions = self.currentPermissions & (~model.rawOptionValue);
             }
             [self reloadData];
         }
