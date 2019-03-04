@@ -177,7 +177,10 @@
 #pragma mark - Actions
 
 - (BOOL)isReadOnly {
-    return !((self.currentPermissions & CBAttributePermissionsWriteable) || (self.currentPermissions & CBAttributePermissionsWriteEncryptionRequired) ||  (self.currentProperties & CBCharacteristicPropertyWrite) || (self.currentProperties & CBCharacteristicPropertyWriteWithoutResponse) || (self.currentProperties & CBCharacteristicPropertyAuthenticatedSignedWrites));
+    NSUInteger writableProperties = CBCharacteristicPropertyWrite | CBCharacteristicPropertyWriteWithoutResponse | CBCharacteristicPropertyAuthenticatedSignedWrites;
+    NSUInteger writablePermissions = CBAttributePermissionsWriteable | CBAttributePermissionsWriteEncryptionRequired;
+    
+    return !(self.currentPermissions & writablePermissions || self.currentProperties & writableProperties);
 }
 
 - (void)reloadData {
@@ -228,7 +231,7 @@
     }
     
     // 如果不是只读属性的权限，无法写入当前值
-    if ([self isReadOnly]) {
+    if (![self isReadOnly]) {
         self.valueString = nil;
     }
 
@@ -397,7 +400,7 @@
                 }];
             }
             else {
-                if ([self isReadOnly]) {
+                if (![self isReadOnly]) {
                     return;
                 }
                 

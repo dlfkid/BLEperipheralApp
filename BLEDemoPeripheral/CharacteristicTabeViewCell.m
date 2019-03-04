@@ -140,7 +140,10 @@
 }
 
 - (BOOL)isReadOnly {
-    return !((self.characteristic.permission & CBAttributePermissionsWriteable) || (self.characteristic.permission & CBAttributePermissionsWriteEncryptionRequired) ||  (self.characteristic.properties & CBCharacteristicPropertyWrite) || (self.characteristic.properties & CBCharacteristicPropertyWriteWithoutResponse) || (self.characteristic.properties & CBCharacteristicPropertyAuthenticatedSignedWrites));
+    NSUInteger writableProperties = CBCharacteristicPropertyWrite | CBCharacteristicPropertyWriteWithoutResponse | CBCharacteristicPropertyAuthenticatedSignedWrites;
+    NSUInteger writablePermissions = CBAttributePermissionsWriteable | CBAttributePermissionsWriteEncryptionRequired;
+    
+    return !(self.characteristic.permission & writablePermissions || self.characteristic.properties & writableProperties);
 }
 
 - (void)setUnFold:(BOOL)unFold {
