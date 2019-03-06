@@ -10,6 +10,7 @@
 
 // Controllers
 #import "ServiceViewController.h"
+#import "AboutViewController.h"
 
 // Views
 #import "ServiceTableViewCell.h"
@@ -52,6 +53,7 @@ static NSString * const kSampleCharacteristicUUID = @"CDD2";
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addButtonDidTappedAction)];
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemPageCurl target:self action:@selector(aboutButtonDidTappedAction)];
     [[DataBaseManager sharedDataBaseManager] dbOpen];
     self.serviceArray = [DPService loadMainService];
     [[DataBaseManager sharedDataBaseManager] dbClose];
@@ -131,6 +133,11 @@ static NSString * const kSampleCharacteristicUUID = @"CDD2";
 }
 
 #pragma mark - Actions
+
+- (void)aboutButtonDidTappedAction {
+    AboutViewController *aboutController = [[AboutViewController alloc] init];
+    [self.navigationController pushViewController:aboutController animated:YES];
+}
 
 - (void)addButtonDidTappedAction {
     ServiceViewController *serviceVC = [[ServiceViewController alloc] initWithService:nil];

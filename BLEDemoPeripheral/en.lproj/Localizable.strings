@@ -110,3 +110,5 @@
 "ServiceViewController.tableView.cell.descriptionText" = "Description";
 "ServiceViewController.tableView.cell.descriptionAlert.title" = "Input description";
 "CharacterisitcViewController.tableView.cell.descriptionText" = "Description";
+
+"AboutViewController.title" = "About";

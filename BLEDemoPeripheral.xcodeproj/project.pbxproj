@@ -27,6 +27,7 @@
 		B44D1FB51F3841840011AC95 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B44D1FB31F3841840011AC95 /* LaunchScreen.storyboard */; };
 		B44D1FBE1F3842770011AC95 /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B44D1FBD1F3842770011AC95 /* MainViewController.m */; };
 		B4C2881F221EFD7A00E528AE /* DataBaseManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B4C2881E221EFD7A00E528AE /* DataBaseManager.m */; };
+		B4F436A222301E760031EEC6 /* AboutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B4F436A122301E760031EEC6 /* AboutViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -72,6 +73,8 @@
 		B44D1FBD1F3842770011AC95 /* MainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainViewController.m; sourceTree = "<group>"; };
 		B4C2881D221EFD7A00E528AE /* DataBaseManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DataBaseManager.h; sourceTree = "<group>"; };
 		B4C2881E221EFD7A00E528AE /* DataBaseManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DataBaseManager.m; sourceTree = "<group>"; };
+		B4F436A022301E760031EEC6 /* AboutViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AboutViewController.h; sourceTree = "<group>"; };
+		B4F436A122301E760031EEC6 /* AboutViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AboutViewController.m; sourceTree = "<group>"; };
 		EDFDC52ACB2C95D53810726F /* Pods_BLEDemoPeripheral.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BLEDemoPeripheral.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -113,6 +116,8 @@
 				35184C6F220ADE82001C8242 /* ServiceViewController.m */,
 				3558C00B221174EE0041D02D /* CharacteristicViewController.h */,
 				3558C00C221174EE0041D02D /* CharacteristicViewController.m */,
+				B4F436A022301E760031EEC6 /* AboutViewController.h */,
+				B4F436A122301E760031EEC6 /* AboutViewController.m */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -357,6 +362,7 @@
 				35184C70220ADE82001C8242 /* ServiceViewController.m in Sources */,
 				B44D1FBE1F3842770011AC95 /* MainViewController.m in Sources */,
 				3558C01022117E900041D02D /* CBCharacteristic+StringExtensions.m in Sources */,
+				B4F436A222301E760031EEC6 /* AboutViewController.m in Sources */,
 				35184C73220C1A77001C8242 /* ServiceTableViewCell.m in Sources */,
 				35184C76220C2746001C8242 /* ViewModel.m in Sources */,
 				B4C2881F221EFD7A00E528AE /* DataBaseManager.m in Sources */,

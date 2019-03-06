@@ -110,3 +110,4 @@
 "ServiceViewController.tableView.cell.descriptionAlert.title" = "输入服务的说明";
 "CharacterisitcViewController.tableView.cell.descriptionText" = "说明";
 
+"AboutViewController.title" = "关于";

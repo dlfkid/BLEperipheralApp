@@ -62,4 +62,6 @@
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 }
 
+#warning TODO: 实现版本号和Build号的获取填入APP信息，实现AboutView
+
 @end
