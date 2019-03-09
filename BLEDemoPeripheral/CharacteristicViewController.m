@@ -222,12 +222,10 @@
     _sampleCharacteristic.properties = self.currentProperties;
     _sampleCharacteristic.permission = self.currentPermissions;
     _sampleCharacteristic.descriptionText = self.descriptionText;
-    _sampleCharacteristic.value = self.valueString;
     // 如果不是只读属性的权限，无法写入当前值
     if (_sampleCharacteristic.isReadOnly) {
-        self.valueString = nil;
+        _sampleCharacteristic.value = self.valueString;
     }
-//    _sampleCharacteristic = [[CBMutableCharacteristic alloc] initWithType:[CBUUID UUIDWithString:[CBCharacteristic uuidValid:self.UUIDString]] properties:self.currentProperties value:value permissions:self.currentPermissions];
     !self.characteristicDidSavedHandler ?: self.characteristicDidSavedHandler(self.sampleCharacteristic);
     [self.navigationController popViewControllerAnimated:YES];
 }

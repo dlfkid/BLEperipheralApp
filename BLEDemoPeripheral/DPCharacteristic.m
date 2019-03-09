@@ -76,7 +76,7 @@
 }
 
 - (BOOL)isReadOnly {
-    NSUInteger writableProperties = CBCharacteristicPropertyWrite | CBCharacteristicPropertyWriteWithoutResponse | CBCharacteristicPropertyAuthenticatedSignedWrites;
+    NSUInteger writableProperties = CBCharacteristicPropertyBroadcast | CBCharacteristicPropertyWrite | CBCharacteristicPropertyWriteWithoutResponse | CBCharacteristicPropertyAuthenticatedSignedWrites | CBCharacteristicPropertyIndicate | CBCharacteristicPropertyNotify | CBCharacteristicPropertyExtendedProperties | CBCharacteristicPropertyIndicateEncryptionRequired | CBCharacteristicPropertyNotifyEncryptionRequired;
     NSUInteger writablePermissions = CBAttributePermissionsWriteable | CBAttributePermissionsWriteEncryptionRequired;
     
     return !(self.permission & writablePermissions || self.properties & writableProperties);

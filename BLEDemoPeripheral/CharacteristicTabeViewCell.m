@@ -136,14 +136,7 @@
     }
     self.valueLabel.text = [valueText stringByAppendingFormat:@" %@", valueString];
     
-    self.notifyView.hidden = ![self isReadOnly];
-}
-
-- (BOOL)isReadOnly {
-    NSUInteger writableProperties = CBCharacteristicPropertyWrite | CBCharacteristicPropertyWriteWithoutResponse | CBCharacteristicPropertyAuthenticatedSignedWrites;
-    NSUInteger writablePermissions = CBAttributePermissionsWriteable | CBAttributePermissionsWriteEncryptionRequired;
-    
-    return !(self.characteristic.permission & writablePermissions || self.characteristic.properties & writableProperties);
+    self.notifyView.hidden = !self.characteristic.isReadOnly;
 }
 
 - (void)setUnFold:(BOOL)unFold {
