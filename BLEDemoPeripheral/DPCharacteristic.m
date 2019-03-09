@@ -68,12 +68,18 @@
 - (CBMutableCharacteristic *)convertToCBCharacteristic {
     CBUUID *cbuuid = [CBUUID UUIDWithString:self.uuid];
     NSData *cbValue = [self.value dataUsingEncoding:NSUTF8StringEncoding];
-    BOOL isReadOnly = !(self.permission & CBAttributePermissionsWriteable) || !(self.permission & CBAttributePermissionsWriteEncryptionRequired);
-    if (!isReadOnly) {
+    if (!self.isReadOnly) {
         cbValue = nil;
     }
     CBMutableCharacteristic *chacteristic = [[CBMutableCharacteristic alloc] initWithType:cbuuid properties:self.properties value:cbValue permissions:self.permission];
     return chacteristic;
+}
+
+- (BOOL)isReadOnly {
+    NSUInteger writableProperties = CBCharacteristicPropertyWrite | CBCharacteristicPropertyWriteWithoutResponse | CBCharacteristicPropertyAuthenticatedSignedWrites;
+    NSUInteger writablePermissions = CBAttributePermissionsWriteable | CBAttributePermissionsWriteEncryptionRequired;
+    
+    return !(self.permission & writablePermissions || self.properties & writableProperties);
 }
 
 @end

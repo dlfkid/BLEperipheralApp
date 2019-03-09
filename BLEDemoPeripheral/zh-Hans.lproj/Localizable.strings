@@ -111,3 +111,6 @@
 "CharacterisitcViewController.tableView.cell.descriptionText" = "说明";
 
 "AboutViewController.title" = "关于";
+"AboutViewController.versionLabel.prefix" = "版本 : ";
+"AboutViewController.buildLabel.prefix" = "Build : ";
+"AboutViewController.autherLabel.prefix" = "版权 ";

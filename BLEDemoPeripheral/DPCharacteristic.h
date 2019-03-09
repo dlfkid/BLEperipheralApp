@@ -24,6 +24,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, assign) NSUInteger properties;
 @property (nonatomic, assign) NSUInteger permission;
 @property (nonatomic, copy) NSString *descriptionText;
+@property (nonatomic, assign, readonly) BOOL isReadOnly;
 
 - (instancetype)initWithUUID:(NSString *)uuid;
 

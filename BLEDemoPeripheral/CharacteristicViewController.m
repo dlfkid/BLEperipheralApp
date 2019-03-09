@@ -176,13 +176,6 @@
 
 #pragma mark - Actions
 
-- (BOOL)isReadOnly {
-    NSUInteger writableProperties = CBCharacteristicPropertyWrite | CBCharacteristicPropertyWriteWithoutResponse | CBCharacteristicPropertyAuthenticatedSignedWrites;
-    NSUInteger writablePermissions = CBAttributePermissionsWriteable | CBAttributePermissionsWriteEncryptionRequired;
-    
-    return !(self.currentPermissions & writablePermissions || self.currentProperties & writableProperties);
-}
-
 - (void)reloadData {
     [self.tableView reloadData];
 }
@@ -224,21 +217,16 @@
         
         return;
     }
-    
-    // 如果不是只读属性的特征，无法写入当前值
-    if (self.currentProperties & CBCharacteristicPropertyWrite || self.currentProperties & CBCharacteristicPropertyWriteWithoutResponse || self.currentProperties & CBCharacteristicPropertyAuthenticatedSignedWrites) {
-        self.valueString = nil;
-    }
-    
-    // 如果不是只读属性的权限，无法写入当前值
-    if (![self isReadOnly]) {
-        self.valueString = nil;
-    }
 
     _sampleCharacteristic = [[DPCharacteristic alloc] initWithUUID:self.UUIDString];
     _sampleCharacteristic.properties = self.currentProperties;
     _sampleCharacteristic.permission = self.currentPermissions;
     _sampleCharacteristic.descriptionText = self.descriptionText;
+    _sampleCharacteristic.value = self.valueString;
+    // 如果不是只读属性的权限，无法写入当前值
+    if (_sampleCharacteristic.isReadOnly) {
+        self.valueString = nil;
+    }
 //    _sampleCharacteristic = [[CBMutableCharacteristic alloc] initWithType:[CBUUID UUIDWithString:[CBCharacteristic uuidValid:self.UUIDString]] properties:self.currentProperties value:value permissions:self.currentPermissions];
     !self.characteristicDidSavedHandler ?: self.characteristicDidSavedHandler(self.sampleCharacteristic);
     [self.navigationController popViewControllerAnimated:YES];
@@ -400,9 +388,6 @@
                 }];
             }
             else {
-                if (![self isReadOnly]) {
-                    return;
-                }
                 
                 // 修改当前值
                 PSTAlertController *controller = [PSTAlertController alertControllerWithTitle:NSLocalizedString(@"CharacteristicTableViewCell.value", "") message:@"" preferredStyle:PSTAlertControllerStyleAlert];

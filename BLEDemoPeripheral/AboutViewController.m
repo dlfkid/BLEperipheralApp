@@ -35,18 +35,22 @@
 - (void)setupContent {
     _logoImageView = [[UIImageView alloc] initWithFrame:CGRectZero];
     _logoImageView.contentMode = UIViewContentModeScaleAspectFill;
+    _logoImageView.image = [UIImage imageNamed:@"blueTooth_icon"];
     [self.view addSubview:self.logoImageView];
     
     _appNameLabel = [[UILabel alloc] initWithFrame:CGRectZero];
     _appNameLabel.textAlignment = NSTextAlignmentCenter;
+    _appNameLabel.text = APP_NAME;
     [self.view addSubview:self.appNameLabel];
     
     _versionLabel = [[UILabel alloc] initWithFrame:CGRectZero];
     _versionLabel.textAlignment = NSTextAlignmentCenter;
+    _versionLabel.text = [NSString stringWithFormat:@"%@%@", NSLocalizedString(@"AboutViewController.versionLabel.prefix", ""), APP_VERSION];
     [self.view addSubview:self.versionLabel];
     
     _buildLabel = [[UILabel alloc] initWithFrame:CGRectZero];
     _buildLabel.textAlignment = NSTextAlignmentCenter;
+    _buildLabel.text = [NSString stringWithFormat:@"%@%@", NSLocalizedString(@"AboutViewController.buildLabel.prefix", ""), APP_BUILD];
     [self.view addSubview:self.buildLabel];
     
     _autherLabel = [[UILabel alloc] initWithFrame:CGRectZero];
@@ -55,12 +59,13 @@
     _autherLabel.numberOfLines = 0;
     _autherLabel.lineBreakMode = NSLineBreakByWordWrapping;
     _autherLabel.font = [UIFont systemFontOfSize:[UIFont systemFontSize]];
+    _autherLabel.text = [NSString stringWithFormat:@"%@%@", NSLocalizedString(@"AboutViewController.autherLabel.prefix", ""), @"@ 2019 github.com/dlfkid"];
     [self.view addSubview:self.autherLabel];
     
     [self.logoImageView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.mas_equalTo(0);
         make.size.mas_equalTo(DSAdaptedValue(100));
-        make.centerY.mas_equalTo(- 50);
+        make.top.mas_equalTo(DSStatusBarMargin + 44 + DSAdaptedValue(80));
     }];
     
     [self.appNameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -79,9 +84,9 @@
     }];
     
     [self.autherLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.bottom.mas_offset(- 10).mas_offset(- DSBottomMargin);
-        make.left.mas_equalTo(10);
-        make.right.mas_equalTo(-10);
+        make.left.right.mas_equalTo(0);
+        CGFloat margin = -DSBottomMargin;
+        make.bottom.mas_equalTo(margin - 10);
     }];
 }
 

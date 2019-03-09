@@ -53,7 +53,11 @@ static NSString * const kSampleCharacteristicUUID = @"CDD2";
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addButtonDidTappedAction)];
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemPageCurl target:self action:@selector(aboutButtonDidTappedAction)];
+    UIButton *aboutButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    UIImage *icon = [UIImage imageScaledFromImage:[UIImage imageNamed:@"edit"] Size:CGSizeMake(DSAdaptedValue(30), DSAdaptedValue(28))];
+    [aboutButton setBackgroundImage:icon forState:UIControlStateNormal];
+    [aboutButton addTarget:self action:@selector(aboutButtonDidTappedAction) forControlEvents:UIControlEventTouchUpInside];
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:aboutButton];
     [[DataBaseManager sharedDataBaseManager] dbOpen];
     self.serviceArray = [DPService loadMainService];
     [[DataBaseManager sharedDataBaseManager] dbClose];

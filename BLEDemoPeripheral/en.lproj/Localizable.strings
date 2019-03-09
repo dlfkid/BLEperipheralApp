@@ -112,3 +112,6 @@
 "CharacterisitcViewController.tableView.cell.descriptionText" = "Description";
 
 "AboutViewController.title" = "About";
+"AboutViewController.versionLabel.prefix" = "Version : ";
+"AboutViewController.buildLabel.prefix" = "Build : ";
+"AboutViewController.autherLabel.prefix" = "Copyright ";
