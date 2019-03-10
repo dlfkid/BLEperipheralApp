@@ -18,6 +18,7 @@
 
 @implementation AppDelegate
 
+#warning TODO: Add BLESearcher functinos and make it side menu switchAble
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // 初始化数据库

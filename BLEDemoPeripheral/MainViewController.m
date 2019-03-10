@@ -284,7 +284,7 @@ static NSString * const kSampleCharacteristicUUID = @"CDD2";
     self.stateLabel.text = [NSString stringWithFormat:@"%@%@", NSLocalizedString(@"MainViewController.stateLabel.text", @""), [self peripherialStateString:peripheral.state]];
 }
 
-#warning TODO: 在这里处理中心设备对外设的读写请求
+#warning TODO: Popup alertController when characterisitc is writted
 
 - (void)peripheralManager:(CBPeripheralManager *)peripheral didReceiveReadRequest:(CBATTRequest *)request {
     [peripheral respondToRequest:request withResult:CBATTErrorSuccess];
