@@ -7,12 +7,22 @@
 //
 
 #import "AppDelegate.h"
+
+// Controllers
+#import <PKRevealController/PKRevealController.h>
 #import "MainViewController.h"
+#import "SideMenuViewController.h"
+
+// Helpers
 #import <UIExtensionKit/UIColor+UIExtensionKit.h>
 #import <IQKeyboardManager/IQKeyboardManager.h>
 #import "DataBaseManager.h"
 
-@interface AppDelegate ()
+
+
+@interface AppDelegate () <PKRevealing>
+
+@property (nonatomic, strong, readwrite) PKRevealController *revealController;
 
 @end
 
@@ -23,12 +33,23 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // 初始化数据库
     [[DataBaseManager sharedDataBaseManager] dataBaseInitialization];
+    
+    // 设置侧滑菜单和主菜单
     self.window = [[UIWindow alloc]initWithFrame:[UIScreen mainScreen].bounds];
-    [self.window makeKeyAndVisible];
     [self.window setBackgroundColor:[UIColor whiteColor]];
     MainViewController *main = [[MainViewController alloc]init];
-    UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:main];
-    [self.window setRootViewController:nav];
+    UINavigationController *frontViewController = [[UINavigationController alloc]initWithRootViewController:main];
+    
+    SideMenuViewController *left = [SideMenuViewController sharedMenuController];
+    UINavigationController *leftViewController = [[UINavigationController alloc] initWithRootViewController:left];
+    
+    self.revealController = [PKRevealController revealControllerWithFrontViewController:frontViewController leftViewController:leftViewController];
+    
+    self.revealController.delegate = self;
+    self.revealController.animationDuration = 0.25;
+    
+    self.window.rootViewController = self.revealController;
+    [self.window makeKeyAndVisible];
     // 设置主色调
     [UIColor setTintColor:[UIColor colorWithR:57.f G:98.f B:153.f]];
     // 激活智能键盘
@@ -61,6 +82,17 @@
 
 - (void)applicationWillTerminate:(UIApplication *)application {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+}
+
+#pragma mark - PKRevealingDelegate
+
+- (void)revealController:(PKRevealController *)revealController didChangeToState:(PKRevealControllerState)state {
+    NSLog(@"%@ (%d)", NSStringFromSelector(_cmd), (int)state);
+}
+
+- (void)revealController:(PKRevealController *)revealController willChangeToState:(PKRevealControllerState)next {
+    PKRevealControllerState current = revealController.state;
+    NSLog(@"%@ (%d -> %d)", NSStringFromSelector(_cmd), (int)current, (int)next);
 }
 
 @end
