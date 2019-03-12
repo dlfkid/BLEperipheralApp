@@ -119,3 +119,5 @@
 "SideMenuViewController.option.peripheral" = "外围设备";
 "SideMenuViewController.option.central" = "中心设备";
 "SideMenuViewController.option.about" = "关于";
+
+"CentralViewController.title" = "中心设备";

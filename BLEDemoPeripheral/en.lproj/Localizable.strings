@@ -120,3 +120,5 @@
 "SideMenuViewController.option.peripheral" = "Peripheral";
 "SideMenuViewController.option.central" = "Central";
 "SideMenuViewController.option.about" = "About";
+
+"CentralViewController.title" = "Central";

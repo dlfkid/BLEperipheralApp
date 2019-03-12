@@ -19,6 +19,8 @@
 		35A7D6622223980300B03F12 /* DPService.m in Sources */ = {isa = PBXBuildFile; fileRef = 35A7D6612223980300B03F12 /* DPService.m */; };
 		35A7D6652223981100B03F12 /* DPCharacteristic.m in Sources */ = {isa = PBXBuildFile; fileRef = 35A7D6642223981100B03F12 /* DPCharacteristic.m */; };
 		35CF4361221403D200107DE4 /* SwitchTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 35CF4360221403D200107DE4 /* SwitchTableViewCell.m */; };
+		35F1F89E2237B74C0042B1ED /* CentralViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 35F1F89D2237B74C0042B1ED /* CentralViewController.m */; };
+		35F1F8A12237BB120042B1ED /* PeripheralTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 35F1F8A02237BB120042B1ED /* PeripheralTableViewCell.m */; };
 		35F7DB23220889270045F7B0 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 35F7DB25220889270045F7B0 /* Localizable.strings */; };
 		819F4A0A64B934D5E6793BA9 /* Pods_BLEDemoPeripheral.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EDFDC52ACB2C95D53810726F /* Pods_BLEDemoPeripheral.framework */; };
 		B44D1FA71F3841840011AC95 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = B44D1FA61F3841840011AC95 /* main.m */; };
@@ -59,6 +61,10 @@
 		35A7D6642223981100B03F12 /* DPCharacteristic.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DPCharacteristic.m; sourceTree = "<group>"; };
 		35CF435F221403D200107DE4 /* SwitchTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SwitchTableViewCell.h; sourceTree = "<group>"; };
 		35CF4360221403D200107DE4 /* SwitchTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SwitchTableViewCell.m; sourceTree = "<group>"; };
+		35F1F89C2237B74C0042B1ED /* CentralViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CentralViewController.h; sourceTree = "<group>"; };
+		35F1F89D2237B74C0042B1ED /* CentralViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CentralViewController.m; sourceTree = "<group>"; };
+		35F1F89F2237BB120042B1ED /* PeripheralTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PeripheralTableViewCell.h; sourceTree = "<group>"; };
+		35F1F8A02237BB120042B1ED /* PeripheralTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PeripheralTableViewCell.m; sourceTree = "<group>"; };
 		35F7DB20220888870045F7B0 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/LaunchScreen.strings"; sourceTree = "<group>"; };
 		35F7DB24220889270045F7B0 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		35F7DB26220889390045F7B0 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
@@ -104,6 +110,8 @@
 				35184C72220C1A77001C8242 /* ServiceTableViewCell.m */,
 				35CF435F221403D200107DE4 /* SwitchTableViewCell.h */,
 				35CF4360221403D200107DE4 /* SwitchTableViewCell.m */,
+				35F1F89F2237BB120042B1ED /* PeripheralTableViewCell.h */,
+				35F1F8A02237BB120042B1ED /* PeripheralTableViewCell.m */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -123,6 +131,8 @@
 				B4F436A122301E760031EEC6 /* AboutViewController.m */,
 				B4EAB1D52236A05300CCA4F5 /* SideMenuViewController.h */,
 				B4EAB1D62236A05300CCA4F5 /* SideMenuViewController.m */,
+				35F1F89C2237B74C0042B1ED /* CentralViewController.h */,
+				35F1F89D2237B74C0042B1ED /* CentralViewController.m */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -375,8 +385,10 @@
 				35184C76220C2746001C8242 /* ViewModel.m in Sources */,
 				B4C2881F221EFD7A00E528AE /* DataBaseManager.m in Sources */,
 				3558C0092211733A0041D02D /* ControllerAnimationManager.m in Sources */,
+				35F1F8A12237BB120042B1ED /* PeripheralTableViewCell.m in Sources */,
 				35A7D6622223980300B03F12 /* DPService.m in Sources */,
 				350EDF8E22094CEF003AD2D9 /* CharacteristicTabeViewCell.m in Sources */,
+				35F1F89E2237B74C0042B1ED /* CentralViewController.m in Sources */,
 				B44D1FA71F3841840011AC95 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
