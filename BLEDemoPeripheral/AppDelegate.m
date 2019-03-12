@@ -16,6 +16,7 @@
 // Helpers
 #import <UIExtensionKit/UIColor+UIExtensionKit.h>
 #import <IQKeyboardManager/IQKeyboardManager.h>
+#import <iOSDeviceScreenAdapter/DeviceScreenAdaptor.h>
 #import "DataBaseManager.h"
 
 
@@ -34,6 +35,9 @@
     // 初始化数据库
     [[DataBaseManager sharedDataBaseManager] dataBaseInitialization];
     
+    // 设置开发者屏幕型号
+    [[DeviceScreenAdaptor sharedAdaptor] setDeveloperScreenType:DeviceScreenType5_5];
+    
     // 设置侧滑菜单和主菜单
     self.window = [[UIWindow alloc]initWithFrame:[UIScreen mainScreen].bounds];
     [self.window setBackgroundColor:[UIColor whiteColor]];
@@ -47,6 +51,7 @@
     
     self.revealController.delegate = self;
     self.revealController.animationDuration = 0.25;
+    [self.revealController setMinimumWidth:[SideMenuViewController sideMenuWidth] maximumWidth:[SideMenuViewController sideMenuWidth] forViewController:leftViewController];
     
     self.window.rootViewController = self.revealController;
     [self.window makeKeyAndVisible];
@@ -87,12 +92,12 @@
 #pragma mark - PKRevealingDelegate
 
 - (void)revealController:(PKRevealController *)revealController didChangeToState:(PKRevealControllerState)state {
-    NSLog(@"%@ (%d)", NSStringFromSelector(_cmd), (int)state);
+    // NSLog(@"%@ (%d)", NSStringFromSelector(_cmd), (int)state);
 }
 
 - (void)revealController:(PKRevealController *)revealController willChangeToState:(PKRevealControllerState)next {
-    PKRevealControllerState current = revealController.state;
-    NSLog(@"%@ (%d -> %d)", NSStringFromSelector(_cmd), (int)current, (int)next);
+//    PKRevealControllerState current = revealController.state;
+//    NSLog(@"%@ (%d -> %d)", NSStringFromSelector(_cmd), (int)current, (int)next);
 }
 
 @end

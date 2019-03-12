@@ -14,6 +14,14 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (instancetype)sharedMenuController;
 
++ (CGFloat)sideMenuWidth;
+
++ (void)showAboutViewController;
+
++ (void)showBLEPeripheralViewController;
+
++ (void)showBLECentralViewController;
+
 @end
 
 NS_ASSUME_NONNULL_END

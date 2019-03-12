@@ -8,7 +8,10 @@
 
 #import "AboutViewController.h"
 
+// Helpers
 #import <iOSDeviceScreenAdapter/DeviceScreenAdaptor.h>
+#import <PKRevealController/PKRevealController.h>
+#import "SideMenuViewController.h"
 
 @interface AboutViewController ()
 
@@ -29,6 +32,11 @@
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
     self.navigationItem.title = NSLocalizedString(@"AboutViewController.title", "");
+    UIButton *aboutButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    UIImage *icon = [UIImage imageScaledFromImage:[UIImage imageNamed:@"edit"] Size:CGSizeMake(DSAdaptedValue(30), DSAdaptedValue(28))];
+    [aboutButton setBackgroundImage:icon forState:UIControlStateNormal];
+    [aboutButton addTarget:self action:@selector(menuButtonDidTappedAction) forControlEvents:UIControlEventTouchUpInside];
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:aboutButton];
     [self setupContent];
 }
 
@@ -95,5 +103,9 @@
 }
 
 #pragma mark - Actions
+
+- (void)menuButtonDidTappedAction {
+    [self.revealController showViewController:self.revealController.leftViewController];
+}
 
 @end

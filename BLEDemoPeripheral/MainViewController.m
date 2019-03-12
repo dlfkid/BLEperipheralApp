@@ -21,6 +21,7 @@
 #import "DPCharacteristic.h"
 
 // Helpers
+#import <PKRevealController/PKRevealController.h>
 #import "DataBaseManager.h"
 
 
@@ -56,7 +57,7 @@ static NSString * const kSampleCharacteristicUUID = @"CDD2";
     UIButton *aboutButton = [UIButton buttonWithType:UIButtonTypeCustom];
     UIImage *icon = [UIImage imageScaledFromImage:[UIImage imageNamed:@"edit"] Size:CGSizeMake(DSAdaptedValue(30), DSAdaptedValue(28))];
     [aboutButton setBackgroundImage:icon forState:UIControlStateNormal];
-    [aboutButton addTarget:self action:@selector(aboutButtonDidTappedAction) forControlEvents:UIControlEventTouchUpInside];
+    [aboutButton addTarget:self action:@selector(menuButtonDidTappedAction) forControlEvents:UIControlEventTouchUpInside];
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:aboutButton];
     [[DataBaseManager sharedDataBaseManager] dbOpen];
     self.serviceArray = [DPService loadMainService];
@@ -138,9 +139,8 @@ static NSString * const kSampleCharacteristicUUID = @"CDD2";
 
 #pragma mark - Actions
 
-- (void)aboutButtonDidTappedAction {
-    AboutViewController *aboutController = [[AboutViewController alloc] init];
-    [self.navigationController pushViewController:aboutController animated:YES];
+- (void)menuButtonDidTappedAction {
+    [self.revealController showViewController:self.revealController.leftViewController];
 }
 
 - (void)addButtonDidTappedAction {

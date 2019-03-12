@@ -32,26 +32,33 @@
 			<key>orderHint</key>
 			<integer>4</integer>
 		</dict>
-		<key>PSTAlertController.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-			<key>orderHint</key>
-			<integer>6</integer>
-		</dict>
-		<key>Pods-BLEDemoPeripheral.xcscheme</key>
+		<key>PKRevealController.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
 			<key>orderHint</key>
 			<integer>5</integer>
 		</dict>
-		<key>UIExtensionKit.xcscheme</key>
+		<key>PSTAlertController.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
 			<key>orderHint</key>
 			<integer>7</integer>
+		</dict>
+		<key>Pods-BLEDemoPeripheral.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+			<key>orderHint</key>
+			<integer>6</integer>
+		</dict>
+		<key>UIExtensionKit.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+			<key>orderHint</key>
+			<integer>8</integer>
 		</dict>
 		<key>iOSDeviceScreenAdapter.xcscheme</key>
 		<dict>

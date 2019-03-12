@@ -30,6 +30,7 @@
     return self;
 }
 
+
 + (NSArray<DPService *> *)loadMainService {
     NSString *queryFormat = [NSString stringWithFormat:@"SELECT (uuid) FROM %@ WHERE is_included = %d", kTableServices, NO];
     FMResultSet *result = [[DataBaseManager sharedDataBaseManager].dataBase executeQuery:queryFormat];

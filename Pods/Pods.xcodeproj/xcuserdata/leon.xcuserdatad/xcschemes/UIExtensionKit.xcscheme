@@ -14,7 +14,7 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "C4524E5F7EB8E5F5B07445454B903594"
+               BlueprintIdentifier = "DE743337754FDAE651D2172C1C083535"
                BlueprintName = "UIExtensionKit"
                ReferencedContainer = "container:Pods.xcodeproj"
                BuildableName = "UIExtensionKit.framework">

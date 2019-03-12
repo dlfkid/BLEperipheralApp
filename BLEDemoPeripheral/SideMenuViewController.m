@@ -11,6 +11,7 @@
 // Controller
 #import <PKRevealController/PKRevealController.h>
 #import "MainViewController.h"
+#import "AboutViewController.h"
 
 // Models
 #import "ViewModel.h"
@@ -45,9 +46,9 @@
             return model;
         };
         
-        _optionModels = @[generateOptionModelHandler(NSLocalizedString(@"SideMenuViewController.option.peripheral", ""), ^(void){ [self performSelector:@selector(showBLEPeripheralViewController) withObject:nil afterDelay:0]; }),
-                          generateOptionModelHandler(NSLocalizedString(@"SideMenuViewController.option.central", ""), ^(void){ [self performSelector:@selector(showBLECentralViewController) withObject:nil afterDelay:0]; }),
-                          generateOptionModelHandler(NSLocalizedString(@"SideMenuViewController.option.about", ""), ^(void){ [self performSelector:@selector(showAboutViewController) withObject:nil afterDelay:0]; })
+        _optionModels = @[generateOptionModelHandler(NSLocalizedString(@"SideMenuViewController.option.peripheral", ""), ^(void){ [SideMenuViewController showBLEPeripheralViewController]; }),
+                          generateOptionModelHandler(NSLocalizedString(@"SideMenuViewController.option.central", ""), ^(void){ [SideMenuViewController showBLECentralViewController]; }),
+                          generateOptionModelHandler(NSLocalizedString(@"SideMenuViewController.option.about", ""), ^(void){ [SideMenuViewController showAboutViewController]; })
                            ];
     }
     return self;
@@ -55,7 +56,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.navigationItem.title = NSLocalizedString(@"SideMenuViewController.title", "");
+    // self.navigationItem.title = NSLocalizedString(@"SideMenuViewController.title", "");
     [self setupContent];
 }
 
@@ -69,7 +70,8 @@
     
     [self.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.mas_equalTo(DSStatusBarMargin + 44);
-        make.left.right.mas_equalTo(0);
+        make.left.mas_equalTo(0);
+        make.width.mas_equalTo([SideMenuViewController sideMenuWidth]);
         make.bottom.mas_equalTo(0);
     }];
 }
@@ -78,16 +80,27 @@
 
 #pragma mark - Actions
 
++ (CGFloat)sideMenuWidth {
+    return DSAdaptedValue(220);
+}
+
 + (void)showAboutViewController {
     NSLog(@"Showing about viewController");
+    UINavigationController *about = [[UINavigationController alloc] initWithRootViewController:[[AboutViewController alloc] init]];
+    [SideMenuViewController sharedMenuController].revealController.frontViewController = about;
+    [[SideMenuViewController sharedMenuController].revealController showViewController:[SideMenuViewController sharedMenuController].revealController.frontViewController];
 }
 
 + (void)showBLEPeripheralViewController {
     NSLog(@"Showing Peripheral viewController");
+    UINavigationController *main = [[UINavigationController alloc] initWithRootViewController:[[MainViewController alloc] init]];
+    [SideMenuViewController sharedMenuController].revealController.frontViewController = main;
+    [[SideMenuViewController sharedMenuController].revealController showViewController:[SideMenuViewController sharedMenuController].revealController.frontViewController];
 }
 
 + (void)showBLECentralViewController {
-    NSLog(@"Show Central viewController");
+    NSLog(@"Showing Central viewController");
+    [[SideMenuViewController sharedMenuController].revealController showViewController:[SideMenuViewController sharedMenuController].revealController.frontViewController];
 }
 
 #pragma mark - TableViewDataSource
