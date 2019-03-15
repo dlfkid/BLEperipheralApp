@@ -12,6 +12,7 @@
 #import <PKRevealController/PKRevealController.h>
 #import "MainViewController.h"
 #import "AboutViewController.h"
+#import "CentralViewController.h"
 
 // Models
 #import "ViewModel.h"
@@ -100,6 +101,8 @@
 
 + (void)showBLECentralViewController {
     NSLog(@"Showing Central viewController");
+    UINavigationController *central = [[UINavigationController alloc] initWithRootViewController:[[CentralViewController alloc] init]];
+    [SideMenuViewController sharedMenuController].revealController.frontViewController = central;
     [[SideMenuViewController sharedMenuController].revealController showViewController:[SideMenuViewController sharedMenuController].revealController.frontViewController];
 }
 

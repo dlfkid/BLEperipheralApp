@@ -76,7 +76,16 @@
 
 - (void)setPeripheral:(CBPeripheral *)peripheral {
     _peripheral = peripheral;
-    
+    self.titleLabel.text = peripheral.name;
+    self.subTitileLabel.text = peripheral.identifier.UUIDString;
+    self.stateLabel.text = [PeripheralTableViewCell peripheralStateString:peripheral.state];
+    if (peripheral.state == CBPeripheralStateConnected) {
+        self.stateLabel.textColor = [UIColor greenColor];
+    } else if (peripheral.state == CBPeripheralStateDisconnected) {
+        self.stateLabel.textColor = [UIColor redColor];
+    } else {
+        self.stateLabel.textColor = [UIColor lightGrayColor];
+    }
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context {
@@ -93,7 +102,21 @@
     return 60;
 }
 
-
++ (NSString *)peripheralStateString:(CBPeripheralState)state {
+    switch (state) {
+        case CBPeripheralStateConnected:
+            return NSLocalizedString(@"CBPeripheralState.connected", "");
+            
+        case CBPeripheralStateConnecting:
+            return NSLocalizedString(@"CBPeripheralState.connecting", "");
+        
+        case CBPeripheralStateDisconnected:
+            return NSLocalizedString(@"CBPeripheralState.disconnected", "");
+        
+        case CBPeripheralStateDisconnecting:
+            return NSLocalizedString(@"CBPeripheralState.disconnecting", "");
+    }
+}
 
 
 @end

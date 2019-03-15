@@ -122,3 +122,10 @@
 "SideMenuViewController.option.about" = "About";
 
 "CentralViewController.title" = "Central";
+
+"CBPeripheralState.connected" = "Connected";
+"CBPeripheralState.connecting" = "Connecting";
+"CBPeripheralState.disconnected" = "Disconnected";
+"CBPeripheralState.disconnecting" = "Disconnecting";
+
+"CentralViewController.rightItem.scan" = "Scan";

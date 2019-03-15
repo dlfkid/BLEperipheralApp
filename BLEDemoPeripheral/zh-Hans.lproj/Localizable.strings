@@ -121,3 +121,10 @@
 "SideMenuViewController.option.about" = "关于";
 
 "CentralViewController.title" = "中心设备";
+
+"CBPeripheralState.connected" = "已连接";
+"CBPeripheralState.connecting" = "连接中";
+"CBPeripheralState.disconnected" = "已断开";
+"CBPeripheralState.disconnecting" = "断开中";
+
+"CentralViewController.rightItem.scan" = "搜索设备";
