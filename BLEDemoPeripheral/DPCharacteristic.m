@@ -28,6 +28,17 @@
     return self;
 }
 
+- (instancetype)initWithCBCharacteristic:(CBCharacteristic *)characteristic {
+    self = [super init];
+    if (self) {
+        _uuid = characteristic.UUID.UUIDString;
+        _viewModel = [[ViewModel alloc] init];
+        _value = [[NSString alloc] initWithData:characteristic.value encoding:NSUTF8StringEncoding];
+        _properties = characteristic.properties;
+    }
+    return self;
+}
+
 + (DPCharacteristic *)loadCharacteristicWithUUID:(NSString *)uuidString {
     NSString *characterQuery = [NSString stringWithFormat:@"SELECT * FROM %@ WHERE uuid = '%@'", kTableCharacteristics, uuidString];
     FMResultSet *result = [[DataBaseManager sharedDataBaseManager].dataBase executeQuery:characterQuery];

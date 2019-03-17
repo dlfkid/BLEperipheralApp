@@ -30,6 +30,28 @@
     return self;
 }
 
+- (instancetype)initWithCBService:(CBService *)service {
+    self = [super init];
+    if (self) {
+        _uuid = service.UUID.UUIDString;
+        _primary = service.isPrimary;
+        _viewModel = [[ViewModel alloc] init];
+        NSMutableArray *includedService = [NSMutableArray array];
+        for (CBService *sampleService in service.includedServices) {
+            DPService *subService = [[DPService alloc] initWithCBService:sampleService];
+            subService.subService = YES;
+            [includedService addObject:subService];
+        }
+        _includedService = includedService;
+        NSMutableArray *charateristics = [NSMutableArray array];
+        for (CBCharacteristic *character in service.characteristics) {
+            DPCharacteristic *chara = [[DPCharacteristic alloc] initWithCBCharacteristic:character];
+            [charateristics addObject:chara];
+        }
+        _characters = charateristics;
+    }
+    return self;
+}
 
 + (NSArray<DPService *> *)loadMainService {
     NSString *queryFormat = [NSString stringWithFormat:@"SELECT (uuid) FROM %@ WHERE is_included = %d", kTableServices, NO];

@@ -8,6 +8,9 @@
 
 #import "CentralViewController.h"
 
+// Controllers
+#import "ServiceViewController.h"
+
 // Helpers
 #import <CoreBluetooth/CoreBluetooth.h>
 #import <PKRevealController/PKRevealController.h>

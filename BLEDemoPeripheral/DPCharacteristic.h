@@ -6,7 +6,7 @@
 //  Copyright © 2019 Ivan_deng. All rights reserved.
 //
 
-@class ViewModel, CBMutableCharacteristic;
+@class ViewModel, CBMutableCharacteristic, CBCharacteristic;
 
 #import <Foundation/Foundation.h>
 
@@ -27,6 +27,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, assign, readonly) BOOL isReadOnly;
 
 - (instancetype)initWithUUID:(NSString *)uuid;
+
+- (instancetype)initWithCBCharacteristic:(CBCharacteristic *)characteristic;
 
 + (DPCharacteristic *)loadCharacteristicWithUUID:(NSString *)uuidString;
 
