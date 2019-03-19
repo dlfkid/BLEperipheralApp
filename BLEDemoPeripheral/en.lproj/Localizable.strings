@@ -129,3 +129,5 @@
 "CBPeripheralState.disconnecting" = "Disconnecting";
 
 "CentralViewController.rightItem.scan" = "Scan";
+
+"MainViewController.alert.read" = "Receieved read request with chatacteristics";

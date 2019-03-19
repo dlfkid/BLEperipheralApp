@@ -288,6 +288,16 @@ static NSString * const kSampleCharacteristicUUID = @"CDD2";
 
 - (void)peripheralManager:(CBPeripheralManager *)peripheral didReceiveReadRequest:(CBATTRequest *)request {
     [peripheral respondToRequest:request withResult:CBATTErrorSuccess];
+    CBCharacteristic *character = request.characteristic;
+    NSString *valueString = [[NSString alloc] initWithData:request.value encoding:NSUTF8StringEncoding];
+    PSTAlertController *controller = [PSTAlertController alertWithTitle:NSLocalizedString(@"MainViewController.alert.read", "") message:[NSString stringWithFormat:@"UUID: %@, Value: %@", character.UUID.UUIDString, valueString]];
+    PSTAlertAction *cancelAction = [PSTAlertAction actionWithTitle:NSLocalizedString(@"Cancel", "") handler:^(PSTAlertAction * _Nonnull action) {
+        
+    }];
+    [controller addAction:cancelAction];
+    [controller showWithSender:nil controller:nil animated:YES completion:^{
+        
+    }];
 }
 
 - (void)peripheralManager:(CBPeripheralManager *)peripheral didReceiveWriteRequests:(NSArray<CBATTRequest *> *)requests {

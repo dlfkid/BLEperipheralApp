@@ -128,3 +128,5 @@
 "CBPeripheralState.disconnecting" = "断开中";
 
 "CentralViewController.rightItem.scan" = "搜索设备";
+
+"MainViewController.alert.read" = "收到读取特征的请求";
