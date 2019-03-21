@@ -284,8 +284,6 @@ static NSString * const kSampleCharacteristicUUID = @"CDD2";
     self.stateLabel.text = [NSString stringWithFormat:@"%@%@", NSLocalizedString(@"MainViewController.stateLabel.text", @""), [self peripherialStateString:peripheral.state]];
 }
 
-#warning TODO: Popup alertController when characterisitc is writted
-
 - (void)peripheralManager:(CBPeripheralManager *)peripheral didReceiveReadRequest:(CBATTRequest *)request {
     [peripheral respondToRequest:request withResult:CBATTErrorSuccess];
     CBCharacteristic *character = request.characteristic;
@@ -303,6 +301,16 @@ static NSString * const kSampleCharacteristicUUID = @"CDD2";
 - (void)peripheralManager:(CBPeripheralManager *)peripheral didReceiveWriteRequests:(NSArray<CBATTRequest *> *)requests {
     CBATTRequest *request = requests.lastObject;
     [peripheral respondToRequest:request withResult:CBATTErrorSuccess];
+    CBCharacteristic *character = request.characteristic;
+    NSString *valueString = [[NSString alloc] initWithData:request.value encoding:NSUTF8StringEncoding];
+    PSTAlertController *controller = [PSTAlertController alertWithTitle:NSLocalizedString(@"MainViewController.alert.write", "") message:[NSString stringWithFormat:@"UUID: %@, Value: %@", character.UUID.UUIDString, valueString]];
+    PSTAlertAction *cancelAction = [PSTAlertAction actionWithTitle:NSLocalizedString(@"Cancel", "") handler:^(PSTAlertAction * _Nonnull action) {
+        
+    }];
+    [controller addAction:cancelAction];
+    [controller showWithSender:nil controller:nil animated:YES completion:^{
+        
+    }];
 }
 
 - (void)peripheralManager:(CBPeripheralManager *)peripheral central:(CBCentral *)central didSubscribeToCharacteristic:(CBMutableCharacteristic *)characteristic {

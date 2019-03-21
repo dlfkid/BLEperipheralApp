@@ -130,3 +130,4 @@
 "CentralViewController.rightItem.scan" = "搜索设备";
 
 "MainViewController.alert.read" = "收到读取特征的请求";
+"MainViewController.alert.write" = "收到写入特征的请求";

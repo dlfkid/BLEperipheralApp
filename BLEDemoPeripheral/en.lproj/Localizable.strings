@@ -131,3 +131,4 @@
 "CentralViewController.rightItem.scan" = "Scan";
 
 "MainViewController.alert.read" = "Receieved read request with chatacteristics";
+"MainViewController.alert.write" = "Receieved write request with chatacteristics";
