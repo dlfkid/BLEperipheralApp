@@ -12,6 +12,7 @@ target 'BLEDemoPeripheral' do
   pod 'PSTAlertController'
   pod 'FMDB'
   pod 'PKRevealController'
+  pod 'pop'
   # Pods for BLEDemoPeripheral
 
 end

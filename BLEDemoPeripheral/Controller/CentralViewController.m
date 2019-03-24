@@ -11,6 +11,9 @@
 // Controllers
 #import "ServiceViewController.h"
 
+// Views
+#import "StatusBarView.h"
+
 // Helpers
 #import <CoreBluetooth/CoreBluetooth.h>
 #import <PKRevealController/PKRevealController.h>
@@ -21,6 +24,7 @@
 @property (nonatomic, strong, readonly) NSArray <CBPeripheral *> *peripherals;
 @property (nonatomic, strong) NSMutableSet <CBPeripheral *> *peripheralSet;
 @property (nonatomic, strong) CBCentralManager *centralManager;
+@property (nonatomic, strong) StatusBarView *statusBar;
 
 @end
 
@@ -31,6 +35,7 @@
 - (CBCentralManager *)centralManager {
     if (!_centralManager) {
         _centralManager = [[CBCentralManager alloc] initWithDelegate:self queue:dispatch_queue_create("CBCentralManagerQueue", DISPATCH_QUEUE_CONCURRENT)];
+        
     }
     return _centralManager;
 }
@@ -66,11 +71,26 @@
     _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     [self.view addSubview:self.tableView];
     
+    _statusBar = [[StatusBarView alloc] initWithPosition:StatusBarPositionTop Frame:CGRectZero];
+    _statusBar.hidden = YES;
+    [self.tableView addSubview:self.statusBar];
+    
     [self.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.right.mas_equalTo(0);
         make.top.mas_equalTo(DSStatusBarMargin + 44);
         make.bottom.mas_equalTo(- DSBottomMargin);
     }];
+    
+    [self.statusBar mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.bottom.mas_equalTo(self.tableView.mas_top);
+        make.left.right.mas_equalTo(0);
+        make.height.mas_equalTo(self.statusBar.intrinsicContentSize.height);
+    }];
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    [self.statusBar showWithMessage:@"Test Message" ForSeconds:3];
 }
 
 #pragma mark - Actions

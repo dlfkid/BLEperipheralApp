@@ -7,6 +7,7 @@ PODS:
   - IQKeyboardManager (6.2.0)
   - Masonry (1.1.0)
   - PKRevealController (2.0.6)
+  - pop (1.0.12)
   - PSTAlertController (1.2.0)
   - UIExtensionKit (0.0.2)
 
@@ -17,6 +18,7 @@ DEPENDENCIES:
   - IQKeyboardManager
   - Masonry
   - PKRevealController
+  - pop
   - PSTAlertController
   - UIExtensionKit
 
@@ -28,6 +30,7 @@ SPEC REPOS:
     - IQKeyboardManager
     - Masonry
     - PKRevealController
+    - pop
     - PSTAlertController
     - UIExtensionKit
 
@@ -38,9 +41,10 @@ SPEC CHECKSUMS:
   IQKeyboardManager: 6194101620b73af5e67900b8f89707a99de0b804
   Masonry: 678fab65091a9290e40e2832a55e7ab731aad201
   PKRevealController: ffb45a16f5a5032ad90a3d16e5cbb0d8e035bd58
+  pop: d582054913807fd11fd50bfe6a539d91c7e1a55a
   PSTAlertController: 9b802dfbda54fee2683bfd6dda7023a6de895d5b
   UIExtensionKit: 839b0092ae7cbb857c4692fb7e4f9379c97fa24c
 
-PODFILE CHECKSUM: d16b576dad59b9cd605127df44171b8370920e4e
+PODFILE CHECKSUM: ef144259018974bc6f45e1c6804222dd0f249ba4
 
-COCOAPODS: 1.6.0.rc.2
+COCOAPODS: 1.6.0.beta.2
