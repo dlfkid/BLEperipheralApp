@@ -131,3 +131,9 @@
 
 "MainViewController.alert.read" = "收到读取特征的请求";
 "MainViewController.alert.write" = "收到写入特征的请求";
+
+"CentralViewController.alert.connect" = "您要连接这个设备吗?";
+"CentralViewController.alert.disconnect" = "您要断开这个设备吗?";
+"CentralViewController.hud.connect.success" = "连接成功";
+"CentralViewController.hud.connect.failure" = "连接失败,原因:";
+"peripheralTableViewCell.titleLabel.unnammed" = "未命名";

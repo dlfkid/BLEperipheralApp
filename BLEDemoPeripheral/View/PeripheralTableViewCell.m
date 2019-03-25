@@ -16,6 +16,7 @@
 @property (nonatomic, strong) UILabel *titleLabel;
 @property (nonatomic, strong) UILabel *subTitileLabel;
 @property (nonatomic, strong) UILabel *stateLabel;
+@property (nonatomic, strong) UIButton *detailButton;
 
 @end
 
@@ -50,33 +51,47 @@
         
         _stateLabel = [[UILabel alloc] initWithFrame:CGRectZero];
         _stateLabel.textAlignment = NSTextAlignmentCenter;
+        _stateLabel.font = [UIFont systemFontOfSize:[UIFont systemFontSize]];
         [self.customContentView addSubview:self.stateLabel];
+        
+        _detailButton = [UIButton buttonWithType:UIButtonTypeDetailDisclosure];
+        [_detailButton addTarget:self action:@selector(detailButtonDidTappedAction) forControlEvents:UIControlEventTouchUpInside];
+        [self.customContentView addSubview:self.detailButton];
     }
     return self;
 }
 
 - (void)updateConstraints {
+    [self.customContentView mas_remakeConstraints:^(MASConstraintMaker *make) {
+        UIEdgeInsets padding = UIEdgeInsetsMake(10, 10, 10, 10);
+        make.edges.mas_equalTo(0).insets(padding);
+    }];
+    
     [self.titleLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
         make.left.top.mas_equalTo(DSAdaptedValue(10));
     }];
     
     [self.subTitileLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
         make.left.mas_equalTo(10);
-        make.top.mas_equalTo(self.titleLabel.mas_bottom).mas_offset(10);
+        make.bottom.mas_equalTo(0).mas_offset(-10);
     }];
     
     [self.stateLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
         make.right.mas_equalTo(-10);
-        make.centerY.mas_equalTo(0);
+        make.top.mas_equalTo(DSAdaptedValue(10));
     }];
     
+    [self.detailButton mas_remakeConstraints:^(MASConstraintMaker *make) {
+        make.right.mas_equalTo(-DSAdaptedValue(10));
+        make.bottom.mas_equalTo(0).mas_offset(-10);
+    }];
     
     [super updateConstraints];
 }
 
 - (void)setPeripheral:(CBPeripheral *)peripheral {
     _peripheral = peripheral;
-    self.titleLabel.text = peripheral.name;
+    self.titleLabel.text = peripheral.name ? peripheral.name : NSLocalizedString(@"peripheralTableViewCell.titleLabel.unnammed", "");
     self.subTitileLabel.text = peripheral.identifier.UUIDString;
     self.stateLabel.text = [PeripheralTableViewCell peripheralStateString:peripheral.state];
     if (peripheral.state == CBPeripheralStateConnected) {
@@ -98,8 +113,12 @@
     }
 }
 
+- (void)detailButtonDidTappedAction {
+    !self.detialButtonDidTappedHandler ?: self.detialButtonDidTappedHandler(self.peripheral);
+}
+
 + (CGFloat)rowHeight {
-    return 60;
+    return DSAdaptedValue(100);
 }
 
 + (NSString *)peripheralStateString:(CBPeripheralState)state {

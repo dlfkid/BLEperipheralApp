@@ -9,6 +9,7 @@ PODS:
   - PKRevealController (2.0.6)
   - pop (1.0.12)
   - PSTAlertController (1.2.0)
+  - SVProgressHUD (2.2.5)
   - UIExtensionKit (0.0.2)
 
 DEPENDENCIES:
@@ -20,6 +21,7 @@ DEPENDENCIES:
   - PKRevealController
   - pop
   - PSTAlertController
+  - SVProgressHUD
   - UIExtensionKit
 
 SPEC REPOS:
@@ -32,6 +34,7 @@ SPEC REPOS:
     - PKRevealController
     - pop
     - PSTAlertController
+    - SVProgressHUD
     - UIExtensionKit
 
 SPEC CHECKSUMS:
@@ -43,8 +46,9 @@ SPEC CHECKSUMS:
   PKRevealController: ffb45a16f5a5032ad90a3d16e5cbb0d8e035bd58
   pop: d582054913807fd11fd50bfe6a539d91c7e1a55a
   PSTAlertController: 9b802dfbda54fee2683bfd6dda7023a6de895d5b
+  SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
   UIExtensionKit: 839b0092ae7cbb857c4692fb7e4f9379c97fa24c
 
-PODFILE CHECKSUM: ef144259018974bc6f45e1c6804222dd0f249ba4
+PODFILE CHECKSUM: 4f167fe893caa72493127f1aa38c13c47d04efe1
 
 COCOAPODS: 1.6.0.beta.2

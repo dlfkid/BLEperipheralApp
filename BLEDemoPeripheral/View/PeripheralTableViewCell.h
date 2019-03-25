@@ -14,6 +14,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface PeripheralTableViewCell : BaseTableViewCell
 
+@property (nonatomic, copy) void(^detialButtonDidTappedHandler)(CBPeripheral *peripheral);
 @property (nonatomic, strong) CBPeripheral *peripheral;
 
 @end

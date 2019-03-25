@@ -132,3 +132,10 @@
 
 "MainViewController.alert.read" = "Receieved read request with chatacteristics";
 "MainViewController.alert.write" = "Receieved write request with chatacteristics";
+
+"CentralViewController.alert.connect" = "Do you wish to connect this peripheral?";
+"CentralViewController.alert.disconnect" = "Do you wish to disconnect this peripheral?";
+"CentralViewController.hud.connect.success" = "Connected";
+"CentralViewController.hud.connect.failure" = "Connection failed with error: ";
+
+"peripheralTableViewCell.titleLabel.unnammed" = "Unnammed";

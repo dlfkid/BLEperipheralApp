@@ -13,6 +13,7 @@ target 'BLEDemoPeripheral' do
   pod 'FMDB'
   pod 'PKRevealController'
   pod 'pop'
+  pod 'SVProgressHUD'
   # Pods for BLEDemoPeripheral
 
 end

@@ -12,7 +12,9 @@
 #import "ServiceViewController.h"
 
 // Views
+#import <SVProgressHUD/SVProgressHUD.h>
 #import "StatusBarView.h"
+#import "PeripheralTableViewCell.h"
 
 // Helpers
 #import <CoreBluetooth/CoreBluetooth.h>
@@ -35,7 +37,6 @@
 - (CBCentralManager *)centralManager {
     if (!_centralManager) {
         _centralManager = [[CBCentralManager alloc] initWithDelegate:self queue:dispatch_queue_create("CBCentralManagerQueue", DISPATCH_QUEUE_CONCURRENT)];
-        
     }
     return _centralManager;
 }
@@ -69,6 +70,7 @@
     _tableView.delegate = self;
     _tableView.dataSource = self;
     _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    [_tableView registerClass:[PeripheralTableViewCell class] forCellReuseIdentifier:[PeripheralTableViewCell reuseIdentifier]];
     [self.view addSubview:self.tableView];
     
     _statusBar = [[StatusBarView alloc] initWithPosition:StatusBarPositionTop Frame:CGRectZero];
@@ -88,9 +90,15 @@
     }];
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    if (self.centralManager.isScanning) {
+        [self.centralManager stopScan];
+    }
+}
+
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-    [self.statusBar showWithMessage:@"Test Message" ForSeconds:3];
 }
 
 #pragma mark - Actions
@@ -101,6 +109,48 @@
 
 - (void)scanButtonDidTappedAction {
     [self.centralManager scanForPeripheralsWithServices:nil options:nil];
+}
+
+- (void)showConnectAlert:(CBPeripheral *)peripheral {
+    PSTAlertController *controller = [PSTAlertController alertControllerWithTitle:peripheral.name message:NSLocalizedString(@"CentralViewController.alert.connect", "") preferredStyle:PSTAlertControllerStyleAlert];
+    
+    PSTAlertAction *cancelAction = [PSTAlertAction actionWithTitle:NSLocalizedString(@"No", "") handler:^(PSTAlertAction * _Nonnull action) {
+        
+    }];
+    
+    PSTAlertAction *okAction = [PSTAlertAction actionWithTitle:NSLocalizedString(@"Yes", "") handler:^(PSTAlertAction * _Nonnull action) {
+        self.tableView.userInteractionEnabled = NO;
+        [SVProgressHUD show];
+        [self.centralManager connectPeripheral:peripheral options:nil];
+    }];
+    
+    [controller addAction:cancelAction];
+    [controller addAction:okAction];
+    
+    [controller showWithSender:nil controller:nil animated:YES completion:^{
+        
+    }];
+}
+
+- (void)showDisconnectAlert:(CBPeripheral *)peripheral {
+    PSTAlertController *controller = [PSTAlertController alertControllerWithTitle:peripheral.name message:NSLocalizedString(@"CentralViewController.alert.disconnect", "") preferredStyle:PSTAlertControllerStyleAlert];
+    
+    PSTAlertAction *cancelAction = [PSTAlertAction actionWithTitle:NSLocalizedString(@"No", "") handler:^(PSTAlertAction * _Nonnull action) {
+        
+    }];
+    
+    PSTAlertAction *okAction = [PSTAlertAction actionWithTitle:NSLocalizedString(@"Yes", "") handler:^(PSTAlertAction * _Nonnull action) {
+        self.tableView.userInteractionEnabled = NO;
+        [SVProgressHUD show];
+        [self.centralManager cancelPeripheralConnection:peripheral];
+    }];
+    
+    [controller addAction:cancelAction];
+    [controller addAction:okAction];
+    
+    [controller showWithSender:nil controller:nil animated:YES completion:^{
+        
+    }];
 }
 
 #pragma mark - TableViewDataSource
@@ -114,29 +164,90 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-    if (!cell) {
-        cell = [[UITableViewCell alloc] initWithFrame:CGRectZero];
-    }
+    PeripheralTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:[PeripheralTableViewCell reuseIdentifier] forIndexPath:indexPath];
+    cell.peripheral = self.peripherals[indexPath.row];
     return cell;
 }
 
 #pragma mark - Delegate
 
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return [PeripheralTableViewCell rowHeight];
+}
+
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    CBPeripheral *peripheral = self.peripherals[indexPath.row];
     
+    if (peripheral.state == CBPeripheralStateConnected) {
+        [self showDisconnectAlert:peripheral];
+    }
+    else if (peripheral.state == CBPeripheralStateDisconnected) {
+        [self showConnectAlert:peripheral];
+    }
 }
 
 #pragma mark - CentralManagerDelegate
 
 - (void)centralManagerDidUpdateState:(CBCentralManager *)central {
-    
+    NSString *stateString = nil;
+    switch (central.state) {
+        case CBManagerStateUnknown:
+            stateString = NSLocalizedString(@"peripheralState.unknown", "");
+            break;
+            
+        case CBManagerStatePoweredOn:
+            stateString = NSLocalizedString(@"peripheralState.powerOn", "");
+            break;
+            
+        case CBManagerStateResetting:
+            stateString = NSLocalizedString(@"peripheralState.resetting", "");
+            break;
+            
+        case CBManagerStatePoweredOff:
+            stateString = NSLocalizedString(@"peripheralState.powerOff", "");
+            break;
+            
+        case CBManagerStateUnsupported:
+            stateString = NSLocalizedString(@"peripheralState.unsupported", "");
+            break;
+            
+        case CBManagerStateUnauthorized:
+            stateString = NSLocalizedString(@"peripheralState.unauthorzied", "");
+            break;
+    }
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.statusBar showWithMessage:stateString ForSeconds:3];
+    });
 }
 
 - (void)centralManager:(CBCentralManager *)central didDiscoverPeripheral:(CBPeripheral *)peripheral advertisementData:(NSDictionary<NSString *,id> *)advertisementData RSSI:(NSNumber *)RSSI {
     [self.peripheralSet addObject:peripheral];
-    dispatch_async(dispatch_get_main_queue(), ^{
+    dispatch_sync(dispatch_get_main_queue(), ^{
         [self.tableView reloadData];
+    });
+}
+
+- (void)centralManager:(CBCentralManager *)central didConnectPeripheral:(CBPeripheral *)peripheral {
+    dispatch_sync(dispatch_get_main_queue(), ^{
+        self.tableView.userInteractionEnabled = YES;
+        [SVProgressHUD dismiss];
+        [SVProgressHUD showSuccessWithStatus:NSLocalizedString(@"CentralViewController.hud.connect.success", "")];
+    });
+}
+
+- (void)centralManager:(CBCentralManager *)central didDisconnectPeripheral:(CBPeripheral *)peripheral error:(NSError *)error {
+    dispatch_sync(dispatch_get_main_queue(), ^{
+        self.tableView.userInteractionEnabled = YES;
+        [SVProgressHUD dismiss];
+        [SVProgressHUD showSuccessWithStatus:NSLocalizedString(@"CBPeripheralState.disconnected", "")];
+    });
+}
+
+- (void)centralManager:(CBCentralManager *)central didFailToConnectPeripheral:(CBPeripheral *)peripheral error:(NSError *)error {
+    dispatch_sync(dispatch_get_main_queue(), ^{
+        self.tableView.userInteractionEnabled = YES;
+        [SVProgressHUD dismiss];
+        [SVProgressHUD showErrorWithStatus:[NSString stringWithFormat:@"%@ %@", NSLocalizedString(@"CentralViewController.hud.connect.failure", ""), error.localizedDescription]];
     });
 }
 
