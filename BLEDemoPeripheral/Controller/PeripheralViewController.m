@@ -14,12 +14,14 @@
 // Models
 #import <CoreBluetooth/CoreBluetooth.h>
 #import "DPService.h"
+#import "ViewModel.h"
+
+
 
 @interface PeripheralViewController () <UITableViewDataSource, UITableViewDelegate, CBPeripheralDelegate>
 
 @property (nonatomic, strong) CBPeripheral *peripheral;
-@property (nonatomic, strong) CBService *service;
-@property (nonatomic, strong) NSArray <DPService *> *services;
+@property (nonatomic, strong, readonly) NSArray <CBService *> *services;
 
 @property (nonatomic, strong) UITableView *tableView;
 
@@ -38,20 +40,30 @@
     return self;
 }
 
+- (NSArray<CBService *> *)services {
+    return self.peripheral.services;
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.navigationItem.title = self.peripheral.name;
     [self setupContents];
+    [self.peripheral discoverServices:nil];
 }
 
 - (void)setupContents {
     _tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStyleGrouped];
     _tableView.dataSource = self;
     _tableView.delegate = self;
+    _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     [_tableView registerClass:[ServiceTableViewCell class] forCellReuseIdentifier:[ServiceTableViewCell reuseIdentifier]];
     [self.view addSubview:self.tableView];
     
-    
+    [self.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.right.mas_equalTo(0);
+        make.bottom.mas_equalTo(- DSBottomMargin);
+        make.top.mas_equalTo(DSStatusBarMargin + 44);
+    }];
 }
 
 #pragma mark - Actions
@@ -68,13 +80,26 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     ServiceTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:[ServiceTableViewCell reuseIdentifier] forIndexPath:indexPath];
+    cell.cbService = self.services[indexPath.row];
     return cell;
 }
 
 #pragma mark - TableViewDelegate
 
-
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return [ServiceTableViewCell rowHeight];
+}
 
 #pragma mark - PeripheralDelegate
+
+- (void)peripheralDidUpdateName:(CBPeripheral *)peripheral {
+    self.title = peripheral.name;
+}
+
+- (void)peripheral:(CBPeripheral *)peripheral didDiscoverServices:(NSError *)error {
+    dispatch_sync(dispatch_get_main_queue(), ^{
+        [self.tableView reloadData];
+    });
+}
 
 @end

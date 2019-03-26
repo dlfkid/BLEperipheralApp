@@ -137,3 +137,5 @@
 "CentralViewController.hud.connect.success" = "连接成功";
 "CentralViewController.hud.connect.failure" = "连接失败,原因:";
 "peripheralTableViewCell.titleLabel.unnammed" = "未命名";
+
+"CentralViewController.cell.detailButton.error" = "只有连接到该设备才可以查看详情";

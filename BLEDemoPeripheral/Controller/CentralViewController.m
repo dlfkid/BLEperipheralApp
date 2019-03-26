@@ -9,7 +9,7 @@
 #import "CentralViewController.h"
 
 // Controllers
-#import "ServiceViewController.h"
+#import "PeripheralViewController.h"
 
 // Views
 #import <SVProgressHUD/SVProgressHUD.h>
@@ -166,6 +166,14 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     PeripheralTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:[PeripheralTableViewCell reuseIdentifier] forIndexPath:indexPath];
     cell.peripheral = self.peripherals[indexPath.row];
+    cell.detialButtonDidTappedHandler = ^(CBPeripheral * _Nonnull peripheral) {
+        if (peripheral.state == CBPeripheralStateConnected) {
+            PeripheralViewController *controller = [[PeripheralViewController alloc] initWithPeripheral:peripheral];
+            [self.navigationController pushViewController:controller animated:YES];
+        } else {
+            [SVProgressHUD showErrorWithStatus:NSLocalizedString(@"CentralViewController.cell.detailButton.error", "")];
+        }
+    };
     return cell;
 }
 
@@ -232,6 +240,7 @@
         self.tableView.userInteractionEnabled = YES;
         [SVProgressHUD dismiss];
         [SVProgressHUD showSuccessWithStatus:NSLocalizedString(@"CentralViewController.hud.connect.success", "")];
+        [self.tableView reloadData];
     });
 }
 
@@ -240,6 +249,7 @@
         self.tableView.userInteractionEnabled = YES;
         [SVProgressHUD dismiss];
         [SVProgressHUD showSuccessWithStatus:NSLocalizedString(@"CBPeripheralState.disconnected", "")];
+        [self.tableView reloadData];
     });
 }
 
@@ -248,6 +258,7 @@
         self.tableView.userInteractionEnabled = YES;
         [SVProgressHUD dismiss];
         [SVProgressHUD showErrorWithStatus:[NSString stringWithFormat:@"%@ %@", NSLocalizedString(@"CentralViewController.hud.connect.failure", ""), error.localizedDescription]];
+        [self.tableView reloadData];
     });
 }
 

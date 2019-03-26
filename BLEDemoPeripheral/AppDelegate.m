@@ -18,6 +18,7 @@
 #import <IQKeyboardManager/IQKeyboardManager.h>
 #import <iOSDeviceScreenAdapter/DeviceScreenAdaptor.h>
 #import "DataBaseManager.h"
+#import <SVProgressHUD/SVProgressHUD.h>
 
 
 
@@ -37,6 +38,9 @@
     
     // 设置开发者屏幕型号
     [[DeviceScreenAdaptor sharedAdaptor] setDeveloperScreenType:DeviceScreenType5_5];
+    
+    // 设置Tost显示时间
+    [SVProgressHUD setMaximumDismissTimeInterval:3];
     
     // 设置侧滑菜单和主菜单
     self.window = [[UIWindow alloc]initWithFrame:[UIScreen mainScreen].bounds];

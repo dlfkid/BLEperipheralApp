@@ -6,7 +6,7 @@
 //  Copyright © 2019 Ivan_deng. All rights reserved.
 //
 
-@class DPService;
+@class DPService, CBService;
 
 #import "BaseTableViewCell.h"
 
@@ -16,6 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, assign, getter = isUnfold) BOOL unfold;
 @property (nonatomic, strong) DPService *service;
+@property (nonatomic, strong) CBService *cbService;
 @property (nonatomic, copy) void(^foldButtonDidTappedHandler)(BOOL isUnfold);
 
 @end

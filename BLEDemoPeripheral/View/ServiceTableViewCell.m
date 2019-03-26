@@ -9,6 +9,8 @@
 #import "ServiceTableViewCell.h"
 
 // Models
+#import <CoreBluetooth/CBService.h>
+#import <CoreBluetooth/CBUUID.h>
 #import "ViewModel.h"
 #import "DPService.h"
 
@@ -66,13 +68,21 @@
         _descriptionLabel.numberOfLines = 0;
         _descriptionLabel.lineBreakMode = NSLineBreakByWordWrapping;
         _descriptionLabel.textColor = [UIColor darkGrayColor];
+        _descriptionLabel.font = [UIFont systemFontOfSize:13];
         
         _UUIDLabel = [[UILabel alloc] initWithFrame:CGRectZero];
         _UUIDLabel.text = NSLocalizedString(@"ServiceTableViewCell.UUIDLabel.text", @"");
+        _UUIDLabel.font = [UIFont systemFontOfSize:13];
+        
         _includedServiceCountLabel = [[UILabel alloc] initWithFrame:CGRectZero];
         _includedServiceCountLabel.text = NSLocalizedString(@"ServiceTableViewCell.includedServicesLabel.text", @"");
+        _includedServiceCountLabel.font = [UIFont systemFontOfSize:13];
+        
         _characteristicCountLabel = [[UILabel alloc] initWithFrame:CGRectZero];
         _characteristicCountLabel.text = NSLocalizedString(@"ServiceTableViewCell.characteristicLabel.text", @"");
+        _characteristicCountLabel.font = [UIFont systemFontOfSize:13];
+        
+        
         [self.customContentView addSubview:self.UUIDLabel];
         
         _unfold = NO;
@@ -103,30 +113,10 @@
     
     [self.UUIDLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
         make.top.mas_equalTo(10);
-        make.centerX.mas_equalTo(0);
+        make.left.mas_equalTo(self.foldButton.mas_right).mas_equalTo(10);
+        make.right.mas_equalTo(-10);
     }];
     
-    [super updateConstraints];
-}
-
-#pragma mark - Actions
-
-- (void)foldButtonDidTappedAction {
-    self.service.viewModel.unfold = !self.isUnfold;
-    ! self.foldButtonDidTappedHandler ?: self.foldButtonDidTappedHandler(self.isUnfold);
-}
-
-- (void)setService:(DPService *)service {
-    _service = service;
-    self.UUIDLabel.text = [NSString stringWithFormat:@"%@ %@", NSLocalizedString(@"ServiceTableViewCell.UUIDLabel.text", @""), service.uuid];
-    self.includedServiceCountLabel.text = [NSString stringWithFormat:@"%@ %tu", NSLocalizedString(@"ServiceTableViewCell.includedServicesLabel.text", @""), service.includedService.count];
-    self.characteristicCountLabel.text = [NSString stringWithFormat:@"%@ %tu", NSLocalizedString(@"ServiceTableViewCell.characteristicLabel.text", @""), service.characters.count];
-    self.primaryIndiCatorView.hidden = !service.isPrimary;
-    self.descriptionLabel.text = service.descriptionText;
-}
-
-- (void)setUnfold:(BOOL)unfold {
-    _unfold = unfold;
     if (_unfold) {
         // 展开状态布局
         [self.customContentView addSubview:self.includedServiceCountLabel];
@@ -157,19 +147,44 @@
             make.width.mas_equalTo(200);
             make.height.mas_equalTo(100);
         }];
-        
-        [self.customContentView layoutIfNeeded];
     } else {
         // 折叠状态布局
-        [self.UUIDLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
-            make.top.mas_equalTo(10);
-            make.centerX.mas_equalTo(0);
-        }];
         [self.includedServiceCountLabel removeFromSuperview];
         [self.characteristicCountLabel removeFromSuperview];
         [self.primaryIndiCatorView removeFromSuperview];
         [self.descriptionLabel removeFromSuperview];
     }
+    
+    [super updateConstraints];
+}
+
+#pragma mark - Actions
+
+- (void)foldButtonDidTappedAction {
+    self.service.viewModel.unfold = !self.isUnfold;
+    ! self.foldButtonDidTappedHandler ?: self.foldButtonDidTappedHandler(self.isUnfold);
+}
+
+- (void)setService:(DPService *)service {
+    _service = service;
+    self.UUIDLabel.text = [NSString stringWithFormat:@"%@ %@", NSLocalizedString(@"ServiceTableViewCell.UUIDLabel.text", @""), service.uuid];
+    self.includedServiceCountLabel.text = [NSString stringWithFormat:@"%@ %tu", NSLocalizedString(@"ServiceTableViewCell.includedServicesLabel.text", @""), service.includedService.count];
+    self.characteristicCountLabel.text = [NSString stringWithFormat:@"%@ %tu", NSLocalizedString(@"ServiceTableViewCell.characteristicLabel.text", @""), service.characters.count];
+    self.primaryIndiCatorView.hidden = !service.isPrimary;
+    self.descriptionLabel.text = service.descriptionText;
+}
+
+- (void)setCbService:(CBService *)cbService {
+    _cbService = cbService;
+    self.UUIDLabel.text = [NSString stringWithFormat:@"%@ %@", NSLocalizedString(@"ServiceTableViewCell.UUIDLabel.text", @""), cbService.UUID.UUIDString];
+    self.includedServiceCountLabel.text = [NSString stringWithFormat:@"%@ %tu", NSLocalizedString(@"ServiceTableViewCell.includedServicesLabel.text", @""), cbService.includedServices.count];
+    self.characteristicCountLabel.text = [NSString stringWithFormat:@"%@ %tu", NSLocalizedString(@"ServiceTableViewCell.characteristicLabel.text", @""), cbService.characteristics.count];
+    self.primaryIndiCatorView.hidden = !cbService.isPrimary;
+}
+
+- (void)setUnfold:(BOOL)unfold {
+    _unfold = unfold;
+    [self.contentView layoutIfNeeded];
     self.foldButton.selected = _unfold;
 }
 

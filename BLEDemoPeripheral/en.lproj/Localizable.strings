@@ -139,3 +139,5 @@
 "CentralViewController.hud.connect.failure" = "Connection failed with error: ";
 
 "peripheralTableViewCell.titleLabel.unnammed" = "Unnammed";
+
+"CentralViewController.cell.detailButton.error" = "You can only access more information when you connected to the peripheral";
