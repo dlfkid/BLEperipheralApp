@@ -31,6 +31,9 @@
 @implementation AppDelegate
 
 #warning TODO: Finish peripheral VC and make characteristic writeable;
+#warning TODO: When centralManager switch off was detected, empty all peripheral cells;
+#warning TODO: Make Section Header For servicetableView;
+#warning TODO: Make ServiceDetail VC;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // 初始化数据库
