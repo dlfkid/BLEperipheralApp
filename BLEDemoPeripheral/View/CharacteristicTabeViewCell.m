@@ -53,16 +53,6 @@
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
-        self.selectionStyle = UITableViewCellSelectionStyleNone;
-        self.backgroundColor = [UIColor clearColor];
-        self.customContentView.backgroundColor = [UIColor whiteColor];
-        self.customContentView.layer.borderWidth = .5f;
-        self.customContentView.layer.borderColor = [UIColor lightGrayColor].CGColor;
-        self.customContentView.layer.cornerRadius = 10;
-        self.customContentView.layer.shadowOffset = CGSizeMake(0, 1);
-        self.customContentView.layer.shadowRadius = 1;
-        self.customContentView.layer.shadowOpacity = 0.4f;
-        
         _UUIDLabel = [[UILabel alloc] initWithFrame:CGRectZero];
         _UUIDLabel.textAlignment = NSTextAlignmentCenter;
         _UUIDLabel.font = [UIFont boldSystemFontOfSize:[UIFont labelFontSize]];
@@ -91,11 +81,6 @@
 }
 
 - (void)updateConstraints {
-    
-    [self.customContentView mas_remakeConstraints:^(MASConstraintMaker *make) {
-        UIEdgeInsets padding = UIEdgeInsetsMake(10, 10, 10, 10);
-        make.edges.mas_equalTo(0).insets(padding);
-    }];
     
     [self.UUIDLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
         make.top.mas_equalTo(10);

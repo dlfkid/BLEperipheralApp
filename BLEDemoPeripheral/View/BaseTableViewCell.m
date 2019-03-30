@@ -15,8 +15,28 @@
     if (self) {
         _customContentView = [[UIView alloc] initWithFrame:CGRectZero];
         [self.contentView addSubview:self.customContentView];
+        
+        self.selectionStyle = UITableViewCellSelectionStyleNone;
+        self.backgroundColor = [UIColor clearColor];
+        self.customContentView.backgroundColor = [UIColor whiteColor];
+        self.customContentView.layer.borderWidth = .5f;
+        self.customContentView.layer.borderColor = [UIColor lightGrayColor].CGColor;
+        self.customContentView.layer.cornerRadius = 10;
+        self.customContentView.layer.shadowOffset = CGSizeMake(0, 1);
+        self.customContentView.layer.shadowRadius = 1;
+        self.customContentView.layer.shadowOpacity = 0.4f;
+        // self.customContentView.layer.shouldRasterize = YES;
     }
     return self;
+}
+
+- (void)updateConstraints {
+    [self.customContentView mas_remakeConstraints:^(MASConstraintMaker *make) {
+        UIEdgeInsets padding = UIEdgeInsetsMake(10, 10, 10, 10);
+        make.edges.mas_equalTo(0).insets(padding);
+    }];
+    
+    [super updateConstraints];
 }
 
 + (BOOL)requiresConstraintBasedLayout {
@@ -24,7 +44,7 @@
 }
 
 + (CGFloat)rowHeight {
-    return 50;
+    return 70;
 }
 
 + (CGFloat)rowUnfoldHeight {

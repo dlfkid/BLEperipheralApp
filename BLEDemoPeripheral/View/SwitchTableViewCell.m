@@ -40,8 +40,10 @@
     
     [self.switchControl mas_remakeConstraints:^(MASConstraintMaker *make) {
         make.right.mas_equalTo(-20);
-        make.top.mas_equalTo(10);
-        make.bottom.mas_equalTo(-10);
+        
+        make.centerY.mas_equalTo(0);
+        make.width.mas_equalTo(self.switchControl.intrinsicContentSize);
+        
     }];
     
     [super updateConstraints];

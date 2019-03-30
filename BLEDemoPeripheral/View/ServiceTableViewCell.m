@@ -53,15 +53,6 @@
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
-        self.selectionStyle = UITableViewCellSelectionStyleNone;
-        self.backgroundColor = [UIColor clearColor];
-        self.customContentView.backgroundColor = [UIColor whiteColor];
-        self.customContentView.layer.borderWidth = .5f;
-        self.customContentView.layer.borderColor = [UIColor lightGrayColor].CGColor;
-        self.customContentView.layer.cornerRadius = 10;
-        self.customContentView.layer.shadowOffset = CGSizeMake(0, 1);
-        self.customContentView.layer.shadowRadius = 1;
-        self.customContentView.layer.shadowOpacity = 0.4f;
         
         _descriptionLabel = [[UILabel alloc] initWithFrame:CGRectZero];
         _descriptionLabel.textAlignment = NSTextAlignmentCenter;
@@ -98,11 +89,6 @@
 }
 
 - (void)updateConstraints {
-    
-    [self.customContentView mas_remakeConstraints:^(MASConstraintMaker *make) {
-        UIEdgeInsets padding = UIEdgeInsetsMake(10, 10, 10, 10);
-        make.edges.mas_equalTo(0).insets(padding);
-    }];
     
     [self.foldButton mas_remakeConstraints:^(MASConstraintMaker *make) {
         make.left.mas_equalTo(5);
@@ -180,6 +166,8 @@
     self.includedServiceCountLabel.text = [NSString stringWithFormat:@"%@ %tu", NSLocalizedString(@"ServiceTableViewCell.includedServicesLabel.text", @""), cbService.includedServices.count];
     self.characteristicCountLabel.text = [NSString stringWithFormat:@"%@ %tu", NSLocalizedString(@"ServiceTableViewCell.characteristicLabel.text", @""), cbService.characteristics.count];
     self.primaryIndiCatorView.hidden = !cbService.isPrimary;
+    self.UUIDLabel.numberOfLines = 0;
+    self.foldButton.hidden = YES;
 }
 
 - (void)setUnfold:(BOOL)unfold {

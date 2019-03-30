@@ -57,6 +57,7 @@
     _tableView.delegate = self;
     _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     [_tableView registerClass:[ServiceTableViewCell class] forCellReuseIdentifier:[ServiceTableViewCell reuseIdentifier]];
+    [_tableView registerClass:[UITableViewHeaderFooterView class] forHeaderFooterViewReuseIdentifier:kdefaultTableViewHeaderReuseIdentifier];
     [self.view addSubview:self.tableView];
     
     [self.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -78,6 +79,12 @@
     return self.services.count;
 }
 
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+    UITableViewHeaderFooterView *header = [tableView dequeueReusableHeaderFooterViewWithIdentifier:kdefaultTableViewHeaderReuseIdentifier];
+    header.textLabel.text = NSLocalizedString(@"ServiceViewController.table.cell.primary", "");
+    return header;
+}
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     ServiceTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:[ServiceTableViewCell reuseIdentifier] forIndexPath:indexPath];
     cell.cbService = self.services[indexPath.row];
@@ -87,7 +94,12 @@
 #pragma mark - TableViewDelegate
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return [ServiceTableViewCell rowHeight];
+    ServiceTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    if (!cell) {
+        return [ServiceTableViewCell rowHeight];
+    } else {
+        return cell.frame.size.height;
+    }
 }
 
 #pragma mark - PeripheralDelegate
