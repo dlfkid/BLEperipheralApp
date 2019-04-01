@@ -6,11 +6,15 @@
 //  Copyright © 2019 Ivan_deng. All rights reserved.
 //
 
+@class CBCharacteristic;
+
 #import "BaseTableViewCell.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface CentralCharacteristicTableViewCell : BaseTableViewCell
+
+@property (nonatomic, strong) CBCharacteristic *character;
 
 @end
 

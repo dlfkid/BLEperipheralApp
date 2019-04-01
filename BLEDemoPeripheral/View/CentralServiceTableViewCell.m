@@ -63,6 +63,11 @@
 
 #pragma mark - Action
 
+- (void)setService:(CBService *)service {
+    _service = service;
+    
+}
+
 #pragma mark - TableViewDelegate
 
 
@@ -99,6 +104,7 @@
          
         case 2: {
             CentralServiceTableViewCell *serviceCell = [tableView dequeueReusableCellWithIdentifier:[CentralServiceTableViewCell reuseIdentifier] forIndexPath:indexPath];
+            serviceCell.service = self.includedServices[indexPath.row];
             return serviceCell;
         }
             break;
