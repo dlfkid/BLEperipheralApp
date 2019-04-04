@@ -98,6 +98,7 @@
     switch (indexPath.section) {
         case 1: {
             CentralCharacteristicTableViewCell *characterCell = [tableView dequeueReusableCellWithIdentifier:[CentralCharacteristicTableViewCell reuseIdentifier] forIndexPath:indexPath];
+            characterCell.character = self.characters[indexPath.row];
             return characterCell;
         }
             break;

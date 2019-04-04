@@ -9,7 +9,7 @@
 #import "PeripheralViewController.h"
 
 // Views
-#import "ServiceTableViewCell.h"
+#import "CentralServiceTableViewCell.h"
 
 // Models
 #import <CoreBluetooth/CoreBluetooth.h>
@@ -56,7 +56,7 @@
     _tableView.dataSource = self;
     _tableView.delegate = self;
     _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    [_tableView registerClass:[ServiceTableViewCell class] forCellReuseIdentifier:[ServiceTableViewCell reuseIdentifier]];
+    [_tableView registerClass:[CentralServiceTableViewCell class] forCellReuseIdentifier:[CentralServiceTableViewCell reuseIdentifier]];
     [_tableView registerClass:[UITableViewHeaderFooterView class] forHeaderFooterViewReuseIdentifier:kdefaultTableViewHeaderReuseIdentifier];
     [self.view addSubview:self.tableView];
     
@@ -86,21 +86,21 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    ServiceTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:[ServiceTableViewCell reuseIdentifier] forIndexPath:indexPath];
-    cell.cbService = self.services[indexPath.row];
+    CentralServiceTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:[CentralServiceTableViewCell reuseIdentifier] forIndexPath:indexPath];
+    cell.service = self.services[indexPath.row];
     return cell;
 }
 
 #pragma mark - TableViewDelegate
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    ServiceTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-    if (!cell) {
-        return [ServiceTableViewCell rowHeight];
-    } else {
-        return cell.frame.size.height;
-    }
+    return [CentralServiceTableViewCell rowHeight];
 }
+
+//- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+//    CBService *service = self.services[indexPath.row];
+//
+//}
 
 #pragma mark - PeripheralDelegate
 
