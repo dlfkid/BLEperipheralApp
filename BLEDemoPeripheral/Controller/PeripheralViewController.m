@@ -58,6 +58,8 @@
     _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     [_tableView registerClass:[CentralServiceTableViewCell class] forCellReuseIdentifier:[CentralServiceTableViewCell reuseIdentifier]];
     [_tableView registerClass:[UITableViewHeaderFooterView class] forHeaderFooterViewReuseIdentifier:kdefaultTableViewHeaderReuseIdentifier];
+    // 给Cell设置建议高度
+    _tableView.estimatedRowHeight = [CentralServiceTableViewCell rowHeight];
     [self.view addSubview:self.tableView];
     
     [self.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -92,15 +94,6 @@
 }
 
 #pragma mark - TableViewDelegate
-
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return [CentralServiceTableViewCell rowHeight];
-}
-
-//- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-//    CBService *service = self.services[indexPath.row];
-//
-//}
 
 #pragma mark - PeripheralDelegate
 

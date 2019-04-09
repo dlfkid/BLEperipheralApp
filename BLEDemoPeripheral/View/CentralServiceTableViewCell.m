@@ -45,7 +45,6 @@
         [_tableView registerClass:[CentralServiceTableViewCell class] forCellReuseIdentifier:[CentralServiceTableViewCell reuseIdentifier]];
         [_tableView registerClass:[UITableViewHeaderFooterView class] forHeaderFooterViewReuseIdentifier:kdefaultTableViewHeaderReuseIdentifier];
         _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-        
         [self.customContentView addSubview:self.tableView];
         
     }
@@ -55,7 +54,7 @@
 - (void)updateConstraints {
     
     [self.tableView mas_remakeConstraints:^(MASConstraintMaker *make) {
-        make.edges.mas_equalTo(10);
+        make.edges.inset(10);
     }];
     
     [super updateConstraints];
