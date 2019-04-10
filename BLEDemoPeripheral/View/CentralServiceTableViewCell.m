@@ -11,10 +11,12 @@
 // Views
 #import "BaseTableViewCell.h"
 #import "CentralCharacteristicTableViewCell.h"
+#import "SwitchTableViewCell.h"
 
 // Models
 #import <CoreBluetooth/CBService.h>
 #import <CoreBluetooth/CBCharacteristic.h>
+#import <CoreBluetooth/CBUUID.h>
 
 @interface CentralServiceTableViewCell()<UITableViewDelegate, UITableViewDataSource>
 
@@ -40,6 +42,7 @@
         
         _tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStyleGrouped];
         _tableView.backgroundColor = [UIColor whiteColor];
+        [_tableView registerClass:[SwitchTableViewCell class] forCellReuseIdentifier:[SwitchTableViewCell reuseIdentifier]];
         [_tableView registerClass:[BaseTableViewCell class] forCellReuseIdentifier:kdefaultTableViewCellReuseIdentifier];
         [_tableView registerClass:[CentralCharacteristicTableViewCell class] forCellReuseIdentifier:[CentralCharacteristicTableViewCell reuseIdentifier]];
         [_tableView registerClass:[CentralServiceTableViewCell class] forCellReuseIdentifier:[CentralServiceTableViewCell reuseIdentifier]];
@@ -110,8 +113,21 @@
             break;
             
         default: {
-            BaseTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kdefaultTableViewCellReuseIdentifier forIndexPath:indexPath];
-            return cell;
+            if (indexPath.row == 0) {
+                BaseTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kdefaultTableViewCellReuseIdentifier forIndexPath:indexPath];
+                cell.baseTitleLabel.text = NSLocalizedString(@"CoreBlueTableViewCell.UUID.alert.text", "");
+                cell.baseSubtitleLabel.text = self.service.UUID.UUIDString;
+                cell.baseSubtitleLabel.textColor = [UIColor lightGrayColor];
+                cell.baseSubtitleLabel.numberOfLines = 0;
+                cell.baseSubtitleLabel.font = [UIFont systemFontOfSize:[UIFont systemFontSize]];
+                return cell;
+            } else {
+                SwitchTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:[SwitchTableViewCell reuseIdentifier]];
+                cell.title = NSLocalizedString(@"ServiceViewController.table.cell.primary", "");
+                cell.switchControl.on = self.service.isPrimary;
+                cell.switchControl.enabled = NO;
+                return cell;
+            }
         }
             break;
     }

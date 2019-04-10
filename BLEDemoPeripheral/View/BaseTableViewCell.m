@@ -8,6 +8,10 @@
 
 #import "BaseTableViewCell.h"
 
+@interface BaseTableViewCell()
+
+@end
+
 @implementation BaseTableViewCell
 
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
@@ -26,6 +30,11 @@
         self.customContentView.layer.shadowRadius = 1;
         self.customContentView.layer.shadowOpacity = 0.4f;
         // self.customContentView.layer.shouldRasterize = YES;
+        
+        _baseTitleLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+        _baseSubtitleLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+        [self.customContentView addSubview:self.baseTitleLabel];
+        [self.customContentView addSubview:self.baseSubtitleLabel];
     }
     return self;
 }
@@ -34,6 +43,17 @@
     [self.customContentView mas_remakeConstraints:^(MASConstraintMaker *make) {
         UIEdgeInsets padding = UIEdgeInsetsMake(10, 10, 10, 10);
         make.edges.mas_equalTo(0).insets(padding);
+    }];
+    
+    [self.baseTitleLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
+        make.left.top.mas_equalTo(10);
+        make.right.mas_equalTo(-10);
+    }];
+    
+    [self.baseSubtitleLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
+        make.top.mas_equalTo(self.baseTitleLabel.mas_bottom).mas_offset(5);
+        make.left.mas_equalTo(10);
+        make.right.mas_equalTo(-10);
     }];
     
     [super updateConstraints];

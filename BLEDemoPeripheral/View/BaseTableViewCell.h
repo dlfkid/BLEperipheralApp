@@ -16,6 +16,8 @@ NS_ASSUME_NONNULL_BEGIN
 @interface BaseTableViewCell : UITableViewCell
 
 @property (nonatomic, strong) UIView *customContentView;
+@property (nonatomic, strong) UILabel *baseTitleLabel;
+@property (nonatomic, strong) UILabel *baseSubtitleLabel;
 
 + (CGFloat)rowHeight;
 
