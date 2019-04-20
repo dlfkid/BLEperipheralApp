@@ -59,7 +59,7 @@
     [_tableView registerClass:[CentralServiceTableViewCell class] forCellReuseIdentifier:[CentralServiceTableViewCell reuseIdentifier]];
     [_tableView registerClass:[UITableViewHeaderFooterView class] forHeaderFooterViewReuseIdentifier:kdefaultTableViewHeaderReuseIdentifier];
     // 给Cell设置建议高度
-    _tableView.estimatedRowHeight = [CentralServiceTableViewCell rowHeight];
+    _tableView.estimatedRowHeight = 200;
     [self.view addSubview:self.tableView];
     
     [self.tableView mas_makeConstraints:^(MASConstraintMaker *make) {

@@ -40,6 +40,7 @@
 }
 
 - (void)updateConstraints {
+    self.customContentView.mas_key = @"mas_key: CustomContentView";
     [self.customContentView mas_remakeConstraints:^(MASConstraintMaker *make) {
         UIEdgeInsets padding = UIEdgeInsetsMake(10, 10, 10, 10);
         make.edges.mas_equalTo(0).insets(padding);
@@ -47,12 +48,11 @@
     
     [self.baseTitleLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
         make.left.top.mas_equalTo(10);
-        make.right.mas_equalTo(-10);
     }];
     
     [self.baseSubtitleLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
-        make.top.mas_equalTo(self.baseTitleLabel.mas_bottom).mas_offset(5);
-        make.left.mas_equalTo(10);
+        make.top.bottom.mas_equalTo(0);
+        make.left.mas_equalTo(self.baseTitleLabel.mas_right).mas_offset(10);
         make.right.mas_equalTo(-10);
     }];
     

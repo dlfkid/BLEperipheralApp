@@ -36,11 +36,16 @@
     return _service.includedServices;
 }
 
+- (void)dealloc {
+    [self.tableView removeObserver:self forKeyPath:@"contentSize"];
+}
+
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
-        
         _tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStyleGrouped];
+        _tableView.delegate = self;
+        _tableView.dataSource = self;
         _tableView.backgroundColor = [UIColor whiteColor];
         [_tableView registerClass:[SwitchTableViewCell class] forCellReuseIdentifier:[SwitchTableViewCell reuseIdentifier]];
         [_tableView registerClass:[BaseTableViewCell class] forCellReuseIdentifier:kdefaultTableViewCellReuseIdentifier];
@@ -49,13 +54,14 @@
         [_tableView registerClass:[UITableViewHeaderFooterView class] forHeaderFooterViewReuseIdentifier:kdefaultTableViewHeaderReuseIdentifier];
         _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
         [self.customContentView addSubview:self.tableView];
-        
+        // 监听TableView的内容高度改变自身高度
+        [self.tableView addObserver:self forKeyPath:@"contentSize" options:0 context:NULL];
     }
     return self;
 }
 
 - (void)updateConstraints {
-    
+    self.tableView.mas_key = @"mas_key: TableViewEdges";
     [self.tableView mas_remakeConstraints:^(MASConstraintMaker *make) {
         make.edges.inset(10);
     }];
@@ -67,12 +73,20 @@
 
 - (void)setService:(CBService *)service {
     _service = service;
-    
+    [self.tableView reloadData];
 }
 
 #pragma mark - TableViewDelegate
 
-
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (indexPath.section == 0) {
+        return [BaseTableViewCell rowHeight];
+    } else if (indexPath.section == 1) {
+        return [CentralCharacteristicTableViewCell rowHeight];
+    } else {
+        return [CentralServiceTableViewCell rowHeight];
+    }
+}
 
 #pragma mark - TableViewDataSource
 
@@ -135,7 +149,23 @@
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     UITableViewHeaderFooterView *header = [tableView dequeueReusableHeaderFooterViewWithIdentifier:kdefaultTableViewHeaderReuseIdentifier];
+    if (section == 0) {
+        header.textLabel.text = NSLocalizedString(@"CoreBlueTableViewCell.header.info", "");
+    } else if (section == 1) {
+        header.textLabel.text = NSLocalizedString(@"ServiceTableViewCell.characteristicLabel.text", "");
+    } else {
+        header.textLabel.text = NSLocalizedString(@"ServiceTableViewCell.includedServicesLabel.text", "");
+    }
     return header;
+}
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context {
+    CGRect frame = self.tableView.frame;
+    frame.size = self.tableView.contentSize;
+    [self.tableView mas_updateConstraints:^(MASConstraintMaker *make) {
+        make.height.mas_greaterThanOrEqualTo(frame.size.height);
+    }];
+    [self layoutIfNeeded];
 }
 
 @end

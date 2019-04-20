@@ -184,6 +184,11 @@
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (self.centralManager.isScanning) {
+        // 准备进行连接操作时先断开搜索
+        [self.centralManager stopScan];
+    }
+    
     CBPeripheral *peripheral = self.peripherals[indexPath.row];
     
     if (peripheral.state == CBPeripheralStateConnected) {
