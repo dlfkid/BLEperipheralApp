@@ -26,9 +26,9 @@
         self.customContentView.layer.borderWidth = .5f;
         self.customContentView.layer.borderColor = [UIColor lightGrayColor].CGColor;
         self.customContentView.layer.cornerRadius = 10;
-        self.customContentView.layer.shadowOffset = CGSizeMake(0, 1);
-        self.customContentView.layer.shadowRadius = 1;
-        self.customContentView.layer.shadowOpacity = 0.4f;
+//        self.customContentView.layer.shadowOffset = CGSizeMake(0, 1);
+//        self.customContentView.layer.shadowRadius = 1;
+//        self.customContentView.layer.shadowOpacity = 0.4f;
         // self.customContentView.layer.shouldRasterize = YES;
         
         _baseTitleLabel = [[UILabel alloc] initWithFrame:CGRectZero];

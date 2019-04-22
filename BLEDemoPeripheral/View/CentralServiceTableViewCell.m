@@ -62,6 +62,10 @@
 
 - (void)updateConstraints {
     self.tableView.mas_key = @"mas_key: TableViewEdges";
+    [self.customContentView mas_remakeConstraints:^(MASConstraintMaker *make) {
+        make.width.mas_greaterThanOrEqualTo(20);
+        make.height.mas_greaterThanOrEqualTo(20);
+    }];
     [self.tableView mas_remakeConstraints:^(MASConstraintMaker *make) {
         make.edges.inset(10);
     }];
