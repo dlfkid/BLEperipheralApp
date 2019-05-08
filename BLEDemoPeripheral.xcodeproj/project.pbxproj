@@ -31,6 +31,7 @@
 		B44D1FBE1F3842770011AC95 /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B44D1FBD1F3842770011AC95 /* MainViewController.m */; };
 		B4800132224FB6F600E0507E /* CentralServiceTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B4800131224FB6F600E0507E /* CentralServiceTableViewCell.m */; };
 		B4800135224FB96A00E0507E /* CentralCharacteristicTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B4800134224FB96A00E0507E /* CentralCharacteristicTableViewCell.m */; };
+		B4A835132283307F0026FEDB /* UIButton+Reactive.m in Sources */ = {isa = PBXBuildFile; fileRef = B4A835122283307F0026FEDB /* UIButton+Reactive.m */; };
 		B4C2881F221EFD7A00E528AE /* DataBaseManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B4C2881E221EFD7A00E528AE /* DataBaseManager.m */; };
 		B4CC5DA82243C808002EAE63 /* PeripheralViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B4CC5DA72243C808002EAE63 /* PeripheralViewController.m */; };
 		B4EAB1D72236A05300CCA4F5 /* SideMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B4EAB1D62236A05300CCA4F5 /* SideMenuViewController.m */; };
@@ -88,6 +89,8 @@
 		B4800131224FB6F600E0507E /* CentralServiceTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CentralServiceTableViewCell.m; sourceTree = "<group>"; };
 		B4800133224FB96A00E0507E /* CentralCharacteristicTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CentralCharacteristicTableViewCell.h; sourceTree = "<group>"; };
 		B4800134224FB96A00E0507E /* CentralCharacteristicTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CentralCharacteristicTableViewCell.m; sourceTree = "<group>"; };
+		B4A835112283307F0026FEDB /* UIButton+Reactive.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIButton+Reactive.h"; sourceTree = "<group>"; };
+		B4A835122283307F0026FEDB /* UIButton+Reactive.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIButton+Reactive.m"; sourceTree = "<group>"; };
 		B4C2881D221EFD7A00E528AE /* DataBaseManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DataBaseManager.h; sourceTree = "<group>"; };
 		B4C2881E221EFD7A00E528AE /* DataBaseManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DataBaseManager.m; sourceTree = "<group>"; };
 		B4CC5DA62243C808002EAE63 /* PeripheralViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PeripheralViewController.h; sourceTree = "<group>"; };
@@ -180,6 +183,8 @@
 			children = (
 				3558C00E22117E900041D02D /* CBCharacteristic+StringExtensions.h */,
 				3558C00F22117E900041D02D /* CBCharacteristic+StringExtensions.m */,
+				B4A835112283307F0026FEDB /* UIButton+Reactive.h */,
+				B4A835122283307F0026FEDB /* UIButton+Reactive.m */,
 			);
 			path = Category;
 			sourceTree = "<group>";
@@ -406,6 +411,7 @@
 				35184C70220ADE82001C8242 /* ServiceViewController.m in Sources */,
 				B4CC5DA82243C808002EAE63 /* PeripheralViewController.m in Sources */,
 				B44D1FBE1F3842770011AC95 /* MainViewController.m in Sources */,
+				B4A835132283307F0026FEDB /* UIButton+Reactive.m in Sources */,
 				B4800135224FB96A00E0507E /* CentralCharacteristicTableViewCell.m in Sources */,
 				3558C01022117E900041D02D /* CBCharacteristic+StringExtensions.m in Sources */,
 				B4F436A222301E760031EEC6 /* AboutViewController.m in Sources */,
