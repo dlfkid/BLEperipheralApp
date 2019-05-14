@@ -14,10 +14,10 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "DA0613279183471D844ABC3161737E88"
-               BlueprintName = "UIExtensionKit"
+               BlueprintIdentifier = "B80062BFE6BD0AA02E6FCD5CFB3FE2C0"
+               BlueprintName = "SVProgressHUD"
                ReferencedContainer = "container:Pods.xcodeproj"
-               BuildableName = "UIExtensionKit.framework">
+               BuildableName = "SVProgressHUD.framework">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>

@@ -153,6 +153,11 @@
     }];
 }
 
+- (void)clearAllPeripherals {
+    [self.peripheralSet removeAllObjects];
+    [self.tableView reloadData];
+}
+
 #pragma mark - TableViewDataSource
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -214,10 +219,12 @@
             
         case CBManagerStateResetting:
             stateString = NSLocalizedString(@"peripheralState.resetting", "");
+            [self clearAllPeripherals];
             break;
             
         case CBManagerStatePoweredOff:
             stateString = NSLocalizedString(@"peripheralState.powerOff", "");
+            [self clearAllPeripherals];
             break;
             
         case CBManagerStateUnsupported:
