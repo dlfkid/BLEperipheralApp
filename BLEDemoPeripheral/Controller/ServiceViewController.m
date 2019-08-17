@@ -128,9 +128,7 @@
         PSTAlertController *controller = [PSTAlertController alertWithTitle:NSLocalizedString(@"ServiceViewController.cancelButton.alert.text", "") message:nil];
         PSTAlertAction *yesAction = [PSTAlertAction actionWithTitle:NSLocalizedString(@"Yes", "") handler:^(PSTAlertAction * _Nonnull action) {
             for (DPCharacteristic *character in self.characteristics) {
-                [[DataBaseManager sharedDataBaseManager] dbOpen];
                 [character RemoveCharacteristicFromDB];
-                [[DataBaseManager sharedDataBaseManager] dbClose];
             }
             [self.navigationController popViewControllerAnimated:YES];
         }];
@@ -395,9 +393,7 @@
                 [tempArray removeObject:characteristic];
                 self.characteristics = tempArray;
                 [tableView reloadData];
-                [[DataBaseManager sharedDataBaseManager] dbOpen];
                 [characteristic RemoveCharacteristicFromDB];
-                [[DataBaseManager sharedDataBaseManager] dbClose];
             }
         };
         
@@ -406,9 +402,7 @@
             [tempArray addObject:characteristic];
             self.characteristics = tempArray;
             [tableView reloadData];
-            [[DataBaseManager sharedDataBaseManager] dbOpen];
             [characteristic addCharacteristicToDB];
-            [[DataBaseManager sharedDataBaseManager] dbClose];
         };
         
         [self.navigationController pushViewController:controller animated:YES];
@@ -422,9 +416,7 @@
             // 子服务添加的时候主服务的sampleService还是nil
             self.includedServices = newIncludedServiceArray;
             [tableView reloadData];
-            [[DataBaseManager sharedDataBaseManager] dbOpen];
             [service addServiceToDB];
-            [[DataBaseManager sharedDataBaseManager] dbClose];
         };
         controller.serviceDidRemovedHandler = ^(DPService * _Nonnull service) {
             if ([self.includedServices containsObject:service]) {
@@ -432,9 +424,7 @@
                 [newIncludedServiceArray removeObject:service];
                 self.includedServices = newIncludedServiceArray;
                 [tableView reloadData];
-                [[DataBaseManager sharedDataBaseManager] dbOpen];
                 [service removeServiceFromDB];
-                [[DataBaseManager sharedDataBaseManager] dbClose];
             }
         };
         [self.navigationController pushViewController:controller animated:YES];

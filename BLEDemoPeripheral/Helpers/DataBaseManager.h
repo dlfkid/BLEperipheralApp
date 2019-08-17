@@ -18,11 +18,9 @@ extern NSString * const kTableCharacteristics;
 
 @interface DataBaseManager : NSObject
 
-@property (nonatomic, strong) FMDatabase *dataBase;
+@property (nonatomic, strong, readonly) FMDatabase *dataBase;
 
 + (instancetype)sharedDataBaseManager;
-
-- (void)dataBaseInitialization;
 
 - (void)dbOpen;
 

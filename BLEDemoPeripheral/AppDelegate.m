@@ -35,7 +35,7 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // 初始化数据库
-    [[DataBaseManager sharedDataBaseManager] dataBaseInitialization];
+    [DataBaseManager sharedDataBaseManager];
     
     // 设置开发者屏幕型号
     [[DeviceScreenAdaptor sharedAdaptor] setDeveloperScreenType:DeviceScreenType5_5];

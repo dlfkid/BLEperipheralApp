@@ -10,10 +10,13 @@
 
 // Helpers
 #import <FMDB/FMDB.h>
+#import "LFDataMigrater.h"
 
-@interface DataBaseManager()
+@interface DataBaseManager() <LFDataMigraterDelegate>
 
 @property (nonatomic, copy) NSString *dataBasePath;
+@property (nonatomic, strong) LFDataMigrater *dataMigrater;
+@property (nonatomic, strong) FMDatabase *dataBase;
 
 @end
 
@@ -22,8 +25,7 @@ static dispatch_once_t onceToken;
 
 // 最新数据库版本，每次更新版本需要在这里备注
 // 第1版数据库建立时间：2019-02-23
-// 第2版数据库建立时间：2019-02-26
-static NSInteger const lastestDBVersion = 2;
+static NSInteger const lastestDBVersion = 1;
 
 static NSString * const kdataBaseName = @"ble_peripheral_db.sqlite";
 NSString * const kTableDBVersion = @"db_version";
@@ -31,33 +33,6 @@ NSString * const kTableServices = @"service_list";
 NSString * const kTableCharacteristics = @"characteristic_list";
 
 @implementation DataBaseManager
-
-- (NSString *)dataBasePath {
-    if (!_dataBasePath) {
-        NSArray *documents = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-        NSString *paths = [documents objectAtIndex:0];
-        NSString *dbPath = [paths stringByAppendingPathComponent:kdataBaseName];
-        NSLog(@"DataBase generated at path %@", dbPath);
-        _dataBasePath = dbPath;
-    }
-    return _dataBasePath;
-}
-
-- (instancetype)init
-{
-    self = [super init];
-    if (self) {
-        _dataBase = [FMDatabase databaseWithPath:self.dataBasePath];
-    }
-    return self;
-}
-
-+ (instancetype)sharedDataBaseManager {
-    dispatch_once(&onceToken, ^{
-        sharedInstance = [[self alloc] init];
-    });
-    return sharedInstance;
-}
 
 #pragma mark - Actions
 
@@ -69,8 +44,15 @@ NSString * const kTableCharacteristics = @"characteristic_list";
     [self.dataBase close];
 }
 
-// 数据库初始化
-- (void)dataBaseInitialization {
+#pragma mark - LFDataMigraterDelegate
+
+/**
+ 创建数据库
+ */
+
+- (void)lf_initDatabaseWithInfo:(LFDataInfo *)dataBaseInfo {
+    _dataBase = [FMDatabase databaseWithPath:self.dataBasePath];
+    
     // 打开数据库
     if (![self.dataBase open]) {
         NSLog(@"DataBaseManager : Failed to open data base!");
@@ -95,53 +77,11 @@ NSString * const kTableCharacteristics = @"characteristic_list";
     if (![self.dataBase executeUpdate:createCBCharacteristicTable]) {
         NSLog(@"DataBaseManager : %@", NSStringFromSelector(_cmd));
     }
-    
-    // 对数据库进行更新
-    [self dataBaseUpdate];
-    
-    // 关闭数据库
-    [self.dataBase close];
 }
 
-- (void)dataBaseUpdate {
-    NSInteger currentVersion = 1;
-    NSString *queryDBVersion = [NSString stringWithFormat:@"SELECT * FROM %@ ORDER BY id", kTableDBVersion];
-    FMResultSet *queryResult = [self.dataBase executeQuery:queryDBVersion];
-    while ([queryResult next]) {
-        // 根据查询结果获取当前最新版本
-        NSInteger version = [queryResult intForColumn:@"version"];
-        if (version > currentVersion) {
-            currentVersion = version;
-        }
-    }
-    // 执行升级操作
-    BOOL needToUpdate = currentVersion < lastestDBVersion;
-    if (needToUpdate) {
-        [self updateToLastestVersion:currentVersion];
-    }
-    NSLog(@"Current DB Version: %zd, Lastest DB Version: %zd, Need update: %d", currentVersion, lastestDBVersion, needToUpdate);
-}
-
-- (void)updateToLastestVersion:(NSInteger)currentVersion {
-    for (NSInteger version = currentVersion; version < lastestDBVersion; version ++) {
-        [self updateToNextDBVersion:version];
-    }
-    NSLog(@"DataBaseManager : DataBase Update Finished");
-    // 更新完毕，将数据库更新信息插入数据库版本信息表
-    NSDateFormatter *timeFormatter = [[NSDateFormatter alloc] init];
-    timeFormatter.locale = [NSLocale systemLocale];
-    timeFormatter.dateFormat = @"yyyy-MM-dd HH:mm";
-    NSString *timeString = [timeFormatter stringFromDate:[NSDate date]];
-    
-    NSString *sqlStatement = [NSString stringWithFormat:@"INSERT INTO %@ (version, update_time) VALUES (%zd, '%@')", kTableDBVersion, lastestDBVersion, timeString];
-    if (![self.dataBase executeUpdate:sqlStatement]) {
-        NSLog(@"DataBaseManager : database version insert failed");
-    }
-}
-
-- (void)updateToNextDBVersion:(NSInteger)currentVersion {
-    switch (currentVersion) {
-        case 1: {
+- (void)lf_updateDataBaseWithVersion:(NSNumber *)version {
+    switch (version.integerValue) {
+        case 0: {
             // 当前是第1版数据库，需要升级到第2版
             // 改动内容：1.为服务和特征增加描述内容 2.为服务增加是否是子服务标识
             NSString *addServiceIncluded = [NSString stringWithFormat:@"ALTER TABLE %@ ADD is_included INTEGER DEFAULT 0", kTableServices];
@@ -154,7 +94,7 @@ NSString * const kTableCharacteristics = @"characteristic_list";
         }
             break;
             
-        case 2: {
+        case 1: {
             // 当前是第2版数据库，需要升级到第3版
         }
             break;
@@ -163,6 +103,41 @@ NSString * const kTableCharacteristics = @"characteristic_list";
             // 未定义的版本不作处理
             break;
     }
+}
+
+#pragma mark - LazyLoads
+
++ (instancetype)sharedDataBaseManager {
+    dispatch_once(&onceToken, ^{
+        sharedInstance = [[self alloc] init];
+        sharedInstance.dataMigrater.delegate = sharedInstance;
+        [sharedInstance.dataMigrater lf_migrateDataBaseToHigherVersion:@1 Completion:^(NSError * _Nullable error) {
+            if (!error) {
+                NSLog(@"Data base migrated to : %ld", lastestDBVersion);
+            } else {
+                NSLog(@"Data base migrate failed with error: %@", error.localizedDescription);
+            }
+        }];
+    });
+    return sharedInstance;
+}
+
+- (NSString *)dataBasePath {
+    if (!_dataBasePath) {
+        NSArray *documents = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+        NSString *paths = [documents objectAtIndex:0];
+        NSString *dbPath = [paths stringByAppendingPathComponent:kdataBaseName];
+        NSLog(@"DataBase generated at path %@", dbPath);
+        _dataBasePath = dbPath;
+    }
+    return _dataBasePath;
+}
+
+- (LFDataMigrater *)dataMigrater {
+    if (!_dataMigrater) {
+        _dataMigrater = [[LFDataMigrater alloc] initWithDataBaseName:kdataBaseName Path:self.dataBasePath toVersion:@1];
+    }
+    return _dataMigrater;
 }
 
 @end

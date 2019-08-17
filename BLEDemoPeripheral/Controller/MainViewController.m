@@ -59,9 +59,7 @@ static NSString * const kSampleCharacteristicUUID = @"CDD2";
     [aboutButton setBackgroundImage:icon forState:UIControlStateNormal];
     [aboutButton addTarget:self action:@selector(menuButtonDidTappedAction) forControlEvents:UIControlEventTouchUpInside];
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:aboutButton];
-    [[DataBaseManager sharedDataBaseManager] dbOpen];
     self.serviceArray = [DPService loadMainService];
-    [[DataBaseManager sharedDataBaseManager] dbClose];
     [self UIBuild];
 }
 
@@ -152,9 +150,7 @@ static NSString * const kSampleCharacteristicUUID = @"CDD2";
             [tmpArray addObject:service];
             self.serviceArray = tmpArray;
             [self.tableView reloadData];
-            [[DataBaseManager sharedDataBaseManager] dbOpen];
             [service addServiceToDB];
-            [[DataBaseManager sharedDataBaseManager] dbClose];
         }
     };
     serviceVC.serviceDidRemovedHandler = ^(DPService * _Nonnull service) {
@@ -163,9 +159,7 @@ static NSString * const kSampleCharacteristicUUID = @"CDD2";
             [tmpArray removeObject:service];
             self.serviceArray = tmpArray;
             [self.tableView reloadData];
-            [[DataBaseManager sharedDataBaseManager] dbOpen];
             [service removeServiceFromDB];
-            [[DataBaseManager sharedDataBaseManager] dbClose];
         }
     };
     [self.navigationController pushViewController:serviceVC animated:YES];
@@ -372,9 +366,7 @@ static NSString * const kSampleCharacteristicUUID = @"CDD2";
             [services addObject:service];
             self.serviceArray = services;
             [self.tableView reloadData];
-            [[DataBaseManager sharedDataBaseManager] dbOpen];
             [service addServiceToDB];
-            [[DataBaseManager sharedDataBaseManager] dbClose];
         }
     };
     viewController.serviceDidRemovedHandler = ^(DPService * _Nonnull service) {
@@ -383,9 +375,7 @@ static NSString * const kSampleCharacteristicUUID = @"CDD2";
             [services removeObject:service];
             self.serviceArray = services;
             [self.tableView reloadData];
-            [[DataBaseManager sharedDataBaseManager] dbOpen];
             [service removeServiceFromDB];
-            [[DataBaseManager sharedDataBaseManager] dbClose];
         }
     };
     [self.navigationController pushViewController:viewController animated:YES];

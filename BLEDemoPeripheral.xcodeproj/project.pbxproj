@@ -24,6 +24,9 @@
 		35F7DB23220889270045F7B0 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 35F7DB25220889270045F7B0 /* Localizable.strings */; };
 		819F4A0A64B934D5E6793BA9 /* Pods_BLEDemoPeripheral.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EDFDC52ACB2C95D53810726F /* Pods_BLEDemoPeripheral.framework */; };
 		B40A3486224721BB0004644E /* StatusBarView.m in Sources */ = {isa = PBXBuildFile; fileRef = B40A3485224721BB0004644E /* StatusBarView.m */; };
+		B43B4D3723079F3C009F9F94 /* LFDataMigrater.m in Sources */ = {isa = PBXBuildFile; fileRef = B43B4D3423079F3B009F9F94 /* LFDataMigrater.m */; };
+		B43B4D3823079F3C009F9F94 /* LFDataInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = B43B4D3523079F3B009F9F94 /* LFDataInfo.m */; };
+		B43B4D3923079F3C009F9F94 /* NSError+LFDataMigrater.m in Sources */ = {isa = PBXBuildFile; fileRef = B43B4D3623079F3B009F9F94 /* NSError+LFDataMigrater.m */; };
 		B44D1FA71F3841840011AC95 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = B44D1FA61F3841840011AC95 /* main.m */; };
 		B44D1FAA1F3841840011AC95 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = B44D1FA91F3841840011AC95 /* AppDelegate.m */; };
 		B44D1FB21F3841840011AC95 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B44D1FB11F3841840011AC95 /* Assets.xcassets */; };
@@ -76,6 +79,12 @@
 		867E6E9C5FF211B7AE199967 /* Pods-BLEDemoPeripheral.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BLEDemoPeripheral.debug.xcconfig"; path = "Pods/Target Support Files/Pods-BLEDemoPeripheral/Pods-BLEDemoPeripheral.debug.xcconfig"; sourceTree = "<group>"; };
 		B40A3484224721BB0004644E /* StatusBarView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StatusBarView.h; sourceTree = "<group>"; };
 		B40A3485224721BB0004644E /* StatusBarView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = StatusBarView.m; sourceTree = "<group>"; };
+		B43B4D3123079F3B009F9F94 /* LFDataMigrater.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LFDataMigrater.h; sourceTree = "<group>"; };
+		B43B4D3223079F3B009F9F94 /* NSError+LFDataMigrater.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSError+LFDataMigrater.h"; sourceTree = "<group>"; };
+		B43B4D3323079F3B009F9F94 /* LFDataInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LFDataInfo.h; sourceTree = "<group>"; };
+		B43B4D3423079F3B009F9F94 /* LFDataMigrater.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LFDataMigrater.m; sourceTree = "<group>"; };
+		B43B4D3523079F3B009F9F94 /* LFDataInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LFDataInfo.m; sourceTree = "<group>"; };
+		B43B4D3623079F3B009F9F94 /* NSError+LFDataMigrater.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSError+LFDataMigrater.m"; sourceTree = "<group>"; };
 		B44D1FA21F3841840011AC95 /* BLEDemoPeripheral.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BLEDemoPeripheral.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B44D1FA61F3841840011AC95 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		B44D1FA81F3841840011AC95 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -129,6 +138,19 @@
 				EDFDC52ACB2C95D53810726F /* Pods_BLEDemoPeripheral.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		B43B4D3023079F3B009F9F94 /* LFDataMirgater */ = {
+			isa = PBXGroup;
+			children = (
+				B43B4D3123079F3B009F9F94 /* LFDataMigrater.h */,
+				B43B4D3423079F3B009F9F94 /* LFDataMigrater.m */,
+				B43B4D3323079F3B009F9F94 /* LFDataInfo.h */,
+				B43B4D3523079F3B009F9F94 /* LFDataInfo.m */,
+				B43B4D3223079F3B009F9F94 /* NSError+LFDataMigrater.h */,
+				B43B4D3623079F3B009F9F94 /* NSError+LFDataMigrater.m */,
+			);
+			path = LFDataMirgater;
 			sourceTree = "<group>";
 		};
 		B44D1F991F3841840011AC95 = {
@@ -192,6 +214,7 @@
 		B4CC5DAA2243C88A002EAE63 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				B43B4D3023079F3B009F9F94 /* LFDataMirgater */,
 				3558C0072211733A0041D02D /* ControllerAnimationManager.h */,
 				3558C0082211733A0041D02D /* ControllerAnimationManager.m */,
 				B4C2881D221EFD7A00E528AE /* DataBaseManager.h */,
@@ -292,7 +315,7 @@
 				TargetAttributes = {
 					B44D1FA11F3841840011AC95 = {
 						CreatedOnToolsVersion = 8.3.3;
-						DevelopmentTeam = VSH7W5Y66V;
+						DevelopmentTeam = BHD34642BX;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -399,11 +422,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B43B4D3723079F3C009F9F94 /* LFDataMigrater.m in Sources */,
 				B4EAB1D72236A05300CCA4F5 /* SideMenuViewController.m in Sources */,
 				350EDF8922094C85003AD2D9 /* BaseTableViewCell.m in Sources */,
 				35CF4361221403D200107DE4 /* SwitchTableViewCell.m in Sources */,
 				B4800132224FB6F600E0507E /* CentralServiceTableViewCell.m in Sources */,
 				35A7D6652223981100B03F12 /* DPCharacteristic.m in Sources */,
+				B43B4D3823079F3C009F9F94 /* LFDataInfo.m in Sources */,
 				B40A3486224721BB0004644E /* StatusBarView.m in Sources */,
 				B44D1FAA1F3841840011AC95 /* AppDelegate.m in Sources */,
 				3561D2672203D8C1000491D2 /* BaseViewController.m in Sources */,
@@ -417,6 +442,7 @@
 				B4F436A222301E760031EEC6 /* AboutViewController.m in Sources */,
 				35184C73220C1A77001C8242 /* ServiceTableViewCell.m in Sources */,
 				35184C76220C2746001C8242 /* ViewModel.m in Sources */,
+				B43B4D3923079F3C009F9F94 /* NSError+LFDataMigrater.m in Sources */,
 				B4C2881F221EFD7A00E528AE /* DataBaseManager.m in Sources */,
 				3558C0092211733A0041D02D /* ControllerAnimationManager.m in Sources */,
 				35F1F8A12237BB120042B1ED /* PeripheralTableViewCell.m in Sources */,
@@ -567,7 +593,7 @@
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = VSH7W5Y66V;
+				DEVELOPMENT_TEAM = BHD34642BX;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/BLEDemoPeripheral/PrefixHeader.pch";
 				INFOPLIST_FILE = BLEDemoPeripheral/Info.plist;
@@ -589,7 +615,7 @@
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = VSH7W5Y66V;
+				DEVELOPMENT_TEAM = BHD34642BX;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/BLEDemoPeripheral/PrefixHeader.pch";
 				INFOPLIST_FILE = BLEDemoPeripheral/Info.plist;
